@@ -1,0 +1,1 @@
+{"version":3,"file":"reply-comment.js","sources":["pages/manages/comments/reply-comment.vue?type=page"],"sourcesContent":["import MiniProgramPage from '/Users/hejintao/otherWorkspace/Ordering/pages/manages/comments/reply-comment.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;AACA,GAAG,WAAW,eAAe;"}

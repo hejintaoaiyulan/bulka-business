@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "評論管理",
+  "navigationBarBackgroundColor": "#000",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#f8f8f8",
+  "usingComponents": {
+    "uv-tabs": "../../../uni_modules/uv-tabs/components/uv-tabs/uv-tabs",
+    "uv-avatar": "../../../uni_modules/uv-avatar/components/uv-avatar/uv-avatar",
+    "uv-rate": "../../../uni_modules/uv-rate/components/uv-rate/uv-rate",
+    "uv-button": "../../../uni_modules/uv-button/components/uv-button/uv-button"
+  }
+}

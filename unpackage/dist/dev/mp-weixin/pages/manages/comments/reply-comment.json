@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "評論管理",
+  "navigationBarBackgroundColor": "#000",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#f8f8f8",
+  "usingComponents": {
+    "uv-textarea": "../../../uni_modules/uv-textarea/components/uv-textarea/uv-textarea",
+    "uv-button": "../../../uni_modules/uv-button/components/uv-button/uv-button"
+  }
+}

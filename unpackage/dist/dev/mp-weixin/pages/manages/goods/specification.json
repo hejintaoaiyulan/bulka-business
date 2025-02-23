@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "设置规格",
+  "navigationBarBackgroundColor": "#000",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#f8f8f8",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uv-navbar": "../../../uni_modules/uv-navbar/components/uv-navbar/uv-navbar",
+    "uv-input": "../../../uni_modules/uv-input/components/uv-input/uv-input",
+    "uv-radio": "../../../uni_modules/uv-radio/components/uv-radio/uv-radio",
+    "uv-radio-group": "../../../uni_modules/uv-radio/components/uv-radio-group/uv-radio-group",
+    "uv-button": "../../../uni_modules/uv-button/components/uv-button/uv-button",
+    "uv-popup": "../../../uni_modules/uv-popup/components/uv-popup/uv-popup"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "首頁",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uv-navbar": "../../uni_modules/uv-navbar/components/uv-navbar/uv-navbar"
+  }
+}

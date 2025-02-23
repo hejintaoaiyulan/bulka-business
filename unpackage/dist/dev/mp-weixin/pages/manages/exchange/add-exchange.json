@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "新增換購活動",
+  "navigationBarBackgroundColor": "#000",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#f8f8f8",
+  "usingComponents": {
+    "uv-input": "../../../uni_modules/uv-input/components/uv-input/uv-input",
+    "uv-button": "../../../uni_modules/uv-button/components/uv-button/uv-button"
+  }
+}

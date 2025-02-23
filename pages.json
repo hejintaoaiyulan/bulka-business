@@ -1,0 +1,179 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首頁",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/orders/index",
+			"style": {
+				"navigationBarTitleText": "訂單",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/account/index",
+			"style": {
+				"navigationBarTitleText": "個人中心",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/manages/goods-category/index",
+			"style": {
+				"navigationBarTitleText": "商品分类",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/manages/goods/index",
+			"style": {
+				"navigationBarTitleText": "商品管理",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/goods/add-goods",
+			"style": {
+				"navigationBarTitleText": "添加商品",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/goods/specification",
+			"style": {
+				"navigationBarTitleText": "设置规格",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/manages/promotions/index",
+			"style": {
+				"navigationBarTitleText": "優惠活動管理",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/promotions/add-promotion",
+			"style": {
+				"navigationBarTitleText": "新增優惠活動",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/exchange/index",
+			"style": {
+				"navigationBarTitleText": "換購活動管理",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/exchange/add-exchange",
+			"style": {
+				"navigationBarTitleText": "新增換購活動",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/exchange/choose-exchange",
+			"style": {
+				"navigationBarTitleText": "選擇換購商品",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/exchange/edit-exchange-goods",
+			"style": {
+				"navigationBarTitleText": "編輯換購商品",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/comments/index",
+			"style": {
+				"navigationBarTitleText": "評論管理",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/manages/comments/reply-comment",
+			"style": {
+				"navigationBarTitleText": "評論管理",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
+			"path": "pages/orders/order-info",
+			"style": {
+				"navigationBarTitleText": "訂單詳情",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8",
+				"enablePullDownRefresh": true
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#c74336",
+		"backgroundColor": "#ffffff",
+		"borderStyle": "black",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首頁",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home-active.png"
+			},
+			{
+				"pagePath": "pages/orders/index",
+				"text": "訂單",
+				"iconPath": "static/tabbar/order.png",
+				"selectedIconPath": "static/tabbar/order-active.png"
+			},
+			{
+				"pagePath": "pages/account/index",
+				"text": "我的",
+				"iconPath": "static/tabbar/my.png",
+				"selectedIconPath": "static/tabbar/my-active.png"
+			}
+		]
+	},
+	"uniIdRouter": {}
+}
