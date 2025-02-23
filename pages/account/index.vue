@@ -1,4 +1,10 @@
 <script setup>
+
+const handleToRoute = (path) => {
+  uni.navigateTo({
+    url: path
+  })
+}
 </script>
 
 <template>
@@ -13,7 +19,7 @@
     </view>
   </view>
   <view class="action-content">
-    <view class="action-item">
+    <view class="action-item" @click="handleToRoute('/pages/account/account-info')">
       <view class="action-item-icon">
         <uv-avatar text="資料" :size="40" />
       </view>
@@ -33,7 +39,7 @@
       </view>
     </view>
 
-    <view class="action-item">
+    <view class="action-item" @click="handleToRoute('/pages/account/helper')">
       <view class="action-item-icon">
         <uv-avatar text="資料" :size="40" />
       </view>
@@ -43,7 +49,7 @@
       </view>
     </view>
 
-    <view class="action-item">
+    <view class="action-item" @click="handleToRoute('/pages/settings/index')">
       <view class="action-item-icon">
         <uv-avatar text="資料" :size="40" />
       </view>

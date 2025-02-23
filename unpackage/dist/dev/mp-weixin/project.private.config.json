@@ -3,5 +3,18 @@
     "projectname": "Ordering",
     "setting": {
         "compileHotReLoad": true
+    },
+    "condition": {
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "pages/register/set-info",
+                    "pathName": "pages/register/set-info",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": null
+                }
+            ]
+        }
     }
 }

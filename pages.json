@@ -8,6 +8,14 @@
 			}
 		},
 		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登錄",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
 			"path": "pages/orders/index",
 			"style": {
 				"navigationBarTitleText": "訂單",
@@ -20,6 +28,30 @@
 			"path": "pages/account/index",
 			"style": {
 				"navigationBarTitleText": "個人中心",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/account/account-info",
+			"style": {
+				"navigationBarTitleText": "商家資料",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/account/album",
+			"style": {
+				"navigationBarTitleText": "商家相冊",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/account/helper",
+			"style": {
+				"navigationBarTitleText": "幫助中心",
 				"navigationBarBackgroundColor": "#000",
 				"navigationBarTextStyle": "white"
 			}
@@ -53,7 +85,7 @@
 		{
 			"path": "pages/manages/goods/specification",
 			"style": {
-				"navigationBarTitleText": "设置规格",
+				"navigationBarTitleText": "設置規格",
 				"navigationBarBackgroundColor": "#000",
 				"navigationBarTextStyle": "white",
 				"backgroundColor": "#f8f8f8",
@@ -140,6 +172,62 @@
 				"navigationBarTextStyle": "white",
 				"backgroundColor": "#f8f8f8",
 				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/settings/index",
+			"style": {
+				"navigationBarTitleText": "設置",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/settings/account-safe",
+			"style": {
+				"navigationBarTitleText": "賬戶安全中心",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/settings/change-mobile",
+			"style": {
+				"navigationBarTitleText": "修改手機綁定",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/settings/change-pwd",
+			"style": {
+				"navigationBarTitleText": "登錄密碼修改",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/login/reset-pwd",
+			"style": {
+				"navigationBarTitleText": "忘記密碼",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/register/index",
+			"style": {
+				"navigationBarTitleText": "註冊",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/register/set-info",
+			"style": {
+				"navigationBarTitleText": "商家入駐",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
 			}
 		}
 	],

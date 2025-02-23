@@ -18,7 +18,7 @@ const handleAddItem = () => {
 <template>
   <view class="container">
     <uv-navbar
-      title="设置商品规格"
+      title="設置商品規格"
       fixed
       bg-color="#000000"
       title-style="color: #fff"
@@ -28,7 +28,7 @@ const handleAddItem = () => {
       left-icon-color="#fff"
     >
       <template #right>
-        <text class="add-spec">新增规格</text>
+        <text class="add-spec">新增規格</text>
       </template>
     </uv-navbar>
     <view class="content">

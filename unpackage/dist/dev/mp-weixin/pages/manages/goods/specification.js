@@ -36,7 +36,7 @@ const _sfc_main = {
       return {
         a: common_vendor.o(handleBack),
         b: common_vendor.p({
-          title: "设置商品规格",
+          title: "設置商品規格",
           fixed: true,
           ["bg-color"]: "#000000",
           ["title-style"]: "color: #fff",

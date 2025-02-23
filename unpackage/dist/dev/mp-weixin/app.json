@@ -1,8 +1,12 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/login/index",
     "pages/orders/index",
     "pages/account/index",
+    "pages/account/account-info",
+    "pages/account/album",
+    "pages/account/helper",
     "pages/manages/goods-category/index",
     "pages/manages/goods/index",
     "pages/manages/goods/add-goods",
@@ -15,7 +19,14 @@
     "pages/manages/exchange/edit-exchange-goods",
     "pages/manages/comments/index",
     "pages/manages/comments/reply-comment",
-    "pages/orders/order-info"
+    "pages/orders/order-info",
+    "pages/settings/index",
+    "pages/settings/account-safe",
+    "pages/settings/change-mobile",
+    "pages/settings/change-pwd",
+    "pages/login/reset-pwd",
+    "pages/register/index",
+    "pages/register/set-info"
   ],
   "window": {
     "navigationBarTextStyle": "black",
