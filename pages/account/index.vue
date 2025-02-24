@@ -11,7 +11,7 @@ const handleToRoute = (path) => {
 <view class="container">
   <view class="header">
     <view class="avatar">
-      <uv-avatar :size="60" shape="square" src="https://img.yzcdn.cn/vant/apple-3.jpg" />
+      <uv-avatar :size="60" shape="square" src="/static/image/img-5.png" />
     </view>
     <view class="content">
       <view class="user-name">我是賬號</view>
@@ -21,7 +21,8 @@ const handleToRoute = (path) => {
   <view class="action-content">
     <view class="action-item" @click="handleToRoute('/pages/account/account-info')">
       <view class="action-item-icon">
-        <uv-avatar text="資料" :size="40" />
+        <text class="iconfont icon-shangjiaziliao"></text>
+<!--        <uv-avatar text="資料" :size="40" />-->
       </view>
       <view class="item-content">
         <view class="item-title">商家資料</view>
@@ -31,7 +32,8 @@ const handleToRoute = (path) => {
 
     <view class="action-item">
       <view class="action-item-icon">
-        <uv-avatar text="資料" :size="40" />
+        <text class="iconfont icon-yonghushouce"></text>
+<!--        <uv-avatar text="資料" :size="40" />-->
       </view>
       <view class="item-content">
         <view class="item-title">新手教程</view>
@@ -41,7 +43,8 @@ const handleToRoute = (path) => {
 
     <view class="action-item" @click="handleToRoute('/pages/account/helper')">
       <view class="action-item-icon">
-        <uv-avatar text="資料" :size="40" />
+        <text class="iconfont icon-xinshoujiaocheng"></text>
+<!--        <uv-avatar text="資料" :size="40" />-->
       </view>
       <view class="item-content">
         <view class="item-title">幫助中心</view>
@@ -51,7 +54,8 @@ const handleToRoute = (path) => {
 
     <view class="action-item" @click="handleToRoute('/pages/settings/index')">
       <view class="action-item-icon">
-        <uv-avatar text="資料" :size="40" />
+        <text class="iconfont icon-shezhi"></text>
+<!--        <uv-avatar text="資料" :size="40" />-->
       </view>
       <view class="item-content">
         <view class="item-title">設置</view>
@@ -114,5 +118,17 @@ const handleToRoute = (path) => {
     color: #fff;
     line-height: 60rpx;
   }
+}
+.action-item-icon {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .iconfont {
+    font-size: 60rpx;
+    color: #333;
+  }
+
 }
 </style>

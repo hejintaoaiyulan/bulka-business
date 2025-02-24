@@ -10,6 +10,12 @@ const handleRegister = () => {
     url: '/pages/register/index'
   })
 }
+
+const handleLogin = () => {
+  uni.redirectTo({
+    url: '/pages/index/index'
+  })
+}
 </script>
 
 <template>
@@ -46,7 +52,7 @@ const handleRegister = () => {
     </view>
 
     <view class="submit-button">
-      <uv-button custom-style="background: black; color: #fff" :hairline="false">登錄</uv-button>
+      <uv-button custom-style="background: black; color: #fff" :hairline="false" @click="handleLogin">登錄</uv-button>
       <view class="register" @click="handleRegister">去注冊</view>
     </view>
   </view>

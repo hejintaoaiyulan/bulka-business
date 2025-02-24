@@ -52,7 +52,7 @@ const handleReply = () => {
       <view class="comment-item">
         <view class="comment-title">
           <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30" />
+            <uv-avatar src="/static/image/img-6.png" :size="30" />
             <text>用戶1</text>
           </view>
           <view class="time">
@@ -67,7 +67,7 @@ const handleReply = () => {
         </view>
         <view class="comment-pictures">
           <view class="picture-item">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" />
+            <image src="/static/image/img-6.png" mode="aspectFill" />
           </view>
         </view>
         <view class="comment-goods">麻辣香鍋雙人套餐</view>
@@ -78,7 +78,7 @@ const handleReply = () => {
       <view class="comment-item">
         <view class="comment-title">
           <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30" />
+            <uv-avatar src="/static/image/img-6.png" :size="30" />
             <text>用戶1</text>
           </view>
           <view class="time">
@@ -93,7 +93,7 @@ const handleReply = () => {
         </view>
         <view class="comment-pictures">
           <view class="picture-item">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" />
+            <image src="/static/image/img-6.png" mode="aspectFill" />
           </view>
         </view>
         <view class="comment-goods">麻辣香鍋雙人套餐</view>
@@ -104,7 +104,7 @@ const handleReply = () => {
       <view class="comment-item">
         <view class="comment-title">
           <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30" />
+            <uv-avatar src="/static/image/img-6.png" :size="30" />
             <text>用戶1</text>
           </view>
           <view class="time">
@@ -119,7 +119,7 @@ const handleReply = () => {
         </view>
         <view class="comment-pictures">
           <view class="picture-item">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" />
+            <image src="/static/image/img-6.png" mode="aspectFill" />
           </view>
         </view>
         <view class="comment-goods">麻辣香鍋雙人套餐</view>

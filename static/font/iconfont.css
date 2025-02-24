@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4835192 */
-  src: url('iconfont.woff2?t=1740157923380') format('woff2'),
-       url('iconfont.woff?t=1740157923380') format('woff'),
-       url('iconfont.ttf?t=1740157923380') format('truetype');
+  src: url('iconfont.woff2?t=1740413045806') format('woff2'),
+       url('iconfont.woff?t=1740413045806') format('woff'),
+       url('iconfont.ttf?t=1740413045806') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,54 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shezhi:before {
+  content: "\e892";
+}
+
+.icon-shangjiaziliao:before {
+  content: "\e603";
+}
+
+.icon-xinshoujiaocheng:before {
+  content: "\e6d1";
+}
+
+.icon-yonghushouce:before {
+  content: "\e657";
+}
+
+.icon-shouye1:before {
+  content: "\e634";
+}
+
+.icon-fenleiguanli:before {
+  content: "\e626";
+}
+
+.icon-dingdanguanli:before {
+  content: "\e611";
+}
+
+.icon-shangpinguanli:before {
+  content: "\e68c";
+}
+
+.icon-a-ziyuan595:before {
+  content: "\e790";
+}
+
+.icon-wodedingdan:before {
+  content: "\e6bd";
+}
+
+.icon-shouye:before {
+  content: "\e6f4";
+}
+
+.icon-wode:before {
+  content: "\e68d";
 }
 
 .icon-arrow-right-copy:before {

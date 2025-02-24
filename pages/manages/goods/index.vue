@@ -25,6 +25,35 @@
       url: '/pages/manages/goods/add-goods'
     })
   }
+
+  const handleRemove = () => {
+    uni.showModal({
+      title: '提示',
+      content: '是否删除该商品？',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定');
+        } else if (res.cancel) {
+          console.log('用户点击取消');
+        }
+      }
+    })
+  }
+
+  // 下架
+  const handleSoldOut = () => {
+    uni.showModal({
+      title: '提示',
+      content: '是否下架该商品？',
+      success: function (res) {
+        if (res.confirm) {
+          console.log('用户点击确定');
+        } else if (res.cancel) {
+          console.log('用户点击取消');
+        }
+      }
+    })
+  }
 </script>
 
 <template>
@@ -56,7 +85,45 @@
 					</view>
 					<view class="goods-content">
 						<view class="goods-img">
-							<image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" />
+							<image src="/static/image/img-1.png" mode="aspectFit" />
+						</view>
+						<view class="goods-msg">
+							<view class="goods-name">熱烈狂歡鍋物套餐</view>
+							<view class="goods-tip">精選新鮮食材，盡享無限風味</view>
+							<view class="goods-price">
+								<view class="price">HK$ 12.1</view>
+								<view class="inventory">
+									<text>銷量999</text>
+									<text>|</text>
+									<text>庫存999</text>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="goods-operation">
+						<uv-button class="operation-item" @click="handleRemove">
+							<text>刪除</text>
+						</uv-button>
+						<uv-button class="operation-item">
+							<text>編輯</text>
+						</uv-button>
+						<uv-button class="operation-item" @click="handleSoldOut">
+							<text>下架</text>
+						</uv-button>
+					</view>
+				</view>
+				<view class="goods-item">
+					<view class="goods-title">
+						<view class="goods-tag">
+							當季限定
+						</view>
+						<view class="goods-status">
+							<text>上架中</text>
+						</view>
+					</view>
+					<view class="goods-content">
+						<view class="goods-img">
+							<image src="/static/image/img-2.png" mode="aspectFit" />
 						</view>
 						<view class="goods-msg">
 							<view class="goods-name">熱烈狂歡鍋物套餐</view>
@@ -94,7 +161,7 @@
 					</view>
 					<view class="goods-content">
 						<view class="goods-img">
-							<image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" />
+							<image src="/static/image/img-3.png" mode="aspectFit" />
 						</view>
 						<view class="goods-msg">
 							<view class="goods-name">熱烈狂歡鍋物套餐</view>
@@ -132,45 +199,7 @@
 					</view>
 					<view class="goods-content">
 						<view class="goods-img">
-							<image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" />
-						</view>
-						<view class="goods-msg">
-							<view class="goods-name">熱烈狂歡鍋物套餐</view>
-							<view class="goods-tip">精選新鮮食材，盡享無限風味</view>
-							<view class="goods-price">
-								<view class="price">HK$ 12.1</view>
-								<view class="inventory">
-									<text>銷量999</text>
-									<text>|</text>
-									<text>庫存999</text>
-								</view>
-							</view>
-						</view>
-					</view>
-					<view class="goods-operation">
-						<uv-button class="operation-item">
-							<text>刪除</text>
-						</uv-button>
-						<uv-button class="operation-item">
-							<text>編輯</text>
-						</uv-button>
-						<uv-button class="operation-item">
-							<text>下架</text>
-						</uv-button>
-					</view>
-				</view>
-				<view class="goods-item">
-					<view class="goods-title">
-						<view class="goods-tag">
-							當季限定
-						</view>
-						<view class="goods-status">
-							<text>上架中</text>
-						</view>
-					</view>
-					<view class="goods-content">
-						<view class="goods-img">
-							<image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" />
+							<image src="/static/image/img-4.png" mode="aspectFit" />
 						</view>
 						<view class="goods-msg">
 							<view class="goods-name">熱烈狂歡鍋物套餐</view>
@@ -200,7 +229,7 @@
 			</view>
 		</view>
 		<view class="footer">
-			<uv-button type="primary" @click="handleAddGoods">新增商品</uv-button>
+			<uv-button @click="handleAddGoods">新增商品</uv-button>
 		</view>
 	</view>
 </template>
@@ -353,4 +382,11 @@
 	.tabs {
 		width: 100%;
 	}
+
+  .operation-item {
+    :global(.uv-button){
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+  }
 </style>

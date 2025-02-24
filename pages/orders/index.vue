@@ -61,212 +61,204 @@ const handleToInfo = () => {
       </view>
       <uv-tabs :list="tabs" line-color="#c74336"></uv-tabs>
     </view>
-    <view class="content">
-      <view class="order-item" @click="handleToInfo">
-        <view class="order-title">
-          <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30"/>
-            <text>用戶1</text>
-          </view>
-          <view class="status">待支付</view>
-        </view>
-        <view class="order-content">
-          <view class="order-single-msg">
-            <view class="order-img">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
-                     style="width: 100rpx; height: 100rpx"/>
+    <scroll-view :scroll-y="true" class="content">
+      <view style="padding: 20rpx">
+        <view class="order-item" @click="handleToInfo">
+          <view class="order-title">
+            <view class="user">
+              <uv-avatar src="/static/image/img-6.png" :size="30"/>
+              <text>用戶1</text>
             </view>
-            <view class="order-msg">
-              <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
-              <view class="order-tip">
-                小份、中辣
+            <view class="status">待支付</view>
+          </view>
+          <view class="order-content">
+            <view class="order-single-msg">
+              <view class="order-img">
+                <image src="/static/image/img-6.png" mode="aspectFill"
+                       style="width: 100rpx; height: 100rpx"/>
+              </view>
+              <view class="order-msg">
+                <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
+                <view class="order-tip">
+                  小份、中辣
+                </view>
               </view>
             </view>
+            <view class="price-msg">
+              <view class="price">HK$ 12.00</view>
+              <view class="count">共1件</view>
+            </view>
           </view>
-          <view class="price-msg">
-            <view class="price">HK$ 12.00</view>
-            <view class="count">共1件</view>
+          <view class="order-operation">
+            <view class="order-time">2022-10-12 12:00</view>
+            <view class="order-btns">
+              <uv-button type="text" custom-style="background-color: #fff !important; color: #000 !important;">取消订单</uv-button>
+              <uv-button>接單</uv-button>
+            </view>
           </view>
         </view>
-        <view class="order-operation">
-          <view class="order-time">2022-10-12 12:00</view>
-          <view class="order-btns">
-            <uv-button type="primary">接單</uv-button>
-            <uv-button type="danger">拒絕</uv-button>
+        <view class="order-item">
+          <view class="order-title">
+            <view class="user">
+              <uv-avatar src="/static/image/img-6.png" :size="30"/>
+              <text>用戶1</text>
+            </view>
+            <view class="status">待支付</view>
+          </view>
+          <view class="order-content">
+            <view class="order-single-msg">
+              <view class="order-img">
+                <image src="/static/image/img-6.png" mode="aspectFill"
+                       style="width: 100rpx; height: 100rpx"/>
+              </view>
+              <view class="order-msg">
+                <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
+                <view class="order-tip">
+                  小份、中辣
+                </view>
+              </view>
+            </view>
+            <view class="price-msg">
+              <view class="price">HK$ 12.00</view>
+              <view class="count">共1件</view>
+            </view>
+          </view>
+          <view class="order-operation">
+            <view class="order-time">2022-10-12 12:00</view>
+            <view class="order-btns">
+              <uv-button>取消订单</uv-button>
+            </view>
+          </view>
+        </view>
+        <view class="order-item">
+          <view class="order-title">
+            <view class="user">
+              <uv-avatar src="/static/image/img-6.png" :size="30"/>
+              <text>用戶1</text>
+            </view>
+            <view class="status">待支付</view>
+          </view>
+          <view class="order-content">
+            <view class="order-single-msg">
+              <view class="order-img">
+                <image src="/static/image/img-6.png" mode="aspectFill"
+                       style="width: 100rpx; height: 100rpx"/>
+              </view>
+              <view class="order-msg">
+                <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
+                <view class="order-tip">
+                  小份、中辣
+                </view>
+              </view>
+            </view>
+            <view class="price-msg">
+              <view class="price">HK$ 12.00</view>
+              <view class="count">共1件</view>
+            </view>
+          </view>
+          <view class="order-operation">
+            <view class="order-time">2022-10-12 12:00</view>
+            <view class="order-btns">
+              <uv-button type="text" custom-style="background-color: #fff !important; color: #000 !important;">取消订单</uv-button>
+              <uv-button>确认出餐</uv-button>
+            </view>
+          </view>
+        </view>
+        <view class="order-item">
+          <view class="order-title">
+            <view class="user">
+              <uv-avatar src="/static/image/img-6.png" :size="30"/>
+              <text>用戶1</text>
+            </view>
+            <view class="status">待支付</view>
+          </view>
+          <view class="order-content">
+            <view class="order-single-msg">
+              <view class="order-img">
+                <image src="/static/image/img-6.png" mode="aspectFill"
+                       style="width: 100rpx; height: 100rpx"/>
+              </view>
+              <view class="order-msg">
+                <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
+                <view class="order-tip">
+                  小份、中辣
+                </view>
+              </view>
+            </view>
+            <view class="price-msg">
+              <view class="price">HK$ 12.00</view>
+              <view class="count">共1件</view>
+            </view>
+          </view>
+          <view class="order-operation">
+            <view class="order-time">2022-10-12 12:00</view>
+            <view class="order-btns">
+              <uv-button>联系客户领取</uv-button>
+            </view>
+          </view>
+        </view>
+        <view class="order-item">
+          <view class="order-title">
+            <view class="user">
+              <uv-avatar src="/static/image/img-6.png" :size="30"/>
+              <text>用戶1</text>
+            </view>
+            <view class="status">待支付</view>
+          </view>
+          <view class="order-content">
+            <view class="order-single-msg">
+              <view class="order-img">
+                <image src="/static/image/img-6.png" mode="aspectFill"
+                       style="width: 100rpx; height: 100rpx"/>
+              </view>
+              <view class="order-msg">
+                <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
+                <view class="order-tip">
+                  小份、中辣
+                </view>
+              </view>
+            </view>
+            <view class="price-msg">
+              <view class="price">HK$ 12.00</view>
+              <view class="count">共1件</view>
+            </view>
+          </view>
+          <view class="order-operation">
+            <view class="order-time">2022-10-12 12:00</view>
+          </view>
+        </view>
+        <view class="order-item">
+          <view class="order-title">
+            <view class="user">
+              <uv-avatar src="/static/image/img-6.png" :size="30"/>
+              <text>用戶1</text>
+            </view>
+            <view class="status">待支付</view>
+          </view>
+          <view class="order-content">
+            <view class="order-single-msg">
+              <view class="order-img">
+                <image src="/static/image/img-6.png" mode="aspectFill"
+                       style="width: 100rpx; height: 100rpx"/>
+              </view>
+              <view class="order-msg">
+                <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
+                <view class="order-tip">
+                  小份、中辣
+                </view>
+              </view>
+            </view>
+            <view class="price-msg">
+              <view class="price">HK$ 12.00</view>
+              <view class="count">共1件</view>
+            </view>
+          </view>
+          <view class="order-operation">
+            <view class="order-time">2022-10-12 12:00</view>
           </view>
         </view>
       </view>
-      <view class="order-item">
-        <view class="order-title">
-          <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30"/>
-            <text>用戶1</text>
-          </view>
-          <view class="status">待支付</view>
-        </view>
-        <view class="order-content">
-          <view class="order-single-msg">
-            <view class="order-img">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
-                     style="width: 100rpx; height: 100rpx"/>
-            </view>
-            <view class="order-msg">
-              <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
-              <view class="order-tip">
-                小份、中辣
-              </view>
-            </view>
-          </view>
-          <view class="price-msg">
-            <view class="price">HK$ 12.00</view>
-            <view class="count">共1件</view>
-          </view>
-        </view>
-        <view class="order-operation">
-          <view class="order-time">2022-10-12 12:00</view>
-          <view class="order-btns">
-            <uv-button type="primary">接單</uv-button>
-            <uv-button type="danger">拒絕</uv-button>
-          </view>
-        </view>
-      </view>
-      <view class="order-item">
-        <view class="order-title">
-          <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30"/>
-            <text>用戶1</text>
-          </view>
-          <view class="status">待支付</view>
-        </view>
-        <view class="order-content">
-          <view class="order-single-msg">
-            <view class="order-img">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
-                     style="width: 100rpx; height: 100rpx"/>
-            </view>
-            <view class="order-msg">
-              <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
-              <view class="order-tip">
-                小份、中辣
-              </view>
-            </view>
-          </view>
-          <view class="price-msg">
-            <view class="price">HK$ 12.00</view>
-            <view class="count">共1件</view>
-          </view>
-        </view>
-        <view class="order-operation">
-          <view class="order-time">2022-10-12 12:00</view>
-          <view class="order-btns">
-            <uv-button type="primary">接單</uv-button>
-            <uv-button type="danger">拒絕</uv-button>
-          </view>
-        </view>
-      </view>
-      <view class="order-item">
-        <view class="order-title">
-          <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30"/>
-            <text>用戶1</text>
-          </view>
-          <view class="status">待支付</view>
-        </view>
-        <view class="order-content">
-          <view class="order-single-msg">
-            <view class="order-img">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
-                     style="width: 100rpx; height: 100rpx"/>
-            </view>
-            <view class="order-msg">
-              <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
-              <view class="order-tip">
-                小份、中辣
-              </view>
-            </view>
-          </view>
-          <view class="price-msg">
-            <view class="price">HK$ 12.00</view>
-            <view class="count">共1件</view>
-          </view>
-        </view>
-        <view class="order-operation">
-          <view class="order-time">2022-10-12 12:00</view>
-          <view class="order-btns">
-            <uv-button type="primary">接單</uv-button>
-            <uv-button type="danger">拒絕</uv-button>
-          </view>
-        </view>
-      </view>
-      <view class="order-item">
-        <view class="order-title">
-          <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30"/>
-            <text>用戶1</text>
-          </view>
-          <view class="status">待支付</view>
-        </view>
-        <view class="order-content">
-          <view class="order-single-msg">
-            <view class="order-img">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
-                     style="width: 100rpx; height: 100rpx"/>
-            </view>
-            <view class="order-msg">
-              <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
-              <view class="order-tip">
-                小份、中辣
-              </view>
-            </view>
-          </view>
-          <view class="price-msg">
-            <view class="price">HK$ 12.00</view>
-            <view class="count">共1件</view>
-          </view>
-        </view>
-        <view class="order-operation">
-          <view class="order-time">2022-10-12 12:00</view>
-          <view class="order-btns">
-            <uv-button type="primary">接單</uv-button>
-            <uv-button type="danger">拒絕</uv-button>
-          </view>
-        </view>
-      </view>
-      <view class="order-item">
-        <view class="order-title">
-          <view class="user">
-            <uv-avatar src="https://img.yzcdn.cn/vant/apple-1.jpg" :size="30"/>
-            <text>用戶1</text>
-          </view>
-          <view class="status">待支付</view>
-        </view>
-        <view class="order-content">
-          <view class="order-single-msg">
-            <view class="order-img">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
-                     style="width: 100rpx; height: 100rpx"/>
-            </view>
-            <view class="order-msg">
-              <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
-              <view class="order-tip">
-                小份、中辣
-              </view>
-            </view>
-          </view>
-          <view class="price-msg">
-            <view class="price">HK$ 12.00</view>
-            <view class="count">共1件</view>
-          </view>
-        </view>
-        <view class="order-operation">
-          <view class="order-time">2022-10-12 12:00</view>
-          <view class="order-btns">
-            <uv-button type="primary">接單</uv-button>
-            <uv-button type="danger">拒絕</uv-button>
-          </view>
-        </view>
-      </view>
-    </view>
+    </scroll-view>
   </view>
 </template>
 
@@ -281,7 +273,6 @@ const handleToInfo = () => {
 }
 
 .content {
-  padding: 20rpx;
   flex: 1;
   overflow-y: auto;
 }
@@ -379,5 +370,12 @@ const handleToInfo = () => {
 .container {
   background-color: #f8f8f8;
   height: 100%;
+}
+
+.operation-item {
+  :global(.uv-button){
+    background-color: #000 !important;
+    color: #fff !important;
+  }
 }
 </style>

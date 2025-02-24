@@ -27,7 +27,7 @@ view, scrollview, text {
 }
 
 .safe-pb {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 20rpx);
 }
 
 .red-text {

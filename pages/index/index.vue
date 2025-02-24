@@ -34,7 +34,8 @@
         <view class="manage-list">
           <view class="manage-item" @click="handleToCategory">
             <view class="icon">
-              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />
+              <text class="iconfont icon-fenleiguanli"></text>
+<!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>商品分類管理</view>
@@ -46,7 +47,8 @@
           </view>
           <view class="manage-item" @click="handleToRouter('/pages/manages/goods/index')">
             <view class="icon">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" style="width: 100%; height: 100%" mode="aspectFill" />
+              <text class="iconfont icon-shangpinguanli"></text>
+<!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>商品管理</view>
@@ -58,7 +60,8 @@
           </view>
           <view class="manage-item" @click="handleToRouter('/pages/manages/promotions/index')">
             <view class="icon">
-              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />
+              <text class="iconfont icon-a-ziyuan595"></text>
+<!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>優惠活動管理</view>
@@ -70,7 +73,8 @@
           </view>
           <view class="manage-item" @click="handleToRouter('/pages/manages/exchange/index')">
             <view class="icon">
-              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />
+              <text class="iconfont icon-shouye1"></text>
+<!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>換購活動管理</view>
@@ -82,7 +86,8 @@
           </view>
           <view class="manage-item" @click="handleToRouter('/pages/manages/comments/index')">
             <view class="icon">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" style="width: 100%; height: 100%" mode="aspectFill" />
+              <text class="iconfont icon-dingdanguanli"></text>
+<!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>評論管理</view>
@@ -211,6 +216,13 @@ page {
         width: 100rpx;
         height: 100rpx;
         flex: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #333;
+        .iconfont {
+          font-size: 60rpx;
+        }
       }
 
       .msg {

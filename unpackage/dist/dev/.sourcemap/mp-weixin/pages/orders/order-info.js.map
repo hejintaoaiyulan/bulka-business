@@ -1,1 +1,0 @@
-{"version":3,"file":"order-info.js","sources":["pages/orders/order-info.vue?type=page"],"sourcesContent":["import MiniProgramPage from '/Users/hejintao/otherWorkspace/Ordering/pages/orders/order-info.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;AACA,GAAG,WAAW,eAAe;"}

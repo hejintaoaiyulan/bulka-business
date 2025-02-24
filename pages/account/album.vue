@@ -2,12 +2,12 @@
 import {computed} from "vue";
 
 const urls = [
-  'https://img.yzcdn.cn/vant/apple-1.jpg',
-  'https://img.yzcdn.cn/vant/apple-1.jpg',
-  'https://img.yzcdn.cn/vant/apple-1.jpg',
-  'https://img.yzcdn.cn/vant/apple-1.jpg',
-  'https://img.yzcdn.cn/vant/apple-1.jpg',
-  'https://img.yzcdn.cn/vant/apple-1.jpg'
+  '/static/image/img-6.png',
+  '/static/image/img-6.png',
+  '/static/image/img-6.png',
+  '/static/image/img-6.png',
+  '/static/image/img-6.png',
+  '/static/image/img-6.png'
 ]
 
 const handlePreviewImage = (index) => {

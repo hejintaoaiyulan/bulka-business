@@ -16,7 +16,7 @@
       <view class="title">客戶信息</view>
       <view class="user-content">
         <view class="user">
-          <uv-avatar :size="30" src="https://img.yzcdn.cn/vant/apple-1.jpg" />
+          <uv-avatar :size="30" src="/static/image/img-6.png" />
           <text>小柯基123</text>
         </view>
         <view class="mobile">1300000000</view>
@@ -31,7 +31,7 @@
       <view class="order-content">
         <view class="order-single-msg">
           <view class="order-img">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
+            <image src="/static/image/img-6.png" mode="aspectFill"
                    style="width: 100rpx; height: 100rpx"/>
           </view>
           <view class="order-msg">
@@ -49,7 +49,7 @@
       <view class="order-content">
         <view class="order-single-msg">
           <view class="order-img">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
+            <image src="/static/image/img-6.png" mode="aspectFill"
                    style="width: 100rpx; height: 100rpx"/>
           </view>
           <view class="order-msg">
@@ -68,7 +68,7 @@
       <view class="title">贈品</view>
       <view class="gift-item">
         <view class="gift-img">
-          <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"
+          <image src="/static/image/img-6.png" mode="aspectFill"
                  style="width: 90rpx; height: 90rpx"/>
         </view>
         <view class="gift-content">

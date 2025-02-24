@@ -1,5 +1,6 @@
 {
   "devDependencies": {
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "lodash": "^4.17.21"
   }
 }

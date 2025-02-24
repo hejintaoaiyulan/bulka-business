@@ -1,1 +1,0 @@
-{"version":3,"file":"edit-exchange-goods.js","sources":["pages/manages/exchange/edit-exchange-goods.vue?type=page"],"sourcesContent":["import MiniProgramPage from '/Users/hejintao/otherWorkspace/Ordering/pages/manages/exchange/edit-exchange-goods.vue'\nwx.createPage(MiniProgramPage)"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AACA,GAAG,WAAW,eAAe;"}

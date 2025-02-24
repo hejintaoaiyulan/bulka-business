@@ -2,7 +2,7 @@
 
 const handlePreviewImage = (url) => {
   uni.previewImage({
-    urls: ['https://img.yzcdn.cn/vant/apple-1.jpg'],
+    urls: ['/static/image/img-6.png'],
     current: 0
   })
 }
@@ -97,13 +97,13 @@ const handleToAlbum = () => {
         <view class="card-content">
           <view class="img-list">
             <view class="img-item" @click="handlePreviewImage">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="widthFix" />
+              <image src="/static/image/img-6.png" mode="widthFix" />
             </view>
             <view class="img-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="widthFix" />
+              <image src="/static/image/img-6.png" mode="widthFix" />
             </view>
             <view class="img-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="widthFix" />
+              <image src="/static/image/img-6.png" mode="widthFix" />
             </view>
           </view>
         </view>

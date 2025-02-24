@@ -5,6 +5,28 @@
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/pages/login" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/pages/register" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/pages/settings" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/uni_modules/uv-album" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/uni_modules/uv-cell" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/uni_modules/uv-code" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/uni_modules/uv-collapse" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/uni_modules/uv-line" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/.sourcemap/mp-weixin/uni_modules/uv-steps" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/pages/login" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/pages/register" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/pages/settings" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/static/image" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/uni_modules/uv-album" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/uni_modules/uv-cell" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/uni_modules/uv-code" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/uni_modules/uv-collapse" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/uni_modules/uv-line" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/dist/dev/mp-weixin/uni_modules/uv-steps" />
+      <excludeFolder url="file://$MODULE_DIR$/unpackage/release" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

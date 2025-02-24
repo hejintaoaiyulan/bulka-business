@@ -6,6 +6,90 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "2076270",
+      "name": "设置",
+      "font_class": "shezhi",
+      "unicode": "e892",
+      "unicode_decimal": 59538
+    },
+    {
+      "icon_id": "4021213",
+      "name": "商家资料",
+      "font_class": "shangjiaziliao",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "8903466",
+      "name": "新手教程",
+      "font_class": "xinshoujiaocheng",
+      "unicode": "e6d1",
+      "unicode_decimal": 59089
+    },
+    {
+      "icon_id": "11611760",
+      "name": "用户手册",
+      "font_class": "yonghushouce",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    },
+    {
+      "icon_id": "765744",
+      "name": "活动",
+      "font_class": "shouye1",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "4312605",
+      "name": "分类管理",
+      "font_class": "fenleiguanli",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "7386957",
+      "name": "评论管理",
+      "font_class": "dingdanguanli",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "12841035",
+      "name": "商品管理",
+      "font_class": "shangpinguanli",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "27285364",
+      "name": "打折优惠活动",
+      "font_class": "a-ziyuan595",
+      "unicode": "e790",
+      "unicode_decimal": 59280
+    },
+    {
+      "icon_id": "11597119",
+      "name": "我的訂單",
+      "font_class": "wodedingdan",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
+      "icon_id": "26112017",
+      "name": "首頁",
+      "font_class": "shouye",
+      "unicode": "e6f4",
+      "unicode_decimal": 59124
+    },
+    {
+      "icon_id": "29657624",
+      "name": "我的",
+      "font_class": "wode",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
       "icon_id": "551964",
       "name": "箭头",
       "font_class": "arrow-right-copy",

@@ -27,7 +27,7 @@ const handleToEdit = () => {
         </view>
         <view class="goods-content" @click="handleToEdit">
           <view class="goods-img">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
+            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
           </view>
           <view class="goods-msg">
             <view class="goods-title">
@@ -51,7 +51,7 @@ const handleToEdit = () => {
         </view>
         <view class="goods-content">
           <view class="goods-img">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
+            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
           </view>
           <view class="goods-msg">
             <view class="goods-title">
@@ -75,7 +75,7 @@ const handleToEdit = () => {
         </view>
         <view class="goods-content">
           <view class="goods-img">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
+            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
           </view>
           <view class="goods-msg">
             <view class="goods-title">
@@ -99,7 +99,7 @@ const handleToEdit = () => {
         </view>
         <view class="goods-content">
           <view class="goods-img">
-            <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
+            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
           </view>
           <view class="goods-msg">
             <view class="goods-title">

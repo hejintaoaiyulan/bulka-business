@@ -15,6 +15,35 @@ const handleAdd = () => {
     url: '/pages/manages/promotions/add-promotion'
   })
 }
+
+const handleRemove = () => {
+  uni.showModal({
+    title: '提示',
+    content: '是否删除该商品？',
+    success: function (res) {
+      if (res.confirm) {
+        console.log('用户点击确定');
+      } else if (res.cancel) {
+        console.log('用户点击取消');
+      }
+    }
+  })
+}
+
+// 下架
+const handleSoldOut = () => {
+  uni.showModal({
+    title: '提示',
+    content: '是否下架该商品？',
+    success: function (res) {
+      if (res.confirm) {
+        console.log('用户点击确定');
+      } else if (res.cancel) {
+        console.log('用户点击取消');
+      }
+    }
+  })
+}
 </script>
 
 <template>
@@ -41,15 +70,58 @@ const handleAdd = () => {
         <view class="promotion-main">
           <view class="pictures">
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
+              <view>商品名稱</view>
+            </view>
+
+          </view>
+          <view class="inventory">
+            <view>銷量：999</view>
+            <view>庫存：999</view>
+          </view>
+        </view>
+        <view class="promotion-operation">
+          <uv-button class="operation-item" @click="handleRemove">
+            <text>刪除</text>
+          </uv-button>
+          <uv-button class="operation-item">
+            <text>編輯</text>
+          </uv-button>
+          <uv-button class="operation-item" @click="handleSoldOut">
+            <text>下架</text>
+          </uv-button>
+        </view>
+      </view>
+      <view class="promotion-item">
+        <view class="promotion-title">
+          <view class="name">組合商品方案A</view>
+          <view class="status">
+            <uv-tags text="未開始" plain size="mini" type="primary"></uv-tags>
+          </view>
+        </view>
+        <view class="promotion-time">
+          <text>活動時間： 2022-12-12 12:00:00 至 2023-12-12-12:00</text>
+        </view>
+        <view class="promotion-main">
+          <view class="pictures">
+            <view class="picture-item">
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
+              <view>商品名稱</view>
+            </view>
+            <view class="picture-item">
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
+              <view>商品名稱</view>
+            </view>
+            <view class="picture-item">
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
 
@@ -84,58 +156,15 @@ const handleAdd = () => {
         <view class="promotion-main">
           <view class="pictures">
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-
-          </view>
-          <view class="inventory">
-            <view>銷量：999</view>
-            <view>庫存：999</view>
-          </view>
-        </view>
-        <view class="promotion-operation">
-          <uv-button class="operation-item">
-            <text>刪除</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>編輯</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>下架</text>
-          </uv-button>
-        </view>
-      </view>
-      <view class="promotion-item">
-        <view class="promotion-title">
-          <view class="name">組合商品方案A</view>
-          <view class="status">
-            <uv-tags text="未開始" plain size="mini" type="primary"></uv-tags>
-          </view>
-        </view>
-        <view class="promotion-time">
-          <text>活動時間： 2022-12-12 12:00:00 至 2023-12-12-12:00</text>
-        </view>
-        <view class="promotion-main">
-          <view class="pictures">
-            <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
 
@@ -170,15 +199,15 @@ const handleAdd = () => {
         <view class="promotion-main">
           <view class="pictures">
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
             <view class="picture-item">
-              <image src="https://img.yzcdn.cn/vant/apple-1.jpg" mode="aspectFill"/>
+              <image src="/static/image/img-6.png" mode="aspectFill"/>
               <view>商品名稱</view>
             </view>
 
@@ -202,7 +231,7 @@ const handleAdd = () => {
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button type="primary" @click="handleAdd">新增優惠活動</uv-button>
+      <uv-button @click="handleAdd">新增優惠活動</uv-button>
     </view>
   </view>
 </template>
@@ -295,5 +324,12 @@ const handleAdd = () => {
   padding-left: 30rpx;
   padding-right: 30rpx;
   background-color: #fff;
+}
+
+.operation-item {
+  :global(.uv-button){
+    background-color: #000 !important;
+    color: #fff !important;
+  }
 }
 </style>
