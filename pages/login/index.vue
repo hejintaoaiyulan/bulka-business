@@ -1,4 +1,14 @@
 <script setup>
+
+import {ref} from "vue";
+import {Regs} from "../../globalConfig";
+import {Login} from "../../api/login";
+
+const formData = ref({
+  mobile: "",
+  password: ''
+})
+
 const handleToPassword = () => {
   uni.navigateTo({
     url: '/pages/login/reset-pwd'
@@ -12,9 +22,27 @@ const handleRegister = () => {
 }
 
 const handleLogin = () => {
-  uni.redirectTo({
-    url: '/pages/index/index'
+  if(!Regs.mobile.test(formData.value.mobile)) {
+    uni.showToast({
+      title: '請輸入正確的手機號',
+      icon: 'none'
+    })
+    return
+  }
+  if(!formData.value.password) {
+    uni.showToast({
+      title: '請輸入密碼',
+      icon: 'none'
+    })
+    return
+  }
+
+  Login(formData.value).then(res => {
+    console.log(res,'resppppp')
   })
+  // uni.redirectTo({
+  //   url: '/pages/index/index'
+  // })
 }
 </script>
 
@@ -31,7 +59,7 @@ const handleLogin = () => {
           <view class="label-text">賬號</view>
         </view>
         <view class="form-value">
-          <uv-input placeholder="請輸入手機號"></uv-input>
+          <uv-input placeholder="請輸入手機號" v-model="formData.mobile"></uv-input>
         </view>
       </view>
       <view class="form-item">
@@ -40,7 +68,7 @@ const handleLogin = () => {
           <view class="label-text">密碼</view>
         </view>
         <view class="form-value">
-          <uv-input placeholder="請輸入密碼" type="password"></uv-input>
+          <uv-input placeholder="請輸入密碼" type="password" v-model="formData.password"></uv-input>
         </view>
       </view>
       <view class="form-item">
