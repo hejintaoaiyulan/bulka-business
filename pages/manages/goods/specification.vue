@@ -1,17 +1,122 @@
 <script setup>
 import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
+import UvPopup from "../../../uni_modules/uv-popup/components/uv-popup/uv-popup.vue";
+import UvInput from "../../../uni_modules/uv-input/components/uv-input/uv-input.vue";
+import {uniqueId} from "lodash";
+import {Toast} from "../../../utils";
 const popUp = ref()
-
-const formData = ref({
-  mode: 'single'
+const keyName = {
+  1: '一',
+  2: '二',
+  3: '三',
+  4: '四',
+  5: '五',
+  6: '六',
+  7: '七',
+  8: '八',
+  9: '九',
+  10: '十'
+}
+let options = {}
+onLoad((query) => {
+  options = query
+  if(query?.type?.toString() === '1') {
+    const d = uni.getStorageSync('goods_spec_attr')
+    uni.removeStorageSync('goods_spec_attr')
+    console.log(d)
+    formListData.value = d
+  }
 })
 
+const defaultData = {
+  goods_spec_name: '',
+  multiple_status: 1,
+  goods_spec_attr: []
+}
+
+const activeForm = ref({
+  name: '',
+  original_price: '',
+  sale_price: '',
+  stock: ''
+})
+
+const clearActiveForm = () => {
+  activeForm.value = {
+    name: '',
+    original_price: '',
+    sale_price: '',
+    stock: ''
+  }
+}
+
+const activeSpecification = ref({})
+
+const formListData = ref([])
 const handleBack = () => {
   uni.navigateBack()
 }
 
-const handleAddItem = () => {
+const handleAddItem = (val) => {
   popUp.value?.open()
+  activeSpecification.value = val
+}
+
+const handleAddSpecification = () => {
+  formListData.value.push({...defaultData, _id: uniqueId()})
+}
+
+// 保存多属性规格数据
+const handleSaveAttr = () => {
+  if(!activeForm.value.name) {
+    return Toast.info('请输入规格项名称')
+  }
+  if(!activeForm.value.original_price) {
+    return Toast.info('请输入规格项的原价')
+  }
+  if(!activeForm.value.sale_price) {
+    return Toast.info('请输入规格项的售价')
+  }
+  if(!activeForm.value.stock) {
+    return Toast.info('请输入库存')
+  }
+  formListData.value = formListData.value.map((item) => {
+    if((item._id === activeSpecification.value._id && item._id) || (item.id === activeSpecification.value.id && item.id)) {
+      item.goods_spec_attr = (item.goods_spec_attr || []).concat({...activeForm.value, id: uniqueId()})
+      return item
+    }
+    return item
+  })
+  console.log(formListData.value, activeSpecification.value)
+
+  clearActiveForm()
+  popUp.value?.close()
+}
+
+const handleRemoveAttr = (data, item) => {
+  uni.showModal({
+    title: '提示',
+    content: `确认删除【${item.name}】 规格选项吗?`,
+    success: (result) => {
+      if(result.confirm) {
+        formListData.value = formListData.value.map((dataItem) => {
+          if(dataItem.id === data.id || dataItem._id === data._id) {
+            dataItem.goods_spec_attr = dataItem.goods_spec_attr.filter(attr => attr.id !== item.id)
+          }
+          return dataItem
+        })
+      }
+    }
+  })
+}
+
+const handleSubmit = () => {
+  uni.navigateBack({
+    success: () => {
+      uni.$emit('updateSpecification', formListData.value)
+    }
+  })
 }
 </script>
 
@@ -22,105 +127,22 @@ const handleAddItem = () => {
       fixed
       bg-color="#000000"
       title-style="color: #fff"
-      safeAreaInsetTop
+      :safeAreaInsetTop="true"
+      :height="100"
       placeholder
       @left-click="handleBack"
       left-icon-color="#fff"
     >
       <template #right>
-        <text class="add-spec">新增規格</text>
+        <text class="add-spec" @click="handleAddSpecification">新增規格</text>
       </template>
     </uv-navbar>
     <view class="content">
-      <view class="card">
-        <view class="card-title">規格一</view>
-        <view class="card-form">
-          <view class="form-item">
-            <view class="form-label">
-              <text class="red-text">*</text>
-              <text>規格名稱</text>
-            </view>
-            <view class="form-value">
-              <uv-input inputAlign="right" class="form-input" :border="false" placeholder="請輸入規格名称"
-                        fontSize="26rpx"/>
-            </view>
-          </view>
-          <view class="form-item">
-            <view class="form-label">
-              <text class="red-text">*</text>
-              <text>是否支持多選</text>
-            </view>
-            <view class="form-value">
-              <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx" v-model="formData.mode">
-                <uv-radio name="multiple" label="是"></uv-radio>
-                <uv-radio name="single" label="否"></uv-radio>
-              </uv-radio-group>
-            </view>
-          </view>
-          <view class="form-item">
-            <view class="form-label">
-              <text class="red-text">*</text>
-              <text>規則選項</text>
-            </view>
-            <view class="form-value" @click="handleAddItem">
-              <text class="setting-mode">添加規格項</text>
-            </view>
-          </view>
-        </view>
-        <view class="card-title">規格選項</view>
-        <view class="option-list">
-          <view class="option">
-            <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
-                <text class="iconfont icon-shanchu"></text>
-              </view>
-            </view>
-            <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
-            </view>
-          </view>
-          <view class="option">
-            <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
-                <text class="iconfont icon-shanchu"></text>
-              </view>
-            </view>
-            <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
-            </view>
-          </view>
-          <view class="option">
-            <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
-                <text class="iconfont icon-shanchu"></text>
-              </view>
-            </view>
-            <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
-            </view>
-          </view>
-          <view class="option">
-            <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
-                <text class="iconfont icon-shanchu"></text>
-              </view>
-            </view>
-            <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
-            </view>
-          </view>
-        </view>
+      <view class="empty" v-if="!formListData.length">
+        <text>暂无规格，点击右上角添加</text>
       </view>
-      <view class="card">
-        <view class="card-title">規格二</view>
+      <view v-for="(item, index) in formListData" :key="item.id" class="card">
+        <view class="card-title">規格{{keyName[index + 1]}}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
@@ -128,7 +150,7 @@ const handleAddItem = () => {
               <text>規格名稱</text>
             </view>
             <view class="form-value">
-              <uv-input inputAlign="right" class="form-input" :border="false" placeholder="請輸入規格名称"
+              <uv-input customStyle="padding: 0" v-model="item.goods_spec_name" inputAlign="right" class="form-input" :border="false" placeholder="請輸入規格名称"
                         fontSize="26rpx"/>
             </view>
           </view>
@@ -138,9 +160,9 @@ const handleAddItem = () => {
               <text>是否支持多選</text>
             </view>
             <view class="form-value">
-              <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx" v-model="formData.mode">
-                <uv-radio name="multiple" label="是"></uv-radio>
-                <uv-radio name="single" label="否"></uv-radio>
+              <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx" v-model="item.multiple_status">
+                <uv-radio :name="2" label="是"></uv-radio>
+                <uv-radio :name="1" label="否"></uv-radio>
               </uv-radio-group>
             </view>
           </view>
@@ -149,66 +171,33 @@ const handleAddItem = () => {
               <text class="red-text">*</text>
               <text>規則選項</text>
             </view>
-            <view class="form-value">
+            <view class="form-value" @click="handleAddItem(item)">
               <text class="setting-mode">添加規格項</text>
             </view>
           </view>
         </view>
         <view class="card-title">規格選項</view>
         <view class="option-list">
-          <view class="option">
+          <view class="option" v-for="opt in item.goods_spec_attr" :key="opt.id">
             <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
+              <view class="name">{{opt.name}}</view>
+              <view class="remove-icon" @click.stop="handleRemoveAttr(item, opt)">
                 <text class="iconfont icon-shanchu"></text>
               </view>
             </view>
             <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
+              <view class="price">HKS {{opt.sale_price}}</view>
+              <view class="inventory">庫存{{opt.stock}}</view>
             </view>
           </view>
-          <view class="option">
-            <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
-                <text class="iconfont icon-shanchu"></text>
-              </view>
-            </view>
-            <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
-            </view>
-          </view>
-          <view class="option">
-            <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
-                <text class="iconfont icon-shanchu"></text>
-              </view>
-            </view>
-            <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
-            </view>
-          </view>
-          <view class="option">
-            <view class="option-title">
-              <view class="name">微辣</view>
-              <view class="remove-icon">
-                <text class="iconfont icon-shanchu"></text>
-              </view>
-            </view>
-            <view class="option-price">
-              <view class="price">HKS 12.00</view>
-              <view class="inventory">庫存999</view>
-            </view>
+          <view class="empty" v-if="!item.goods_spec_attr?.length">
+            暂无规格项，请添加
           </view>
         </view>
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button type="primary">保存</uv-button>
+      <uv-button class="operation-item" @click="handleSubmit">保存</uv-button>
     </view>
 
     <uv-popup mode="bottom" ref="popUp">
@@ -216,19 +205,19 @@ const handleAddItem = () => {
         <view class="title">添加规格項</view>
         <view class="form">
           <view class="form-item">
-            <uv-input placeholder="輸入規格項名稱" />
+            <uv-input placeholder="輸入規格項名稱" v-model="activeForm.name" />
           </view>
           <view class="form-item">
-            <uv-input placeholder="輸入原價（HK$）" />
+            <uv-input placeholder="輸入原價（HK$）" v-model="activeForm.original_price" />
           </view>
           <view class="form-item">
-            <uv-input placeholder="輸入售價（HK$）" />
+            <uv-input placeholder="輸入售價（HK$）" v-model="activeForm.sale_price" />
           </view>
           <view class="form-item">
-            <uv-input placeholder="輸入庫存數量" />
+            <uv-input placeholder="輸入庫存數量" v-model="activeForm.stock" />
           </view>
           <view class="form-item">
-            <uv-button type="primary" class="button">確認</uv-button>
+            <uv-button type="primary" class="button" @click="handleSaveAttr">確認</uv-button>
           </view>
         </view>
       </view>
@@ -239,6 +228,13 @@ const handleAddItem = () => {
 <style scoped lang="scss">
 :global(page) {
   height: 100%;
+}
+
+.empty {
+  color: #999;
+  font-size: 26rpx;
+  text-align: center;
+  padding: 60rpx 0;
 }
 
 .submit-button {
@@ -342,6 +338,14 @@ const handleAddItem = () => {
   .title {
     text-align: center;
     padding: 10rpx 0;
+  }
+}
+
+
+.operation-item {
+  :global(.uv-button) {
+    background-color: #000 !important;
+    color: #fff !important;
   }
 }
 </style>

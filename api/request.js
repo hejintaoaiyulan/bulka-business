@@ -1,5 +1,8 @@
 // utils/request.js
 
+import {getToken, Toast} from "../utils"
+import {useNotAuthModal} from "../hooks";
+const { open } = useNotAuthModal()
 const config = {
     baseUrl: '', // 基础地址
     timeout: 15000, // 超时时间
@@ -60,9 +63,10 @@ async function request(options) {
 
         // 携带token
         if (mergedOptions.withToken) {
-            const token = uni.getStorageSync('token')
+            const token = getToken()
+            const tokenType = uni.getStorageSync('token_type')
             if (token) {
-                mergedOptions.header.Authorization = `Bearer ${token}`
+                mergedOptions.header.Authorization = `${tokenType} ${token}`
             }
         }
 
@@ -150,19 +154,17 @@ function handleError(error, options) {
 
     // 显示错误提示
     if (options.showErrorToast !== false) {
-        uni.showToast({
-            title: error.message || '网络异常，请稍后重试',
-            icon: 'none',
-            duration: 2000
-        })
+        Toast.info(error.message || '网络异常，请稍后重试')
     }
 
     // 未登录处理
-    if (error.statusCode === 401) {
+    if (error.statusCode === 401 || error?.data?.code === 401) {
         // 跳转到登录页
-        uni.navigateTo({
-            url: '/pages/login/login'
-        })
+        // uni.navigateTo({
+        //     url: '/pages/login/login'
+        // })
+        // 提示登录失效
+        open()
     }
 }
 

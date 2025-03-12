@@ -1,9 +1,11 @@
 // utils/uploadFile.ts
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 import {toPromise} from '@/utils/index'
+import {getToken} from "./index";
 // import { BaseUrl } from '@/api/config'
+import request from "../api/index";
 
-const BaseUrl = ''
+const BaseUrl = request.config.baseUrl
 
 const defaultOptions = {
   url: '',
@@ -12,7 +14,7 @@ const defaultOptions = {
   name: 'file',
   fileType: ['image', 'video'],
   camera: 'back',
-  maxSize: 10 * 1024 * 1024, // 默认10MB
+  maxSize: 15 * 1024 * 1024, // 默认10MB
   count: 9, // 默认最多选择9个文件
   sourceType: ['album', 'camera'], // 默认从相册或相机选择
   onSuccess: () => {},
@@ -20,9 +22,21 @@ const defaultOptions = {
 }
 
 
-export function useFileUpload() {
+export function useFileUpload(c = { showUploadLoading: false }) {
   const isUploading = ref(false)
   const uploadProgress = ref(0)
+
+  watch(()=> isUploading.value, (val)=> {
+    if(c?.showUploadLoading) {
+      if(val) {
+        uni.showLoading({
+          title: '上传中'
+        })
+      }else {
+        uni.hideLoading()
+      }
+    }
+  })
 
   // 核心上传方法
   const uploadFile = async (
@@ -65,7 +79,7 @@ export function useFileUpload() {
             filePath: file.tempFilePath,
             name: config.name,
             header: {
-              token: uni.getStorageSync('token'), // 示例token
+              Authorization: uni.getStorageSync('token_type') + ' ' + getToken(), // 示例token
               ...config.header
             },
             formData: config.formData,

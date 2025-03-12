@@ -1,15 +1,18 @@
-<script>
-	export default {
-		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
-		}
-	}
+<script setup>
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import dayjs from "dayjs";
+import {useUserStore} from "./model/user";
+import { onLaunch } from '@dcloudio/uni-app'
+
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
+
+const userStore = useUserStore()
+
+onLaunch(() => {
+  userStore.getInfo()
+})
 </script>
 
 <style lang="scss">

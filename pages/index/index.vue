@@ -104,10 +104,12 @@
 </template>
 
 <script setup>
+import {onShow} from '@dcloudio/uni-app'
 // header掃碼
 const handleRight = () => {
 
 }
+
 
 // 分類管理
 const handleToCategory = () => {

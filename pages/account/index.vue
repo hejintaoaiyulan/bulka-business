@@ -1,21 +1,27 @@
 <script setup>
+import {useUserStore} from "../../model/user";
+import {computed} from "vue";
 
+const userStore = useUserStore()
 const handleToRoute = (path) => {
   uni.navigateTo({
     url: path
   })
 }
+
+const userInfo = computed(() => userStore.userInfo)
 </script>
 
 <template>
 <view class="container">
   <view class="header">
     <view class="avatar">
-      <uv-avatar :size="60" shape="square" src="/static/image/img-5.png" />
+      <uv-avatar :size="60" shape="square" :src="userInfo.shop_avatar" />
     </view>
     <view class="content">
-      <view class="user-name">我是賬號</view>
-      <view class="sub-title">ID：12345678</view>
+      <view class="user-name">{{userInfo.shop_name}}</view>
+      <view class="sub-title" v-if="!userInfo.shop_no">電話：{{userInfo.prefix}}{{userInfo.mobile}}</view>
+      <view v-else class="sub-title">ID: {{userInfo.shop_no}}</view>
     </view>
   </view>
   <view class="action-content">

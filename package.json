@@ -2,5 +2,8 @@
   "devDependencies": {
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21"
+  },
+  "dependencies": {
+    "pinia": "^3.0.1"
   }
 }

@@ -1,0 +1,31 @@
+import request from './index';
+
+// 获取商品分类列表
+export const getGoodsTypes = () => {
+  return request.get('/store/goods/getGoodsTypeList',{})
+}
+
+// 新增商品分类
+export const saveGoodsType = (params) => {
+  return request.post('/store/goods/saveGoodsType', params)
+}
+
+// 删除商品分类
+export const delGoodsType = (params) => {
+  return request.post('/store/goods/delGoodsType',params)
+}
+
+// 获取商品列表
+export const goodsList = () => {
+  return request.get('/store/goods/getGoodsList', {})
+}
+
+// 删除商品
+export const delGoods = (params) => {
+  return request.post('/store/goods/delGoods', params)
+}
+
+// 商品上下架 publish_status 1 上架 2 下架
+export const goodsPublish = (params) => {
+  return request.post('/store/goods/setGoodsPublish', params)
+}
