@@ -1,12 +1,32 @@
 <script setup>
 import {ref} from 'vue'
+import {getDiscountActivityList} from "../../../api/discount";
+import {usePageLoading} from "../../../hooks";
+import {onShow} from "@dcloudio/uni-app";
+
+const {getData, reload, dataList, delItem, loadNext } = usePageLoading(getDiscountActivityList, {
+  onFinish: uni.stopPullDownRefresh
+});
+
+const requestParams = ref({
+  activity_name: '',
+  status: ''
+})
+
+const search = () => {
+  reload(requestParams.value)
+}
+
+onShow(() => {
+  search()
+})
 
 const tabs = ref([
-  {name: '全部', key: 1},
-  {name: '未開始', key: 2},
-  {name: '進行中', key: 3},
-  {name: '已下架', key: 4},
-  {name: '已結束', key: 5},
+  {name: '全部', key: 0},
+  {name: '未開始', key: 1},
+  {name: '進行中', key: 2},
+  {name: '已下架', key: 3},
+  {name: '已結束', key: 4},
 ])
 
 const handleAdd = () => {
@@ -14,6 +34,11 @@ const handleAdd = () => {
   uni.navigateTo({
     url: '/pages/manages/promotions/add-promotion'
   })
+}
+
+const handleSelectStatus = (val) => {
+  requestParams.value.status = val.key ? val.key : null
+  search()
 }
 
 const handleRemove = () => {
@@ -50,10 +75,10 @@ const handleSoldOut = () => {
   <view class="container">
     <view class="header">
       <view class="search">
-        <uv-input prefix-icon="search" placeholder="請輸入活動名稱" :border="false"/>
+        <uv-input v-model="requestParams.activity_name" prefix-icon="search" placeholder="請輸入活動名稱" :border="false"/>
       </view>
       <view class="tabs">
-        <uv-tabs :list="tabs" line-color="#c74336" :scrollable="false"></uv-tabs>
+        <uv-tabs :list="tabs" line-color="#c74336" :scrollable="false" @click="handleSelectStatus"></uv-tabs>
       </view>
     </view>
     <view class="content">

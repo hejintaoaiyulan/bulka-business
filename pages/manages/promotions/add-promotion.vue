@@ -1,6 +1,87 @@
-<script>
-export default {
-  name: "add-promotion"
+<script setup>
+import {onLoad, onShow} from '@dcloudio/uni-app'
+import {ref} from "vue";
+import UvDatetimePicker
+  from "../../../uni_modules/uv-datetime-picker/components/uv-datetime-picker/uv-datetime-picker.vue";
+import dayjs from "dayjs";
+
+const startTimePicker = ref()
+const endTimePicker = ref()
+const timeFormat = 'YYYY-MM-DD HH:mm'
+
+const formData = ref({
+  activity_name: '',
+  start_time: dayjs().valueOf(),
+  end_time: '',
+  goods: [{
+    _id: '1',
+    freebies_image: "/20250313/4455e84e648ec224b7999b84364b359c.png",
+    freebies_name: "赠品1",
+    freebies_num: 1,
+    freebies_stock: "10",
+    goods_desc: "1123",
+    goods_image: "/20250313/0d67b9e6ae577c61ef6daf6146831685.png",
+    goods_name: "商品1",
+    goods_stock: 1,
+    original_price: "110",
+    sale_price: "110",
+    show_freebies_image: "https://pkimage.totxlive.com/20250313/4455e84e648ec224b7999b84364b359c.png",
+    show_goods_image: "https://pkimage.totxlive.com/20250313/0d67b9e6ae577c61ef6daf6146831685.png",
+  }]
+})
+
+onShow(() => {
+  uni.$off('addGoods')
+  uni.$off('editGoods')
+  uni.$on('addGoods', (d) => {
+    formData.value.goods.push(d)
+  })
+  uni.$on('editGoods', (d) => {
+    formData.value.goods = formData.value.goods.map(item => {
+      if ((item.id !== d.id && item.id) || (item._id === d._id && item._id)) {
+        return d
+      }
+      return item
+    })
+  })
+})
+
+const handleToAddGoods = () => {
+  uni.navigateTo({
+    url: '/pages/manages/promotions/add-goods',
+  })
+}
+
+const handleSetStartTime = (evt) => {
+  // console.log(evt)
+  formData.value.start_time = evt.value
+}
+
+const handleSetEndTime = (evt) => {
+  // console.log(evt)
+  formData.value.end_time = evt.value
+}
+
+const handleRemoveGoods = (goods) => {
+  uni.showModal({
+    title: '提示',
+    content: '确定删除此商品吗？',
+    success(res) {
+      if(res.confirm) {
+        formData.value.goods = formData.value.goods.filter(item => (item._id !== goods._id && item._id) || (item.id !== goods.id && item.id))
+      }
+    }
+  })
+}
+
+const handleEditGoods = (goods) => {
+  uni.setStorageSync('PromotionGoods', goods)
+  uni.navigateTo({
+    url: '/pages/manages/promotions/add-goods?isEdit=1',
+    success: () => {
+
+    }
+  })
 }
 </script>
 
@@ -16,7 +97,8 @@ export default {
               <text>活動名稱</text>
             </view>
             <view class="form-value">
-              <uv-input placeholder="請輸入活動名稱" :border="false" input-align="right" fontSize="26rpx"/>
+              <uv-input v-model="formData.activity_name" placeholder="請輸入活動名稱" :border="false"
+                        input-align="right" fontSize="26rpx"/>
             </view>
           </view>
           <view class="form-item">
@@ -24,11 +106,12 @@ export default {
               <text class="red-text">*</text>
               <text>活動開始時間</text>
             </view>
-            <picker mode="date">
-              <view class="form-value">
-                <view class="placeholder">請選擇活動開始時間<text class="iconfont icon-shijian"></text></view>
+            <view class="form-value" @click="startTimePicker.open()">
+              <view class="placeholder">
+                {{ formData.start_time ? dayjs(formData.start_time).format(timeFormat) : '請選擇活動開始時間' }}
+                <text class="iconfont icon-shijian"></text>
               </view>
-            </picker>
+            </view>
           </view>
           <view class="form-item">
             <view class="form-label">
@@ -36,30 +119,85 @@ export default {
               <text>活動結束時間
               </text>
             </view>
-            <picker mode="date">
-              <view class="form-value">
-                <view class="placeholder">請選擇活動結束時間
-                  <text class="iconfont icon-shijian"></text>
-                </view>
+            <view class="form-value" @click="endTimePicker.open()">
+              <view class="placeholder">
+                {{ formData.end_time ? dayjs(formData.end_time).format(timeFormat) : '請選擇活動結束時間' }}
+                <text class="iconfont icon-shijian"></text>
               </view>
-            </picker>
+            </view>
           </view>
         </view>
       </view>
       <view class="card">
         <view class="card-title">
           <view>活動商品</view>
-          <view class="setting-mode">添加商品</view>
+          <view class="setting-mode" @click="handleToAddGoods">添加商品</view>
         </view>
         <view class="card-form">
-          <view class="empty">暫無商品，快去上傳吧</view>
+          <!--          <view class="empty">暫無商品，快去上傳吧</view>-->
+          <view class="card" style="padding: 0" v-for="(item, i) in formData.goods" :key="i">
+            <view class="title">
+              <view>{{ i + 1 }}号商品</view>
+              <view class="card-option">
+                <view @click="handleRemoveGoods(item)">
+                  <text>删除商品</text>
+                  <text class="iconfont icon-yichu1"></text>
+                </view>
+                <view @click="handleEditGoods(item)">
+                  <text>重新编辑</text>
+                  <text class="iconfont icon-bianji"></text>
+                </view>
+              </view>
+            </view>
+            <view class="order-content">
+              <view class="order-single-msg">
+                <view class="order-img">
+                  <image :src="item.show_goods_image" mode="aspectFill"
+                         style="width: 100rpx; height: 100rpx"/>
+                </view>
+                <view class="order-msg">
+                  <view class="order-title">{{ item.goods_name }}</view>
+                  <view class="order-tip">
+                    {{ item.goods_desc }}
+                  </view>
+                  <view class="price-msg">
+                    <view class="price">换购价 HK$ {{ item.sale_price }}</view>
+                  </view>
+                </view>
+              </view>
+              <view class="price-msg">
+                <view class="count">库存{{ item.goods_stock }}件</view>
+              </view>
+            </view>
+
+            <template>
+              <view class="title">贈品</view>
+              <view class="gift-item">
+                <view class="gift-img">
+                  <image :src="item.show_freebies_image" mode="aspectFill"
+                         style="width: 90rpx; height: 90rpx"/>
+                </view>
+                <view class="gift-content">
+                  <view class="gift-title">{{ item.freebies_name }}</view>
+                  <view class="gift-count">* {{ item.freebies_num }}</view>
+                </view>
+              </view>
+            </template>
+          </view>
         </view>
       </view>
     </view>
 
     <view class="submit-button safe-pb">
-      <uv-button type="primary" block>保存</uv-button>
+      <uv-button class="operation-item" block>保存</uv-button>
     </view>
+
+    <uv-datetime-picker ref="startTimePicker" v-model="formData.start_time" :max-date="formData.end_time || undefined"
+                        mode="datetime" @confirm="handleSetStartTime">
+    </uv-datetime-picker>
+    <uv-datetime-picker ref="endTimePicker" v-model="formData.end_time" :min-date="formData.start_time" mode="datetime"
+                        @confirm="handleSetEndTime">
+    </uv-datetime-picker>
   </view>
 </template>
 
@@ -67,11 +205,24 @@ export default {
 :global(page) {
   height: 100%;
 }
+
 .container {
   height: 100%;
   background-color: #f8f8f8;
   display: flex;
   flex-direction: column;
+}
+
+.card-form {
+  .card {
+    border-bottom: 1rpx solid rgba(0, 0, 0, 0.1);
+    border-radius: 0;
+    padding-bottom: 40rpx !important;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
 }
 
 .content {
@@ -116,6 +267,24 @@ export default {
   }
 }
 
+.title {
+  padding: 20rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 27rpx;
+  .card-option {
+    display: flex;
+    align-items: center;
+    column-gap: 24rpx;
+    > view {
+      display: flex;
+      align-items: center;
+      column-gap: 6rpx;
+    }
+  }
+}
+
 .placeholder {
   color: #888888;
   font-size: 26rpx;
@@ -143,10 +312,69 @@ export default {
   font-weight: normal;
   font-size: 28rpx;
 }
+
 .empty {
   text-align: center;
   padding: 40rpx 0;
   font-size: 26rpx;
   color: #666;
+}
+
+.gift-item {
+  display: flex;
+  column-gap: 20rpx;
+  font-size: 26rpx;
+  align-items: center;
+
+  .gift-count {
+    color: #666;
+  }
+}
+
+.order-content {
+  display: flex;
+  column-gap: 50rpx;
+  margin-bottom: 20rpx;
+}
+
+.order-single-msg {
+  display: flex;
+  flex: 1;
+  column-gap: 20rpx;
+
+  .order-img {
+    border-radius: 10rpx;
+  }
+
+  .order-tip {
+    color: #999;
+    font-size: 24rpx;
+  }
+}
+
+.order-title {
+  font-size: 28rpx;
+}
+
+.price-msg {
+  font-size: 26rpx;
+  white-space: nowrap;
+
+  .price {
+    color: #c74336;
+  }
+
+  .count {
+    color: #999;
+    font-size: 24rpx;
+  }
+}
+
+
+.operation-item {
+  :global(.uv-button) {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
 }
 </style>

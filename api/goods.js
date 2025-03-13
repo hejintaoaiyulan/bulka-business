@@ -16,8 +16,8 @@ export const delGoodsType = (params) => {
 }
 
 // 获取商品列表
-export const goodsList = () => {
-  return request.get('/store/goods/getGoodsList', {})
+export const goodsList = (params) => {
+  return request.get('/store/goods/getGoodsList', params)
 }
 
 // 删除商品
@@ -28,4 +28,14 @@ export const delGoods = (params) => {
 // 商品上下架 publish_status 1 上架 2 下架
 export const goodsPublish = (params) => {
   return request.post('/store/goods/setGoodsPublish', params)
+}
+
+// 保存商品
+export const saveGoods = (params) => {
+  return request.post('/store/goods/saveGoods',params)
+}
+
+// 商品详情
+export const getGoodsInfo = (params) => {
+  return request.get('/store/goods/getGoodsInfo', params)
 }

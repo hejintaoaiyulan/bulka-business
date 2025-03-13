@@ -31,3 +31,10 @@ export const getShopCheck = () => {
 export const getShopType = () => {
     return request.get('/store/index/shopType',{})
 }
+
+/**
+ * 平台商品分类
+ * */
+export const getGoodsCategory = () => {
+    return request.get('/store/index/goodsCategoryList',{})
+}

@@ -120,9 +120,10 @@ async function request(options) {
         throw error
     } finally {
         // 隐藏loading
-        if (options.showLoading !== false) {
-            uni.hideLoading()
-        }
+        // if (options.showLoading !== false) {
+        //
+        // }
+        uni.hideLoading()
     }
 }
 

@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6263342",
+      "name": "移除",
+      "font_class": "yichu1",
+      "unicode": "e66a",
+      "unicode_decimal": 58986
+    },
+    {
+      "icon_id": "739100",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "10885631",
+      "name": "移除",
+      "font_class": "yichu",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
       "icon_id": "2076270",
       "name": "设置",
       "font_class": "shezhi",

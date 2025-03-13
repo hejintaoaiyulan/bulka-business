@@ -22,9 +22,8 @@ let options = {}
 onLoad((query) => {
   options = query
   if(query?.type?.toString() === '1') {
-    const d = uni.getStorageSync('goods_spec_attr')
-    uni.removeStorageSync('goods_spec_attr')
-    console.log(d)
+    const d = uni.getStorageSync('goods_spec')
+    uni.removeStorageSync('goods_spec')
     formListData.value = d
   }
 })
@@ -83,12 +82,11 @@ const handleSaveAttr = () => {
   }
   formListData.value = formListData.value.map((item) => {
     if((item._id === activeSpecification.value._id && item._id) || (item.id === activeSpecification.value.id && item.id)) {
-      item.goods_spec_attr = (item.goods_spec_attr || []).concat({...activeForm.value, id: uniqueId()})
+      item.goods_spec_attr = (item.goods_spec_attr || []).concat({...activeForm.value, _id: uniqueId()})
       return item
     }
     return item
   })
-  console.log(formListData.value, activeSpecification.value)
 
   clearActiveForm()
   popUp.value?.close()
@@ -101,8 +99,8 @@ const handleRemoveAttr = (data, item) => {
     success: (result) => {
       if(result.confirm) {
         formListData.value = formListData.value.map((dataItem) => {
-          if(dataItem.id === data.id || dataItem._id === data._id) {
-            dataItem.goods_spec_attr = dataItem.goods_spec_attr.filter(attr => attr.id !== item.id)
+          if((dataItem.id === data.id && dataItem.id) || (dataItem._id === data._id && dataItem._id) ) {
+            dataItem.goods_spec_attr = dataItem.goods_spec_attr.filter(attr => (attr._id !== item._id && attr._id) || (attr.id !== item.id && attr.id))
           }
           return dataItem
         })
@@ -217,7 +215,7 @@ const handleSubmit = () => {
             <uv-input placeholder="輸入庫存數量" v-model="activeForm.stock" />
           </view>
           <view class="form-item">
-            <uv-button type="primary" class="button" @click="handleSaveAttr">確認</uv-button>
+            <uv-button class="button" @click="handleSaveAttr">確認</uv-button>
           </view>
         </view>
       </view>

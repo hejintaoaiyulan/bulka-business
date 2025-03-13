@@ -84,7 +84,7 @@ export const usePageLoading = (
     pageParams.value.page = 1
     hasMore.value = true
     dataList.value = []
-    return getData({...(data || {}), ...loadDataParams})
+    return getData({...loadDataParams, ...(data || {})})
   }
 
   const loadNext = () => {

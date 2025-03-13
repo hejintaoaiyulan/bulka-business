@@ -112,6 +112,15 @@
 			}
 		},
 		{
+			"path": "pages/manages/promotions/add-goods",
+			"style": {
+				"navigationBarTitleText": "添加商品",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
 			"path": "pages/manages/exchange/index",
 			"style": {
 				"navigationBarTitleText": "換購活動管理",

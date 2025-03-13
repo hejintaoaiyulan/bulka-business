@@ -1,14 +1,19 @@
 <script setup>
 import {ref, computed, unref} from "vue";
-import {onShow } from '@dcloudio/uni-app'
+import {onShow, onLoad} from '@dcloudio/uni-app'
 import UvImage from "../../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 import {useFileUpload} from "../../../utils/uploadFile";
-import {getShopType, UploadUrl} from "../../../api/public";
+import {getGoodsCategory, UploadUrl} from "../../../api/public";
 import PickerSelect from "../../../components/PickerSelect.vue";
+import {pick} from "lodash";
+import {getGoodsInfo, getGoodsTypes, saveGoods} from "../../../api/goods";
+import {Toast} from "../../../utils";
 
-const { uploadFile } = useFileUpload({showUploadLoading: true })
+const {uploadFile} = useFileUpload({showUploadLoading: true})
 const types = ref([])
+const categories = ref([])
 const formData = ref({
+  id: '',
   goods_image: '',
   show_goods_image: '',
   goods_name: '',
@@ -30,24 +35,45 @@ const single = computed(() => {
   return formData.value.goods_spec_type === 1
 })
 
+onLoad((query) => {
+  if(query?.id) {
+    getInfo(query.id)
+    uni.setNavigationBarTitle({
+      title: '編輯商品'
+    })
+  }
+})
+
+const getInfo = (id) => {
+  getGoodsInfo({id}).then(res => {
+    formData.value = res.data || {}
+  })
+}
+
 const getTypes = () => {
-  getShopType().then(res => {
+  getGoodsTypes().then(res => {
     types.value = res.data || []
+  })
+}
+
+const getCategories = () => {
+  getGoodsCategory().then(res => {
+    categories.value = res.data || []
   })
 }
 
 const handleToSetSpecification = () => {
   let n = ''
-  if(formData.value.goods_spec_attr?.length) {
-    uni.setStorageSync('goods_spec_attr', formData.value.goods_spec_attr)
+  if (formData.value.goods_spec?.length) {
+    uni.setStorageSync('goods_spec', formData.value.goods_spec)
     n = '1'
   }
   uni.navigateTo({
     url: '/pages/manages/goods/specification?type=' + n,
     success: () => {
       uni.$once('updateSpecification', (data) => {
-        formData.value.goods_spec_attr = unref(data)
-        formData.value.goods_spec_attr_name = unref(data).map(item => item.goods_spec_name).join('、')
+        formData.value.goods_spec = unref(data)
+        formData.value.goods_spec_name = unref(data).map(item => item.goods_spec_name).join('、')
       })
     }
   })
@@ -67,13 +93,31 @@ const handleChooseImage = () => {
 }
 
 const handleChangeType = (val) => {
-  formData.value.goods_type_name = val.name
+  formData.value.goods_type_name = val.goods_type_name
   formData.value.goods_type_id = val.id
+}
+
+const handleChangeCategory = (val) => {
+  formData.value.goods_category_id = val.id
+  formData.value.goods_category_name = val.category_name
 }
 
 onShow(() => {
   getTypes()
+  getCategories()
 })
+
+const handleSave = () => {
+  const baseFields = ['goods_image', 'goods_name', 'goods_desc', 'goods_type_id', 'goods_category_id', 'goods_spec_type', 'goods_stock', 'original_price', 'sale_price', 'discount', 'top_status', 'publish_status', 'weigh', 'goods_spec']
+  const singleFields = formData.value.goods_spec_type === 1 ? baseFields.filter(key => !['goods_spec'].includes(key)) : baseFields.filter(key => !['goods_stock', 'original_price', 'sale_price'].includes(key))
+  const saveParams = pick(formData.value, singleFields)
+  saveGoods(saveParams).then(res => {
+    Toast.success('保存成功')
+    setTimeout(() => {
+      uni.navigateBack({})
+    }, 1000)
+  })
+}
 </script>
 
 <template>
@@ -102,7 +146,8 @@ onShow(() => {
               <text>商品名稱</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.goods_name" inputAlign="right" class="form-input" :border="false" placeholder="請輸入商品名稱"
+              <uv-input v-model="formData.goods_name" inputAlign="right" class="form-input" :border="false"
+                        placeholder="請輸入商品名稱"
                         fontSize="26rpx"/>
             </view>
           </view>
@@ -112,18 +157,33 @@ onShow(() => {
               <text>商品描述</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.goods_desc" inputAlign="right" fontSize="26rpx" :border="false" placeholder="請輸入商品描述"/>
+              <uv-input v-model="formData.goods_desc" inputAlign="right" fontSize="26rpx" :border="false"
+                        placeholder="請輸入商品描述"/>
             </view>
           </view>
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品分類</text>
+              <text>平台商品分類</text>
             </view>
-            <PickerSelect :options="types" key-name="name" @change="handleChangeType">
+            <PickerSelect :options="categories" key-name="category_name" @change="handleChangeCategory">
               <view class="form-value">
                 <text class="placeholder">
-                  {{formData.goods_type_name || '請選擇商品分類'}}
+                  {{ formData.goods_category_name || '請選擇分類' }}
+                  <text class="iconfont icon-arrow-right-copy"></text>
+                </text>
+              </view>
+            </PickerSelect>
+          </view>
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商家商品分類</text>
+            </view>
+            <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeType">
+              <view class="form-value">
+                <text class="placeholder">
+                  {{ formData.goods_type_name || '請選擇分類' }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -141,7 +201,8 @@ onShow(() => {
                 <text>商品規格</text>
               </view>
               <view class="form-value flex-right">
-                <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx" v-model="formData.goods_spec_type">
+                <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx"
+                                v-model="formData.goods_spec_type">
                   <uv-radio :name="1" label="單規格"></uv-radio>
                   <uv-radio :name="2" label="多規格"></uv-radio>
                 </uv-radio-group>
@@ -153,7 +214,8 @@ onShow(() => {
                 <text>商品庫存</text>
               </view>
               <view class="form-value">
-                <uv-input v-model="formData.goods_stock" placeholder="請輸入商品庫存" :border="false" input-align="right" fontSize="26rpx" />
+                <uv-input v-model="formData.goods_stock" placeholder="請輸入商品庫存" :border="false"
+                          input-align="right" fontSize="26rpx"/>
               </view>
             </view>
             <view class="form-item">
@@ -162,7 +224,8 @@ onShow(() => {
                 <text>商品原價</text>
               </view>
               <view class="form-value">
-                <uv-input v-model="formData.original_price" placeholder="請輸入商品原價" type="digit" :border="false" input-align="right" fontSize="26rpx" />
+                <uv-input v-model="formData.original_price" placeholder="請輸入商品原價" type="digit" :border="false"
+                          input-align="right" fontSize="26rpx"/>
               </view>
             </view>
             <view class="form-item">
@@ -171,7 +234,8 @@ onShow(() => {
                 <text>商品售價</text>
               </view>
               <view class="form-value">
-                <uv-input v-model="formData.sale_price" placeholder="請輸入商品售價" type="digit" :border="false" input-align="right" fontSize="26rpx" />
+                <uv-input v-model="formData.sale_price" placeholder="請輸入商品售價" type="digit" :border="false"
+                          input-align="right" fontSize="26rpx"/>
               </view>
             </view>
           </template>
@@ -182,7 +246,8 @@ onShow(() => {
                 <text>規格類型</text>
               </view>
               <view class="form-value flex-right">
-                <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx" v-model="formData.goods_spec_type">
+                <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx"
+                                v-model="formData.goods_spec_type">
                   <uv-radio :name="1" label="單規格"></uv-radio>
                   <uv-radio :name="2" label="多規格"></uv-radio>
                 </uv-radio-group>
@@ -194,7 +259,7 @@ onShow(() => {
                 <text>商品規格</text>
               </view>
               <view class="form-value flex-right" @click="handleToSetSpecification">
-                <text class="setting-mode">{{formData.goods_spec_attr_name || '設置商品規格'}}</text>
+                <text class="setting-mode">{{ formData.goods_spec_name || '設置商品規格' }}</text>
               </view>
             </view>
           </template>
@@ -204,7 +269,8 @@ onShow(() => {
               <text>商品折扣</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.discount" placeholder="請輸入商品折扣" type="digit" :border="false" input-align="right" fontSize="26rpx" />
+              <uv-input v-model="formData.discount" placeholder="請輸入商品折扣" type="digit" :border="false"
+                        input-align="right" fontSize="26rpx"/>
             </view>
           </view>
         </view>
@@ -237,14 +303,15 @@ onShow(() => {
               <text>商品順序</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.weigh" placeholder="請輸入商品順序" type="number" :border="false" input-align="right" fontSize="26rpx" />
+              <uv-input v-model="formData.weigh" placeholder="請輸入商品順序" type="number" :border="false"
+                        input-align="right" fontSize="26rpx"/>
             </view>
           </view>
         </view>
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" >保存</uv-button>
+      <uv-button class="operation-item" @click="handleSave">保存</uv-button>
     </view>
   </view>
 </template>
@@ -253,12 +320,14 @@ onShow(() => {
 :global(page) {
   height: 100%;
 }
+
 .submit-button {
   padding-top: 20rpx;
   padding-left: 30rpx;
   padding-right: 30rpx;
   background-color: #fff;
 }
+
 .container {
   height: 100%;
   background-color: #f8f8f8;
@@ -279,6 +348,7 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
   .iconfont {
     display: inline-block;
     font-size: 24rpx;
@@ -328,6 +398,7 @@ onShow(() => {
   align-items: center;
   border: 1rpx dashed #888888;
   color: #888;
+
   &.show-picture {
     border: none;
   }
