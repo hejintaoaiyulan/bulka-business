@@ -160,7 +160,7 @@ onShow(() => {
       </view>
     </view>
     <view class="content">
-      <scroll-view :scroll-y="true" style="height: 100%" @scrolltolower="loadNext" enhanced :show-scrollbar="false">
+      <scroll-view :scroll-y="true" style="height: 100%;overflow: hidden;" @scrolltolower="loadNext" enhanced :show-scrollbar="false">
         <view class="goods-list">
           <view class="goods-item" v-for="item in dataList" :key="item.id">
             <view class="goods-title">

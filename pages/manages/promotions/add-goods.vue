@@ -91,7 +91,7 @@ const handleSave = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseImage">
-                <uv-image :src="formData.show_goods_image" mode="aspectFill" width="100%" height="100%" radius="5"/>
+                <uv-image :src="formData.show_goods_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
               </view>
             </view>
           </view>
@@ -163,7 +163,7 @@ const handleSave = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseFreebiesImage">
-                <uv-image :src="formData.show_freebies_image" mode="aspectFill" width="100%" height="100%" radius="5"/>
+                <uv-image :src="formData.show_freebies_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
               </view>
             </view>
           </view>

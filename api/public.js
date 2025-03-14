@@ -38,3 +38,18 @@ export const getShopType = () => {
 export const getGoodsCategory = () => {
     return request.get('/store/index/goodsCategoryList',{})
 }
+
+/**
+ * 常见问题
+ * */
+export const getQuestionAnswer = () => {
+    return request.get('/store/index/fqa',{})
+}
+
+/**
+ * 校驗驗證碼
+ * @param {{prefix: string, mobile: string, type: 'forget' | 'oldmobile', code: string }} params
+ * */
+export const verifySms = (params) => {
+    return request.post('/store/index/verifySms',params)
+}

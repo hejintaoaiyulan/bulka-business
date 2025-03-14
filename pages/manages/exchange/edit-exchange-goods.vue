@@ -1,4 +1,139 @@
 <script setup>
+import { onLoad } from '@dcloudio/uni-app'
+import {ref, computed, unref} from "vue";
+import {getGoodsInfo} from "../../../api/goods";
+import UvPopup from "../../../uni_modules/uv-popup/components/uv-popup/uv-popup.vue";
+import UvInput from "../../../uni_modules/uv-input/components/uv-input/uv-input.vue";
+import {Toast} from "../../../utils";
+
+const popUp = ref()
+
+const formData = ref({
+
+})
+
+const singleForm = ref({
+  price: '',
+  max_stock: 1,
+  stock: 1
+})
+
+const activeForm = ref({
+  sale_price: '',
+  max_stock: 1,
+  stock: ''
+})
+
+onLoad((query) => {
+  if(query.id && !query.isEdit) {
+    getInfo(query.id)
+  }
+  if(query.isEdit?.toString() === '1') {
+    // 赋值本地数据
+  }
+})
+
+const isSingle = computed(() => {
+  return formData.value.goods_spec_type === 1
+})
+
+const getInfo = (id) => {
+  getGoodsInfo({id}).then(res => {
+    console.log(res)
+    formData.value = res.data || {}
+    formData.value.show_goods_image = formData.value.base_url + formData.value.goods_image
+  })
+}
+
+// 移除当前商品
+const handleRemoveGoods = () => {
+  uni.showModal({
+    title: '移除商品',
+    content: '确认移除该换购商品吗?',
+    success: (result) => {
+      if(result.confirm) {
+        uni.$emit('remove-goods', formData.value.id)
+        uni.navigateBack({})
+      }
+    }
+  })
+}
+
+// 编辑规格
+const handleEditAttr = (val, opt) => {
+  popUp.value?.open()
+  activeForm.value = unref(opt)
+  activeForm.value.max_stock = activeForm.value.max_stock || 1
+}
+
+// 修改規格
+const handleSaveAttr = () => {
+  if(!activeForm.value.sale_price) {
+    return Toast.info('請輸入換購價格')
+  }
+  if(!activeForm.value.max_stock) {
+    return Toast.info('請輸入限購數量')
+  }
+  if(!activeForm.value.stock) {
+    return Toast.info('請輸入庫存數量')
+  }
+  formData.value.goods_spec = formData.value.goods_spec.map(spec => {
+    spec.goods_spec_attr = spec.goods_spec_attr.map(item => {
+      if(item.id === activeForm.value.id) {
+        return {...item, ...activeForm.value}
+      }
+      return item
+    })
+    return spec
+  })
+  popUp.value?.close()
+  activeForm.value.sale_price = ''
+  activeForm.value.max_stock = ''
+  activeForm.value.stock = ''
+}
+
+const handleSubmit = () => {
+  if(formData.value.goods_spec_type === 2) {
+
+    const goods = []
+    formData.value.goods_spec.forEach(spec => {
+      spec.goods_spec_attr.forEach(item => {
+        const obj = {
+          goods_id: formData.value.id,
+          price: item.sale_price,
+          goods_spec_attr_id: item.id,
+          max_stock: item.max_stock || 1,
+          stock: item.stock,
+        }
+        goods.push(obj)
+      })
+    })
+
+    const minPrice = Math.min(...goods.map(item => +item.price))
+    // 多规格
+    const goodsItem = {
+      ...formData.value,
+      _editend: true,
+      sale_price: minPrice
+    }
+
+    uni.$emit('edit-exchange-goods', goodsItem, goods)
+    uni.navigateBack({})
+  }
+  if(formData.value.goods_spec_type === 1) {
+    const goodsItem = {
+      ...formData.value,
+      _editend: true,
+      sale_price: singleForm.value.price
+    }
+    if(!singleForm.value.price){
+      return Toast.info('請輸入換購價格')
+    }
+    const goods = [{goods_id: formData.value.id, goods_spec_attr_id: 0,...singleForm.value }]
+    uni.$emit('edit-exchange-goods', goodsItem, goods)
+    uni.navigateBack({})
+  }
+}
 </script>
 
 <template>
@@ -7,26 +142,26 @@
     <view class="goods-item">
       <view class="goods-content">
         <view class="goods-img">
-          <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
+          <image :src="formData.show_goods_image" mode="aspectFit" style="width: 100rpx; height: 100rpx" />
         </view>
         <view class="goods-msg">
           <view class="goods-title">
-            熱烈狂歡換購套餐
+            {{formData.goods_name}}
           </view>
-          <view class="goods-tip">精選新鮮食材，盡享無限風味</view>
+          <view class="goods-tip">{{formData.goods_desc}}</view>
           <view class="goods-price">
-            <view class="price">HK$ 12.00</view>
+            <view class="price">HK$ {{formData.sale_price}}</view>
             <view class="inventory">
-              <text>銷量999</text>
+              <text>銷量{{formData.sales}}</text>
               <text>|</text>
-              <text>庫存999</text>
+              <text>庫存{{formData.goods_stock}}</text>
             </view>
           </view>
         </view>
       </view>
     </view>
 
-    <view class="card">
+    <view v-if="isSingle" class="card">
       <view class="card-title">換購信息</view>
       <view class="card-form">
         <view class="form-item">
@@ -35,7 +170,7 @@
             <text>換購價格</text>
           </view>
           <view class="form-value">
-            <uv-input placeholder="請輸入換購價格(HK$)" :border="false" input-align="right" fontSize="26rpx" type="digit" />
+            <uv-input v-model="singleForm.price" placeholder="請輸入換購價格(HK$)" :border="false" input-align="right" fontSize="26rpx" type="digit" />
           </view>
         </view>
         <view class="form-item">
@@ -44,7 +179,7 @@
             <text>限購數量</text>
           </view>
             <view class="form-value flex-right" style="column-gap: 10rpx">
-              <text>最大限購</text><uv-number-box :step="1"></uv-number-box>
+              <text>最大限購</text><uv-number-box v-model="singleForm.max_stock" :step="1" :min="1"></uv-number-box>
             </view>
         </view>
         <view class="form-item">
@@ -55,16 +190,53 @@
           </view>
             <view class="form-value flex-right" style="column-gap: 10rpx">
               <text>當前庫存</text>
-              <uv-number-box :step="1"></uv-number-box>
+              <uv-number-box :step="1" :min="0" v-model="singleForm.stock"></uv-number-box>
             </view>
+        </view>
+      </view>
+    </view>
+    <view v-else class="card" v-for="item in formData.goods_spec" :key="item.id">
+      <view class="card-title">{{item.goods_spec_name}}</view>
+      <view class="option-list">
+        <view class="option" v-for="opt in item.goods_spec_attr" :key="opt.id">
+          <view class="option-title">
+            <view class="name">{{opt.name}}</view>
+            <view class="remove-icon" @click.stop="handleEditAttr(item, opt)">
+              <text class="iconfont icon-bianji"></text>
+            </view>
+          </view>
+          <view class="option-price">
+            <view class="price">HK$ {{opt.sale_price}}</view>
+            <view class="inventory">庫存{{opt.stock}}</view>
+          </view>
         </view>
       </view>
     </view>
   </view>
   <view class="submit-button safe-pb">
-    <view class="remove-tip">移除當前換購商品</view>
-    <uv-button type="primary">保存</uv-button>
+    <view class="remove-tip" @click="handleRemoveGoods">移除當前換購商品</view>
+    <uv-button class="operation-item" @click="handleSubmit">保存</uv-button>
   </view>
+
+  <uv-popup mode="bottom" ref="popUp">
+    <view class="pop-content">
+      <view class="title">編輯換購信息</view>
+      <view class="form">
+        <view class="form-item">
+          <uv-input placeholder="輸入換購價格（HK$）" v-model="activeForm.sale_price" />
+        </view>
+        <view class="form-item">
+          <uv-input placeholder="輸入限購數量" v-model="activeForm.max_stock" type="number" />
+        </view>
+        <view class="form-item">
+          <uv-input placeholder="輸入庫存數量" v-model="activeForm.stock" type="number" />
+        </view>
+        <view class="form-item">
+          <uv-button class="button" @click="handleSaveAttr">確認</uv-button>
+        </view>
+      </view>
+    </view>
+  </uv-popup>
 </view>
 </template>
 
@@ -177,11 +349,63 @@
   }
 }
 
+
 .submit-button {
   padding-top: 20rpx;
   padding-left: 30rpx;
   padding-right: 30rpx;
   background-color: #fff;
   flex: none;
+}
+
+.option-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18rpx 20rpx;
+  margin-top: 15rpx;
+  justify-content: space-between;
+  .option {
+    width: 48%;
+    padding: 20rpx;
+    background-color: #f5f5f5;
+    border-radius: 10rpx;
+    .option-title {
+      font-weight: bold;
+      color: #333;
+      font-size: 30rpx;
+      display: flex;
+      justify-content: space-between;
+    }
+    .option-price {
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+      font-size: 26rpx;
+    }
+  }
+}
+
+
+.form {
+  padding: 30rpx;
+  .form-item {
+    margin-bottom: 20rpx;
+  }
+}
+
+.pop-content {
+  //height: 440rpx;
+  .title {
+    text-align: center;
+    padding: 10rpx 0;
+  }
+}
+
+
+.operation-item {
+  :global(.uv-button) {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
 }
 </style>

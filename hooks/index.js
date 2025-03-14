@@ -1,4 +1,5 @@
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
+import {isFunction} from "lodash";
 
 let isOpened = false
 // 401鉴权失败，重新登录
@@ -31,7 +32,7 @@ export const useNotAuthModal = () => {
  *     dataKeyName?: string,
  *     size?: number,
  *     onFinish?: Function,
- *     requestParams?: Record<any, any>}} options
+ *     requestParams?: Record<any, any>, transform?: Function }} options
  * */
 export const usePageLoading = (
   fn,
@@ -56,18 +57,19 @@ export const usePageLoading = (
         ...data,
         ...pageParams.value
       })
-      if(replace) {
+      if (replace) {
         (response.data[keyName] || []).forEach(newItem => {
           dataList.value = dataList.value.map(item => {
-            if(newItem.id === item.id) {
+            if (newItem.id === item.id) {
               return {...item, ...newItem}
             }
             return item
           })
         })
 
-      }else {
-        dataList.value = dataList.value.concat(response.data[keyName])
+      } else {
+        const d = isFunction(options.transform) ? options.transform(response.data[keyName], dataList.value) : response.data[keyName]
+        dataList.value = dataList.value.concat(d)
       }
       if (response.data.count <= dataList.value.length) {
         hasMore.value = false
@@ -97,6 +99,13 @@ export const usePageLoading = (
     dataList.value = dataList.value.filter(item => item.id !== id)
   }
 
+  const dataMap = computed(() => {
+    return dataList.value.reduce((acc, item) => {
+      acc[item.id] = item
+      return acc
+    } , {})
+  })
+
   return {
     loadNext,
     loading,
@@ -104,6 +113,7 @@ export const usePageLoading = (
     reload,
     delItem,
     dataList,
-    pageParams
+    pageParams,
+    dataMap
   }
 }

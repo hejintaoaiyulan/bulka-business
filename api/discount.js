@@ -15,7 +15,7 @@ export const updateDiscountActivity = (params) => {
   return request.post('/store/discountActivity/saveDiscountActivity', params)
 }
 
-// 下架优惠活动
+// 下架结束优惠活动 status 3 下架 4 结束
 export const downDiscountActivity = (params) => {
   return request.post('/store/discountActivity/operateDiscountActivity', params)
 }

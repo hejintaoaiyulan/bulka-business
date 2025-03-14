@@ -1,11 +1,23 @@
 <script setup>
 import {ref} from 'vue'
-import {getDiscountActivityList} from "../../../api/discount";
+import {deleteDiscountActivity, downDiscountActivity, getDiscountActivityList} from "../../../api/discount";
 import {usePageLoading} from "../../../hooks";
-import {onShow} from "@dcloudio/uni-app";
+import {onShow, onPullDownRefresh} from "@dcloudio/uni-app";
+import {ActivityStatus} from "../../../utils/fields";
+import UvButton from "../../../uni_modules/uv-button/components/uv-button/uv-button.vue";
+import UvImage from "../../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 
 const {getData, reload, dataList, delItem, loadNext } = usePageLoading(getDiscountActivityList, {
-  onFinish: uni.stopPullDownRefresh
+  onFinish: uni.stopPullDownRefresh,
+  transform: (list) => {
+    return list.map((item) => {
+      item.goods =( item.goods || []).map(goods => {
+        goods.show_goods_image = goods.base_url + goods.goods_image
+        return goods;
+      });
+      return item
+    })
+  }
 });
 
 const requestParams = ref({
@@ -18,6 +30,10 @@ const search = () => {
 }
 
 onShow(() => {
+  search()
+})
+
+onPullDownRefresh(() => {
   search()
 })
 
@@ -37,17 +53,20 @@ const handleAdd = () => {
 }
 
 const handleSelectStatus = (val) => {
-  requestParams.value.status = val.key ? val.key : null
+  requestParams.value.status = val.key ? val.key : ''
   search()
 }
 
-const handleRemove = () => {
+const handleRemove = (val) => {
   uni.showModal({
     title: '提示',
     content: '是否删除该商品？',
     success: function (res) {
       if (res.confirm) {
         console.log('用户点击确定');
+        deleteDiscountActivity({id: val.id}).then(() =>{
+          delItem(val.id)
+        })
       } else if (res.cancel) {
         console.log('用户点击取消');
       }
@@ -55,14 +74,41 @@ const handleRemove = () => {
   })
 }
 
+const handleEdit = (val) => {
+  uni.navigateTo({
+    url: '/pages/manages/promotions/add-promotion?id=' + val.id
+  })
+}
+
 // 下架
-const handleSoldOut = () => {
+const handleSoldOut = (val) => {
   uni.showModal({
     title: '提示',
-    content: '是否下架该商品？',
+    content: '是否下架該活動？',
     success: function (res) {
       if (res.confirm) {
         console.log('用户点击确定');
+        downDiscountActivity({id: val.id, status: 3}).then(res => {
+          getData(requestParams.value, true)
+        })
+      } else if (res.cancel) {
+        console.log('用户点击取消');
+      }
+    }
+  })
+}
+
+// 结束
+const handleOver = (val) => {
+  uni.showModal({
+    title: '提示',
+    content: '是否結束該活動？',
+    success: function (res) {
+      if (res.confirm) {
+        console.log('用户点击确定');
+        downDiscountActivity({id: val.id, status: 4}).then(res => {
+          getData(requestParams.value, true)
+        })
       } else if (res.cancel) {
         console.log('用户点击取消');
       }
@@ -75,186 +121,57 @@ const handleSoldOut = () => {
   <view class="container">
     <view class="header">
       <view class="search">
-        <uv-input v-model="requestParams.activity_name" prefix-icon="search" placeholder="請輸入活動名稱" :border="false"/>
+        <uv-input v-model="requestParams.activity_name" prefix-icon="search" placeholder="請輸入活動名稱" :border="false" @confirm="search" clearable />
       </view>
       <view class="tabs">
         <uv-tabs :list="tabs" line-color="#c74336" :scrollable="false" @click="handleSelectStatus"></uv-tabs>
       </view>
     </view>
-    <view class="content">
-      <view class="promotion-item">
-        <view class="promotion-title">
-          <view class="name">組合商品方案A</view>
-          <view class="status">
-            <uv-tags text="未開始" plain size="mini" type="primary"></uv-tags>
+    <scroll-view style="flex: 1;overflow: hidden;" :scroll-y="true" @scrolltolower="loadNext">
+      <view class="content">
+        <view class="empty" v-if="!dataList.length">
+          暂无数据
+        </view>
+        <view class="promotion-item" v-for="item in dataList" :key="item.id">
+          <view class="promotion-title">
+            <view class="name">{{item.activity_name}}</view>
+            <view class="status">
+              <uv-tags :text="ActivityStatus.map.get(item.status)" plain size="mini" type="primary"></uv-tags>
+            </view>
           </view>
-        </view>
-        <view class="promotion-time">
-          <text>活動時間： 2022-12-12 12:00:00 至 2023-12-12-12:00</text>
-        </view>
-        <view class="promotion-main">
-          <view class="pictures">
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
+          <view class="promotion-time">
+            <text>活動時間： {{item.start_time}} 至 {{item.end_time}}</text>
+          </view>
+          <view class="promotion-main">
+            <view class="pictures">
+              <view class="picture-item" v-for="goods in item.goods" :key="goods.id">
+                <uv-image :src="goods.show_goods_image" mode="aspectFit" width="100rpx" height="100rpx" />
+                <view>{{goods.goods_name}}</view>
+              </view>
 
+            </view>
+            <view class="inventory">
+              <view>銷量：{{item.sales}}</view>
+              <view>庫存：{{item.stock}}</view>
+            </view>
           </view>
-          <view class="inventory">
-            <view>銷量：999</view>
-            <view>庫存：999</view>
+          <view class="promotion-operation">
+            <uv-button class="operation-item" @click="handleRemove(item)">
+              <text>刪除</text>
+            </uv-button>
+            <uv-button class="operation-item" @click="handleEdit(item)">
+              <text>編輯</text>
+            </uv-button>
+            <uv-button class="operation-item" @click="handleSoldOut(item)" v-if="item.status === 2">
+              <text>下架</text>
+            </uv-button>
+            <uv-button class="operation-item" v-if="item.status !== 4" @click="handleOver(item)">
+              <text>结束</text>
+            </uv-button>
           </view>
-        </view>
-        <view class="promotion-operation">
-          <uv-button class="operation-item" @click="handleRemove">
-            <text>刪除</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>編輯</text>
-          </uv-button>
-          <uv-button class="operation-item" @click="handleSoldOut">
-            <text>下架</text>
-          </uv-button>
         </view>
       </view>
-      <view class="promotion-item">
-        <view class="promotion-title">
-          <view class="name">組合商品方案A</view>
-          <view class="status">
-            <uv-tags text="未開始" plain size="mini" type="primary"></uv-tags>
-          </view>
-        </view>
-        <view class="promotion-time">
-          <text>活動時間： 2022-12-12 12:00:00 至 2023-12-12-12:00</text>
-        </view>
-        <view class="promotion-main">
-          <view class="pictures">
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-
-          </view>
-          <view class="inventory">
-            <view>銷量：999</view>
-            <view>庫存：999</view>
-          </view>
-        </view>
-        <view class="promotion-operation">
-          <uv-button class="operation-item">
-            <text>刪除</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>編輯</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>下架</text>
-          </uv-button>
-        </view>
-      </view>
-      <view class="promotion-item">
-        <view class="promotion-title">
-          <view class="name">組合商品方案A</view>
-          <view class="status">
-            <uv-tags text="未開始" plain size="mini" type="primary"></uv-tags>
-          </view>
-        </view>
-        <view class="promotion-time">
-          <text>活動時間： 2022-12-12 12:00:00 至 2023-12-12-12:00</text>
-        </view>
-        <view class="promotion-main">
-          <view class="pictures">
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-
-          </view>
-          <view class="inventory">
-            <view>銷量：999</view>
-            <view>庫存：999</view>
-          </view>
-        </view>
-        <view class="promotion-operation">
-          <uv-button class="operation-item">
-            <text>刪除</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>編輯</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>下架</text>
-          </uv-button>
-        </view>
-      </view>
-      <view class="promotion-item">
-        <view class="promotion-title">
-          <view class="name">組合商品方案A</view>
-          <view class="status">
-            <uv-tags text="未開始" plain size="mini" type="primary"></uv-tags>
-          </view>
-        </view>
-        <view class="promotion-time">
-          <text>活動時間： 2022-12-12 12:00:00 至 2023-12-12-12:00</text>
-        </view>
-        <view class="promotion-main">
-          <view class="pictures">
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-            <view class="picture-item">
-              <image src="/static/image/img-6.png" mode="aspectFill"/>
-              <view>商品名稱</view>
-            </view>
-
-          </view>
-          <view class="inventory">
-            <view>銷量：999</view>
-            <view>庫存：999</view>
-          </view>
-        </view>
-        <view class="promotion-operation">
-          <uv-button class="operation-item">
-            <text>刪除</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>編輯</text>
-          </uv-button>
-          <uv-button class="operation-item">
-            <text>下架</text>
-          </uv-button>
-        </view>
-      </view>
-    </view>
+    </scroll-view>
     <view class="submit-button safe-pb">
       <uv-button @click="handleAdd">新增優惠活動</uv-button>
     </view>
@@ -264,6 +181,14 @@ const handleSoldOut = () => {
 <style scoped lang="scss">
 :global(page) {
   height: 100%;
+}
+.empty {
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-size: 28rpx;
 }
 .promotion-item {
   margin-bottom: 25rpx;

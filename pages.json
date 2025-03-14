@@ -45,7 +45,8 @@
 			"style": {
 				"navigationBarTitleText": "商家相冊",
 				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -99,7 +100,8 @@
 				"navigationBarTitleText": "優惠活動管理",
 				"navigationBarBackgroundColor": "#000",
 				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
+				"backgroundColor": "#f8f8f8",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -121,12 +123,22 @@
 			}
 		},
 		{
+			"path": "pages/manages/promotions/save-success",
+			"style": {
+				"navigationBarTitleText": "添加成功",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#f8f8f8"
+			}
+		},
+		{
 			"path": "pages/manages/exchange/index",
 			"style": {
 				"navigationBarTitleText": "換購活動管理",
 				"navigationBarBackgroundColor": "#000",
 				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
+				"backgroundColor": "#f8f8f8",
+				"enablePullDownRefresh": true
 			}
 		},
 		{

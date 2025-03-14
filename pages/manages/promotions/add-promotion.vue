@@ -1,33 +1,44 @@
 <script setup>
 import {onLoad, onShow} from '@dcloudio/uni-app'
-import {ref} from "vue";
+import {ref, unref} from "vue";
 import UvDatetimePicker
   from "../../../uni_modules/uv-datetime-picker/components/uv-datetime-picker/uv-datetime-picker.vue";
 import dayjs from "dayjs";
+import {pick} from "lodash";
+import {getDiscountActivityInfo, updateDiscountActivity} from "../../../api/discount";
+import {Toast} from "../../../utils";
 
 const startTimePicker = ref()
 const endTimePicker = ref()
-const timeFormat = 'YYYY-MM-DD HH:mm'
+const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 
 const formData = ref({
   activity_name: '',
   start_time: dayjs().valueOf(),
   end_time: '',
-  goods: [{
-    _id: '1',
-    freebies_image: "/20250313/4455e84e648ec224b7999b84364b359c.png",
-    freebies_name: "赠品1",
-    freebies_num: 1,
-    freebies_stock: "10",
-    goods_desc: "1123",
-    goods_image: "/20250313/0d67b9e6ae577c61ef6daf6146831685.png",
-    goods_name: "商品1",
-    goods_stock: 1,
-    original_price: "110",
-    sale_price: "110",
-    show_freebies_image: "https://pkimage.totxlive.com/20250313/4455e84e648ec224b7999b84364b359c.png",
-    show_goods_image: "https://pkimage.totxlive.com/20250313/0d67b9e6ae577c61ef6daf6146831685.png",
-  }]
+  goods: []
+})
+
+const getInfo = (id) => {
+  getDiscountActivityInfo({id}).then(res => {
+    formData.value = res.data || { goods: [] }
+
+    formData.value.goods = formData.value.goods.map(item => {
+      item.show_goods_image = item.base_url + item.goods_image
+      item.show_freebies_image = item.base_url + item.freebies_image
+      return {...item}
+    })
+    console.log(formData.value.goods)
+  })
+}
+
+onLoad((query) => {
+  if(query?.id) {
+    getInfo(query.id)
+    uni.setNavigationBarTitle({
+      title: '編輯優惠活動'
+    })
+  }
 })
 
 onShow(() => {
@@ -67,7 +78,7 @@ const handleRemoveGoods = (goods) => {
     title: '提示',
     content: '确定删除此商品吗？',
     success(res) {
-      if(res.confirm) {
+      if (res.confirm) {
         formData.value.goods = formData.value.goods.filter(item => (item._id !== goods._id && item._id) || (item.id !== goods.id && item.id))
       }
     }
@@ -81,6 +92,24 @@ const handleEditGoods = (goods) => {
     success: () => {
 
     }
+  })
+}
+
+const handleSubmit = () => {
+  const goodsFields = ['discount_activity_id', 'id', 'goods_image', 'goods_name', 'goods_desc', 'original_price', 'sale_price', 'goods_stock', 'freebies_image', 'freebies_name', 'freebies_stock', 'freebies_num']
+  const saveParams = unref(formData.value)
+  if(!saveParams.goods?.length) {
+    return Toast.info('请添加商品')
+  }
+  saveParams.goods = saveParams.goods.map(item => {
+    return pick(item, goodsFields)
+  })
+  saveParams.start_time = dayjs(saveParams.start_time).format(timeFormat)
+  saveParams.end_time = dayjs(saveParams.end_time).format(timeFormat)
+  updateDiscountActivity(pick(saveParams,['id','activity_name', 'start_time', 'end_time', 'goods'])).then(res => {
+    uni.redirectTo({
+      url: '/pages/manages/promotions/save-success'
+    })
   })
 }
 </script>
@@ -152,7 +181,7 @@ const handleEditGoods = (goods) => {
             <view class="order-content">
               <view class="order-single-msg">
                 <view class="order-img">
-                  <image :src="item.show_goods_image" mode="aspectFill"
+                  <image :src="item.show_goods_image" mode="aspectFit"
                          style="width: 100rpx; height: 100rpx"/>
                 </view>
                 <view class="order-msg">
@@ -174,7 +203,7 @@ const handleEditGoods = (goods) => {
               <view class="title">贈品</view>
               <view class="gift-item">
                 <view class="gift-img">
-                  <image :src="item.show_freebies_image" mode="aspectFill"
+                  <image :src="item.show_freebies_image" mode="aspectFit"
                          style="width: 90rpx; height: 90rpx"/>
                 </view>
                 <view class="gift-content">
@@ -189,7 +218,7 @@ const handleEditGoods = (goods) => {
     </view>
 
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" block>保存</uv-button>
+      <uv-button class="operation-item" block @click="handleSubmit">保存</uv-button>
     </view>
 
     <uv-datetime-picker ref="startTimePicker" v-model="formData.start_time" :max-date="formData.end_time || undefined"
@@ -273,10 +302,12 @@ const handleEditGoods = (goods) => {
   align-items: center;
   justify-content: space-between;
   font-size: 27rpx;
+
   .card-option {
     display: flex;
     align-items: center;
     column-gap: 24rpx;
+
     > view {
       display: flex;
       align-items: center;

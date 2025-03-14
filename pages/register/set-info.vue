@@ -151,7 +151,7 @@ const handleToHome = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseImage">
-                <uv-image :src="info.show_shop_avatar" mode="aspectFill" width="100%" height="100%" radius="5"/>
+                <uv-image :src="info.show_shop_avatar" mode="aspectFit" width="100%" height="100%" radius="5"/>
               </view>
             </view>
           </view>
@@ -224,7 +224,7 @@ const handleToHome = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseMaterialImage">
-                <uv-image :src="info.show_material_image" mode="aspectFill" width="100%" height="100%" radius="5"/>
+                <uv-image :src="info.show_material_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
               </view>
             </view>
           </view>
@@ -237,7 +237,7 @@ const handleToHome = () => {
             <view class="form-value flex-right">
               <view class="add-file-box show-picture" v-for="(img, index) in info.view_images" :key="index"
                     @click="handleShowActions(img, index)">
-                <uv-image :src="img.url" mode="aspectFill" width="100%" height="100%" radius="5"/>
+                <uv-image :src="img.url" mode="aspectFit" width="100%" height="100%" radius="5"/>
               </view>
               <view class="add-file-box" v-if="(info.director_images?.length || 0) < 2" @click="handleChooseDirector">
                 <view class="iconfont icon-jiajianzujianjiahao"></view>

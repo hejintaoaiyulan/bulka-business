@@ -45,7 +45,14 @@
                 "dSYMs" : false
             },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "maps" : {
+                    "google" : {
+                        "APIKey_ios" : "",
+                        "APIKey_android" : ""
+                    }
+                }
+            }
         }
     },
     /* 快应用特有相关 */

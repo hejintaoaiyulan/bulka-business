@@ -1,9 +1,79 @@
 <script setup>
-const handleToEdit = () => {
-  uni.navigateTo({
-    url: '/pages/manages/exchange/edit-exchange-goods'
+import {getGoodsTypes, goodsList} from "../../../api/goods";
+import { onShow, onLoad } from '@dcloudio/uni-app'
+import {usePageLoading} from "../../../hooks";
+import {ref} from "vue";
+import {pick} from "lodash";
+import PickerSelect from "../../../components/PickerSelect.vue";
+import {Toast} from "../../../utils";
+
+const { reload, loadNext, dataList } = usePageLoading( goodsList,{
+  onFinish: uni.stopPullDownRefresh
+})
+
+const types = ref([])
+
+const selection = ref([])
+const oldSelectionData = ref([])
+
+const requestParams = ref({
+  goods_name: '',
+  goods_type_id: '',
+  goods_type_name: ''
+})
+
+const getTypes = () => {
+  getGoodsTypes().then(res => {
+    types.value = (res.data || []);
+    types.value.unshift({id: '', goods_type_name: '全部类型' })
   })
 }
+
+const search = () => {
+  reload(pick(requestParams.value, ['goods_name', 'goods_type_id']));
+}
+
+onShow(() => {
+  search()
+  getTypes()
+})
+
+onLoad((query) => {
+  if(query?.isEdit === '1') {
+    const list = uni.getStorageSync('exchange-goods-list')
+    uni.removeStorageSync('exchange-goods-list')
+    if(list) {
+      oldSelectionData.value = list
+      selection.value = list.map(item => item.id)
+    }
+  }
+})
+
+const handleSetType = (val) => {
+  requestParams.value.goods_type_id = val.id;
+  requestParams.value.goods_type_name = val.goods_type_name
+  search()
+}
+
+const handleSelectId = (val) => {
+  console.log(val)
+}
+
+const handleSubmit = () => {
+  if(!selection.value.length) {
+    return Toast.info('請選擇商品')
+  }
+  const data = dataList.value.filter(item => {
+    return selection.value.includes(item.id)
+  })
+  const oldList = oldSelectionData.value.filter(item => {
+    return selection.value.includes(item.id) && data.every(o => o.id !== item.id)
+  })
+
+  uni.$emit('exchange-goods', [...data, ...oldList])
+  uni.navigateBack({})
+}
+
 </script>
 
 <template>
@@ -11,116 +81,48 @@ const handleToEdit = () => {
   <view class="header">
     <view class="search-box">
       <view class="left-search">
-        <uv-input placeholder="請輸入商品名稱" prefixIcon="search" fontSize="28rpx" style="width: 100%" :border="false" />
+        <uv-input v-model="requestParams.goods_name" placeholder="請輸入商品名稱" prefixIcon="search" fontSize="28rpx" style="width: 100%" :border="false" @confirm="search" />
       </view>
-      <view class="right-search">
-        <view>選擇商品分類</view>
-        <text class="iconfont icon-arrow-right-copy"></text>
-      </view>
+      <PickerSelect :options="types" key-name="goods_type_name" @change="handleSetType">
+        <view class="right-search">
+          <view>{{requestParams.goods_type_name || '選擇商品分類'}}</view>
+          <text class="iconfont icon-arrow-right-copy"></text>
+        </view>
+      </PickerSelect>
     </view>
   </view>
-  <view class="content">
-    <uv-checkbox-group>
-      <view class="goods-item">
-        <view class="goods-checkbox">
-          <uv-checkbox name="1"></uv-checkbox>
-        </view>
-        <view class="goods-content" @click="handleToEdit">
-          <view class="goods-img">
-            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
+  <scroll-view :scroll-y="true" style="flex: 1">
+    <view class="content">
+      <uv-checkbox-group @change="handleSelectId" v-model="selection">
+        <view class="goods-item" v-for="goods in dataList" :key="goods.id">
+          <view class="goods-checkbox">
+            <uv-checkbox shape="circle" :name="goods.id"></uv-checkbox>
           </view>
-          <view class="goods-msg">
-            <view class="goods-title">
-              熱烈狂歡換購套餐
+          <view class="goods-content">
+            <view class="goods-img">
+              <image :src="goods.goods_image" mode="aspectFit" style="width: 100rpx; height: 100rpx" />
             </view>
-            <view class="goods-tip">精選新鮮食材，盡享無限風味</view>
-            <view class="goods-price">
-              <view class="price">HK$ 12.00</view>
-              <view class="inventory">
-                <text>銷量999</text>
-                <text>|</text>
-                <text>庫存999</text>
+            <view class="goods-msg">
+              <view class="goods-title">
+                {{goods.goods_name}}
+              </view>
+              <view class="goods-tip">{{goods.goods_desc}}</view>
+              <view class="goods-price">
+                <view class="price">HK$ {{goods.sale_price}}</view>
+                <view class="inventory">
+                  <text>銷量{{goods.sales}}</text>
+                  <text>|</text>
+                  <text>庫存{{goods.stock_status}}</text>
+                </view>
               </view>
             </view>
           </view>
         </view>
-      </view>
-      <view class="goods-item">
-        <view class="goods-checkbox">
-          <uv-checkbox name="1"></uv-checkbox>
-        </view>
-        <view class="goods-content">
-          <view class="goods-img">
-            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
-          </view>
-          <view class="goods-msg">
-            <view class="goods-title">
-              熱烈狂歡換購套餐
-            </view>
-            <view class="goods-tip">精選新鮮食材，盡享無限風味</view>
-            <view class="goods-price">
-              <view class="price">HK$ 12.00</view>
-              <view class="inventory">
-                <text>銷量999</text>
-                <text>|</text>
-                <text>庫存999</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="goods-item">
-        <view class="goods-checkbox">
-          <uv-checkbox name="1"></uv-checkbox>
-        </view>
-        <view class="goods-content">
-          <view class="goods-img">
-            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
-          </view>
-          <view class="goods-msg">
-            <view class="goods-title">
-              熱烈狂歡換購套餐
-            </view>
-            <view class="goods-tip">精選新鮮食材，盡享無限風味</view>
-            <view class="goods-price">
-              <view class="price">HK$ 12.00</view>
-              <view class="inventory">
-                <text>銷量999</text>
-                <text>|</text>
-                <text>庫存999</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="goods-item">
-        <view class="goods-checkbox">
-          <uv-checkbox name="1"></uv-checkbox>
-        </view>
-        <view class="goods-content">
-          <view class="goods-img">
-            <image src="/static/image/img-6.png" mode="aspectFill" style="width: 100rpx; height: 100rpx" />
-          </view>
-          <view class="goods-msg">
-            <view class="goods-title">
-              熱烈狂歡換購套餐
-            </view>
-            <view class="goods-tip">精選新鮮食材，盡享無限風味</view>
-            <view class="goods-price">
-              <view class="price">HK$ 12.00</view>
-              <view class="inventory">
-                <text>銷量999</text>
-                <text>|</text>
-                <text>庫存999</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </uv-checkbox-group>
-  </view>
+      </uv-checkbox-group>
+    </view>
+  </scroll-view>
   <view class="submit-button safe-pb">
-    <uv-button type="primary">保存</uv-button>
+    <uv-button class="operation-item" @click="handleSubmit">保存</uv-button>
   </view>
 </view>
 </template>
@@ -241,5 +243,12 @@ const handleToEdit = () => {
   padding-right: 30rpx;
   background-color: #fff;
   flex: none;
+}
+
+.operation-item {
+  :global(.uv-button) {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
 }
 </style>

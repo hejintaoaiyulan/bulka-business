@@ -11,6 +11,9 @@ request.addRequestInterceptor(async (config) => {
 
 // 添加响应拦截器（示例：处理数据结构）
 request.addResponseInterceptor(async (response) => {
+    if(response.data?.code === 401) {
+        return Promise.reject(response)
+    }
     if (response.data.code !== 0) {
         throw new Error(response.data.message || '请求失败')
     }

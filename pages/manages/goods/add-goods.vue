@@ -47,6 +47,11 @@ onLoad((query) => {
 const getInfo = (id) => {
   getGoodsInfo({id}).then(res => {
     formData.value = res.data || {}
+    if(formData.value.goods_spec_type === 2){
+      formData.value.goods_spec_name = formData.value.goods_spec.map(item => item.goods_spec_name).join('、')
+    }
+
+    formData.value.show_goods_image = formData.value.base_url + formData.value.goods_image
   })
 }
 
@@ -108,7 +113,7 @@ onShow(() => {
 })
 
 const handleSave = () => {
-  const baseFields = ['goods_image', 'goods_name', 'goods_desc', 'goods_type_id', 'goods_category_id', 'goods_spec_type', 'goods_stock', 'original_price', 'sale_price', 'discount', 'top_status', 'publish_status', 'weigh', 'goods_spec']
+  const baseFields = ['goods_image', 'id', 'goods_name', 'goods_desc', 'goods_type_id', 'goods_category_id', 'goods_spec_type', 'goods_stock', 'original_price', 'sale_price', 'discount', 'top_status', 'publish_status', 'weigh', 'goods_spec']
   const singleFields = formData.value.goods_spec_type === 1 ? baseFields.filter(key => !['goods_spec'].includes(key)) : baseFields.filter(key => !['goods_stock', 'original_price', 'sale_price'].includes(key))
   const saveParams = pick(formData.value, singleFields)
   saveGoods(saveParams).then(res => {
@@ -136,7 +141,7 @@ const handleSave = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseImage">
-                <uv-image :src="formData.show_goods_image" mode="aspectFill" width="100%" height="100%" radius="5"/>
+                <uv-image :src="formData.show_goods_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
               </view>
             </view>
           </view>

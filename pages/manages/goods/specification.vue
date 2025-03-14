@@ -126,7 +126,6 @@ const handleSubmit = () => {
       bg-color="#000000"
       title-style="color: #fff"
       :safeAreaInsetTop="true"
-      :height="100"
       placeholder
       @left-click="handleBack"
       left-icon-color="#fff"
@@ -184,7 +183,7 @@ const handleSubmit = () => {
               </view>
             </view>
             <view class="option-price">
-              <view class="price">HKS {{opt.sale_price}}</view>
+              <view class="price">HK$ {{opt.sale_price}}</view>
               <view class="inventory">庫存{{opt.stock}}</view>
             </view>
           </view>

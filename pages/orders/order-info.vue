@@ -31,7 +31,7 @@
       <view class="order-content">
         <view class="order-single-msg">
           <view class="order-img">
-            <image src="/static/image/img-6.png" mode="aspectFill"
+            <image src="/static/image/img-6.png" mode="aspectFit"
                    style="width: 100rpx; height: 100rpx"/>
           </view>
           <view class="order-msg">
@@ -49,7 +49,7 @@
       <view class="order-content">
         <view class="order-single-msg">
           <view class="order-img">
-            <image src="/static/image/img-6.png" mode="aspectFill"
+            <image src="/static/image/img-6.png" mode="aspectFit"
                    style="width: 100rpx; height: 100rpx"/>
           </view>
           <view class="order-msg">

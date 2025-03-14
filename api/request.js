@@ -72,6 +72,7 @@ async function request(options) {
 
         // 显示loading
         if (mergedOptions.showLoading) {
+            console.log('显示loading')
             uni.showLoading({
                 title: mergedOptions.loadingText,
                 mask: true
