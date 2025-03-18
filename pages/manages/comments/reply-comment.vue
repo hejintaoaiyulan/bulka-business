@@ -34,7 +34,7 @@ const handleSubmit = () => {
     <view class="content">
       <view class="reply-content">
         <view class="title">正在回復“
-          <text>吃貨一號</text>
+          <text>{{formData.user_name}}</text>
           ”的評價
         </view>
         <view class="msg">

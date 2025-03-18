@@ -4,6 +4,7 @@ import {useUserStore} from "../../model/user";
 import {getSMSCode, verifySms} from "../../api/public";
 import {Toast} from "../../utils";
 import UvInput from "../../uni_modules/uv-input/components/uv-input/uv-input.vue";
+import {changeMobile} from "../../api/user";
 
 const tips = ref('')
 const oldCode = ref()
@@ -20,6 +21,7 @@ const codeChange = (text) => {
 }
 const getCode = () => {
   console.log('get code')
+  if(oldCode.value.canGetCode)
   getSMSCode({prefix: userStore.userInfo.prefix, mobile: userStore.userInfo.mobile, type: 'oldmobile'}).then(res => {
     oldCode.value?.start()
     Toast.success('驗證碼已發送')
@@ -27,7 +29,17 @@ const getCode = () => {
 }
 
 const getNewCode = () => {
-  newCode.value?.start()
+  if(!formData.value.prefix) {
+    return Toast.info('請輸入區號')
+  }
+  if(!formData.value.mobile) {
+    return Toast.info('請輸入手機號')
+  }
+  if(newCode.value.canGetCode)
+  getSMSCode({prefix: formData.value.prefix, mobile: formData.value.mobile, type: 'newmobile'}).then(() => {
+    newCode.value?.start()
+    Toast.success('驗證碼已發送')
+  })
 }
 
 const handleNext = () => {
@@ -39,13 +51,31 @@ const handleNext = () => {
     mobile: userStore.userInfo.mobile,
     type: 'oldmobile',
     code: oldMobileSmsCode.value,
-  }).then(() => {
+  }).then((res) => {
     isCheckOldMobile.value = true
+    formData.value.verify_code = res.data.verify_code || ''
   })
 }
 
 const handleBindMobile = () => {
-
+  if(!formData.value.code){
+    return Toast.info('請輸入驗證碼')
+  }
+  if(!formData.value.mobile){
+    return Toast.info('請輸入手機號')
+  }
+  changeMobile({
+    ...formData.value,
+    prefix: formData.value.prefix,
+  }).then(() => {
+    Toast.success('修改成功')
+    userStore.getInfo()
+    setTimeout(() => {
+      uni.navigateBack({
+        delta: 2
+      })
+    }, 1000)
+  })
 }
 </script>
 

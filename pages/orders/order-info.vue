@@ -1,4 +1,78 @@
 <script setup>
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import {ref, computed} from 'vue'
+import {AcceptOrder, cancelOrder, getOrderDetail, ServingFood} from "../../api/order";
+import {OrderStatusText} from "../../utils/fields";
+import UvButton from "../../uni_modules/uv-button/components/uv-button/uv-button.vue";
+import {showModal} from "../../utils";
+
+let option = {}
+const info = ref({})
+
+onLoad((query) => {
+  option = query
+})
+
+onShow(() => {
+  getInfo()
+})
+
+const getInfo = () => {
+  getOrderDetail({order_no: option.order_no}).then(res => {
+    info.value = res.data || {}
+  })
+}
+
+const handleConnect = () => {
+  if(info.value.user?.mobile){
+    uni.makePhoneCall({
+      phoneNumber: info.value.user?.mobile,
+    })
+  }
+}
+
+const freebies = computed(() => {
+  return info.value.goods_list?.reduce((t, c) => {
+    if(c.freebies) {
+      t.push(c.freebies)
+    }
+    return t
+  }, []) || []
+})
+
+
+const handleServingFood = () => {
+  // 出餐
+  showModal('是否確定出餐').then(() => {
+    ServingFood({order_no: info.value.order_no}).then(() => {
+      getInfo()
+    })
+  }).catch(() => {
+  })
+}
+
+const handleAccept = () => {
+  // 接单
+  showModal('是否確定接單').then(() => {
+    AcceptOrder({order_no: info.value.order_no}).then(() => {
+      getInfo()
+    })
+  })
+}
+
+const handleCancel = () => {
+  // 取消订单
+  showModal('是否確定取消訂單').then(() => {
+    cancelOrder({order_no: info.value.order_no}).then(() => {
+      getInfo()
+    })
+  })
+}
+
+const handleScanCode = () => {
+
+}
+
 </script>
 
 <template>
@@ -6,87 +80,74 @@
   <view class="content">
     <view class="card">
       <view class="title">
-        <view class="status-text">用戶取消訂單</view>
-        <view class="result">不想要了</view>
+        <view class="status-text">{{info.status_txt}}</view>
+
+        <view class="result" v-if="info.status === 4">
+          <uv-button size="small" @click="handleScanCode">掃碼取餐</uv-button>
+        </view>
       </view>
-      <view class="sub-title">用戶已取消訂單，訂單金額將原路返回</view>
+      <view class="sub-title">{{OrderStatusText.map.get(info.status)}}</view>
     </view>
 
     <view class="card">
       <view class="title">客戶信息</view>
       <view class="user-content">
         <view class="user">
-          <uv-avatar :size="30" src="/static/image/img-6.png" />
-          <text>小柯基123</text>
+          <uv-avatar :size="30" :src="info.user?.avatar" />
+          <text>{{info.user?.nickname}}</text>
         </view>
-        <view class="mobile">1300000000</view>
+        <view class="mobile">{{info.user?.mobile}}</view>
       </view>
       <view class="call">
-        <view class="call-button">聯繫客戶<view class="iconfont icon-dianhua"></view></view>
+        <view class="call-button" @click="handleConnect">聯繫客戶<view class="iconfont icon-dianhua"></view></view>
       </view>
     </view>
 
     <view class="card">
       <view class="title">餐品詳情</view>
-      <view class="order-content">
+      <view class="order-content" v-for="goods in info.goods_list" :key="goods.goods_id">
         <view class="order-single-msg">
           <view class="order-img">
-            <image src="/static/image/img-6.png" mode="aspectFit"
+            <image :src="goods.goods_image" mode="aspectFit"
                    style="width: 100rpx; height: 100rpx"/>
           </view>
           <view class="order-msg">
-            <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
+            <view class="order-title">{{goods.goods_name}}</view>
             <view class="order-tip">
-              小份、中辣
+              {{goods.goods_spec_name}}
             </view>
           </view>
         </view>
         <view class="price-msg">
-          <view class="price">HK$ 12.00</view>
-          <view class="count">共1件</view>
-        </view>
-      </view>
-      <view class="order-content">
-        <view class="order-single-msg">
-          <view class="order-img">
-            <image src="/static/image/img-6.png" mode="aspectFit"
-                   style="width: 100rpx; height: 100rpx"/>
-          </view>
-          <view class="order-msg">
-            <view class="order-title">熱烈狂歡國五套餐：精選食材，精選無限風味</view>
-            <view class="order-tip">
-              小份、中辣
-            </view>
-          </view>
-        </view>
-        <view class="price-msg">
-          <view class="price">HK$ 12.00</view>
-          <view class="count">共1件</view>
+          <view class="price">HK$ {{goods.all_sale_price}}</view>
+          <view class="count">共{{goods.num}}件</view>
         </view>
       </view>
 
-      <view class="title">贈品</view>
-      <view class="gift-item">
-        <view class="gift-img">
-          <image src="/static/image/img-6.png" mode="aspectFill"
-                 style="width: 90rpx; height: 90rpx"/>
+      <template v-if="freebies.length">
+        <view class="title">贈品</view>
+        <view class="gift-item" v-for="(gift, index) in freebies" :key="index">
+          <view class="gift-img">
+            <image :src="gift.freebies_image" mode="aspectFit"
+                   style="width: 90rpx; height: 90rpx"/>
+          </view>
+          <view class="gift-content">
+            <view class="gift-title">{{gift.freebies_name}}</view>
+            <view class="gift-count">* {{gift.freebies_num}}</view>
+          </view>
         </view>
-        <view class="gift-content">
-          <view class="gift-title">巧心師 明信片30張 新年賀卡春節</view>
-          <view class="gift-count">* 1</view>
-        </view>
-      </view>
+      </template>
 
       <view class="form-item" style="margin-top: 20rpx">
         <view class="form-label">費用合計</view>
         <view class="form-value red-text">
-          HK$ 12.00
+          HK$ {{info.price}}
         </view>
       </view>
       <view class="form-item">
         <view class="form-label">訂單備註</view>
         <view class="form-value">
-          <text class="placeholder">訂單備註</text>
+          <text class="placeholder">{{info.mark || '無備注'}}</text>
         </view>
       </view>
     </view>
@@ -95,32 +156,35 @@
       <view class="title">訂單信息</view>
       <view class="form-item">
         <view class="form-label">訂單編號</view>
-        <view class="form-value">123456789</view>
+        <view class="form-value">{{info.order_no}}</view>
       </view>
       <view class="form-item">
         <view class="form-label">下單時間</view>
-        <view class="form-value">2022-12-12 12:00:00</view>
+        <view class="form-value">{{info.createtime}}</view>
       </view>
       <view class="form-item">
         <view class="form-label">費用合計</view>
-        <view class="form-value">HK$ 12.00</view>
+        <view class="form-value">HK$ {{info.price}}</view>
       </view>
       <view class="form-item">
         <view class="form-label">支付方式</view>
-        <view class="form-value">微信支付</view>
+        <view class="form-value">{{info.pay_type_txt}}</view>
       </view>
-      <view class="form-item">
+      <view class="form-item" v-if="info.pay_time">
         <view class="form-label">
           <text>支付時間</text>
         </view>
         <view class="form-value">
-          <text>2022-12-12 12:00:00</text>
+          <text>{{info.pay_time}}</text>
         </view>
       </view>
     </view>
   </view>
   <view class="submit-button flex-right safe-pb">
-    <uv-button>取消訂單</uv-button>
+    <uv-button size="small" v-if="[1,2,3].includes(info.status)" @click="handleCancel">取消訂單</uv-button>
+    <uv-button size="small" v-if="info.status === 2" @click="handleAccept">接單</uv-button>
+    <uv-button size="small" v-if="info.status === 3" @click="handleServingFood">确认出餐</uv-button>
+    <uv-button size="small" v-if="info.status === 4" @click="handleConnect">联系客户领取</uv-button>
   </view>
 </view>
 </template>
@@ -194,6 +258,7 @@
   padding-right: 20rpx;
   padding-left: 20rpx;
   flex: none;
+  column-gap: 20rpx;
   background-color: #fff;
 }
 
@@ -234,7 +299,7 @@
 .order-single-msg {
   display: flex;
   column-gap: 20rpx;
-
+  flex: 1;
   .order-img {
     border-radius: 10rpx;
   }
@@ -252,6 +317,7 @@
 .price-msg {
   font-size: 26rpx;
   white-space: nowrap;
+  flex: none;
 
   .price {
     color: #c74336;
@@ -292,6 +358,14 @@
   .iconfont {
     font-size: 24rpx;
     color: #666;
+  }
+}
+
+
+.operation-item {
+  :global(.uv-button) {
+    background-color: #000 !important;
+    color: #fff !important;
   }
 }
 </style>

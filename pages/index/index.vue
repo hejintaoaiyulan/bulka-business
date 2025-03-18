@@ -14,19 +14,19 @@
       <view class="grid">
         <view class="grid-item">
           <view class="tip">今日營業額(HK$)</view>
-          <view class="count">999.00</view>
+          <view class="count">{{ info.sales_price }}</view>
         </view>
         <view class="grid-item">
           <view class="tip">今日訂單量</view>
-          <view class="count">999.00</view>
+          <view class="count">{{ info.order_num }}</view>
         </view>
         <view class="grid-item">
           <view class="tip">今日已售商品(件)</view>
-          <view class="count">999.00</view>
+          <view class="count">{{ info.sales_num }}</view>
         </view>
         <view class="grid-item">
           <view class="tip">今日訪客(人)</view>
-          <view class="count">999.00</view>
+          <view class="count">{{ info.shop_uv }}</view>
         </view>
       </view>
       <view class="work-platform">
@@ -35,7 +35,7 @@
           <view class="manage-item" @click="handleToCategory">
             <view class="icon">
               <text class="iconfont icon-fenleiguanli"></text>
-<!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>商品分類管理</view>
@@ -48,7 +48,7 @@
           <view class="manage-item" @click="handleToRouter('/pages/manages/goods/index')">
             <view class="icon">
               <text class="iconfont icon-shangpinguanli"></text>
-<!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>商品管理</view>
@@ -61,7 +61,7 @@
           <view class="manage-item" @click="handleToRouter('/pages/manages/promotions/index')">
             <view class="icon">
               <text class="iconfont icon-a-ziyuan595"></text>
-<!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>優惠活動管理</view>
@@ -74,7 +74,7 @@
           <view class="manage-item" @click="handleToRouter('/pages/manages/exchange/index')">
             <view class="icon">
               <text class="iconfont icon-shouye1"></text>
-<!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>換購活動管理</view>
@@ -87,7 +87,7 @@
           <view class="manage-item" @click="handleToRouter('/pages/manages/comments/index')">
             <view class="icon">
               <text class="iconfont icon-dingdanguanli"></text>
-<!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
             </view>
             <view class="msg">
               <view>評論管理</view>
@@ -105,10 +105,33 @@
 
 <script setup>
 import {onShow} from '@dcloudio/uni-app'
+import {shopStatictis} from "../../api/shop";
+import {ref} from "vue";
+import {useUserStore} from "../../model/user";
 // header掃碼
 const handleRight = () => {
 
 }
+
+const userStore = useUserStore()
+
+const info = ref({
+  sales_price: '',
+  order_num: '',
+  sales_num: '',
+  shop_uv: ''
+})
+
+const getInfo = () => {
+  shopStatictis().then(res => {
+    info.value = res.data || {};
+  })
+}
+
+onShow(() => {
+  if (userStore.isLogin())
+    getInfo()
+})
 
 
 // 分類管理
@@ -222,6 +245,7 @@ page {
         justify-content: center;
         align-items: center;
         color: #333;
+
         .iconfont {
           font-size: 60rpx;
         }

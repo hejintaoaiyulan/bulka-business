@@ -127,7 +127,7 @@ const handleStatus = ({key}) => {
               </view>
             </view>
             <view class="comment-star">
-              <uv-rate :count="5" :value="item.star" disabled readonly></uv-rate>
+              <uv-rate :count="5" :value="item.star"></uv-rate>
             </view>
             <view class="comment-content">
               {{ item.content }}
@@ -137,7 +137,7 @@ const handleStatus = ({key}) => {
                 <uv-image :src="img" mode="aspectFit" width="100%" height="100%"/>
               </view>
             </view>
-            <view class="comment-goods">{{ item.goods_name }}</view>
+            <view class="comment-goods">{{ Array.isArray(item.goods_name) ? item.goods_name.join('、') : item.goods_name }}</view>
             <view class="response-text" v-if="item.response_status === 1">
               回复：{{ item.response }}
             </view>

@@ -17,7 +17,10 @@
             "delay" : 0
         },
         /* 模块配置 */
-        "modules" : {},
+        "modules" : {
+            "Maps" : {},
+            "Geolocation" : {}
+        },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
@@ -48,8 +51,13 @@
             "sdkConfigs" : {
                 "maps" : {
                     "google" : {
-                        "APIKey_ios" : "",
-                        "APIKey_android" : ""
+                        "APIKey_ios" : "AIzaSyC2dpdvm87rWSY3pocUfpxpkTawMHebSjw",
+                        "APIKey_android" : "AIzaSyC2dpdvm87rWSY3pocUfpxpkTawMHebSjw"
+                    }
+                },
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
                     }
                 }
             }
@@ -65,7 +73,8 @@
             "ignoreDevUnusedFiles" : false,
             "ignoreUploadUnusedFiles" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "requiredPrivateInfos": ["getLocation", "chooseAddress"]
     },
     "mp-alipay" : {
         "usingComponents" : true

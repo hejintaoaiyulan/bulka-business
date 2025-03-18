@@ -7,5 +7,10 @@ export const getShopInfo = () => {
 
 // 修改店铺装修信息
 export const updateShopInfo = (params) => {
-  return request.put('/store/shop/getShopInfo', params)
+  return request.post('/store/shop/editShop', params)
+}
+
+// 获取店铺信息统计
+export const shopStatictis = () => {
+  return request.get('/store/shop/shopStatistics', {})
 }

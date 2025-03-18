@@ -21,6 +21,7 @@ const codeChange = (text) => {
 
 const getCode = () => {
   console.log('get code')
+  if(!oldCode.value.canGetCode) return
   if(!formData.value.prefix) {
     return Toast.info('請輸入區號')
   }
@@ -30,7 +31,7 @@ const getCode = () => {
   if(!Regs.mobile.test(formData.value.mobile)) {
     return Toast.info('請輸入正確的手機號')
   }
-  getSMSCode({mobile: formData.value.mobile, prefix: `+${formData.value.prefix}`, type: 'forget'}).then(res => {
+  getSMSCode({mobile: formData.value.mobile, prefix: formData.value.prefix, type: 'forget'}).then(res => {
     Toast.success('驗證碼已發送')
     oldCode.value?.start()
   })

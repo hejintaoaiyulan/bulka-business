@@ -187,3 +187,22 @@ export async function getBrowserCacheSize() {
   }
   return total / 1024 / 1024;
 }
+
+export const showModal = (content, title = '提示') => {
+  return new Promise((resolve, reject) => {
+    uni.showModal({
+      title: title,
+      content: content,
+      success: (result) => {
+        if(result.confirm) {
+          resolve(result.confirm);
+        }else {
+          reject(result.confirm);
+        }
+      },
+      fail: (result) => {
+        reject(result);
+      }
+    })
+  })
+}

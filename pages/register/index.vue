@@ -21,6 +21,7 @@ const codeChange = (text) => {
 
 const getCode = () => {
   console.log('get code')
+  if(oldCode.value.canGetCode)
   getSMSCode({mobile: formData.value.mobile, prefix: formData.value.prefix, type: 'register'}).then(res => {
     console.log(res, 'res')
     oldCode.value?.start()
@@ -49,7 +50,7 @@ const checkFormData = () => {
 const handleToSetInfo = () => {
   const check = checkFormData()
   if (!check) return
-  Register({...formData.value, prefix: `+${formData.value.prefix}`}).then(res => {
+  Register({...formData.value, prefix: formData.value.prefix}).then(res => {
     const {access_token, check_status, token_type , expires_in} = res.data || {}
     setToken(access_token, expires_in)
     uni.setStorageSync('token_type', token_type)

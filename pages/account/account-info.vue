@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from 'vue'
-import {onShow} from '@dcloudio/uni-app'
-import {getShopInfo} from "../../api/shop";
+import {onShow, onLoad} from '@dcloudio/uni-app'
+import {getShopInfo, updateShopInfo} from "../../api/shop";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 import {getShopType, UploadUrl} from "../../api/public";
 import PickerSelect from "../../components/PickerSelect.vue";
 import {useFileUpload} from "../../utils/uploadFile";
+import {pick} from "lodash";
+import {Toast} from "../../utils";
 
 const formData = ref({
   order_on: 2,
@@ -14,11 +16,22 @@ const formData = ref({
 })
 const types = ref([])
 
+const ImageBaseUrl = ref('')
+
+onLoad(async () => {
+  getInfo()
+  getTypes()
+  uni.$off('store-images')
+  uni.$on('store-images', (d) => {
+    formData.value.images = d
+  })
+})
+
 const { uploadFile } = useFileUpload({showUploadLoading: true})
 
 const handlePreviewImage = (url) => {
   uni.previewImage({
-    urls: ['/static/image/img-6.png'],
+    urls: [url],
     current: 0
   })
 }
@@ -31,22 +44,29 @@ const getTypes = () => {
 }
 
 const handleToAlbum = () => {
+  const images = formData.value.images || []
+  uni.setStorageSync('storeImages', images)
   uni.navigateTo({
-    url: '/pages/account/album'
+    url: '/pages/account/album?base_url=' + ImageBaseUrl.value
   })
 }
 
 const getInfo = () => {
   getShopInfo().then((res) => {
-    formData.value = res.data || {}
-    formData.value.show_shop_avatar = formData.value.base_url + formData.value.shop_avatar
-    formData.value.show_bg_image = formData.value.base_url + formData.value.bg_image
+    const d = res.data || {}
+    ImageBaseUrl.value = d.base_url
+    formData.value = {
+      ...formData.value,
+      ...d,
+      show_bg_image: d.base_url + d.bg_image,
+      show_shop_avatar: d.base_url + d.shop_avatar,
+    }
   })
 }
 
 onShow(() => {
-  getInfo()
-  getTypes()
+  // getInfo()
+
 })
 
 const handleChooseAvatar = () => {
@@ -82,6 +102,27 @@ const handleSelectType = (val) => {
 
 const handleSubmit = () => {
   console.log('submit', formData.value)
+  const params = pick(formData.value, ['shop_name', 'shop_type', 'shop_avatar', 'bg_image','images', 'address', 'order_on', 'takeout_on', 'dine_on', 'longitude', 'latitude'])
+  updateShopInfo(params).then(() => {
+    Toast.success('保存成功')
+    getInfo()
+  })
+}
+
+const handleLocation = () => {
+  uni.chooseLocation({
+    success: (result) => {
+      console.log(result)
+      const {latitude, longitude, address, name} = result || {}
+      formData.value.longitude = longitude.toString()
+      formData.value.latitude = latitude.toString()
+      formData.value.address = address || ''
+      formData.value.address_name = name || ''
+    },
+    complete: (result) => {
+      console.log(result, 'complete')
+    }
+  })
 }
 </script>
 
@@ -134,20 +175,20 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>店鋪地址</text>
+              <text>門店定位</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.address" inputAlign="right" fontSize="26rpx" :border="false" placeholder="請輸入店鋪地址"/>
+              <view class="setting-mode" @click="handleLocation">{{formData.address_name || '獲取門店定位'}}</view>
             </view>
           </view>
 
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>門店定位</text>
+              <text>店鋪地址</text>
             </view>
             <view class="form-value">
-              <view class="setting-mode">獲取門店定位</view>
+              <uv-input v-model="formData.address" inputAlign="right" fontSize="26rpx" :border="false" placeholder="請輸入店鋪地址"/>
             </view>
           </view>
 
@@ -174,9 +215,10 @@ const handleSubmit = () => {
           <view class="setting-mode" @click="handleToAlbum">管理相冊</view>
         </view>
         <view class="card-content">
-          <view class="img-list">
+          <view class="img-list" style="height: 150rpx">
+            <view class="empty" v-if="!formData.images.length">暫無相片</view>
             <view class="img-item" @click="handlePreviewImage" v-for="(img, index) in formData.images" :key="index">
-              <image :src="img" mode="widthFix" />
+              <uv-image :src="ImageBaseUrl + img" mode="widthFix" height="150rpx" width="100%"  />
             </view>
           </view>
         </view>
@@ -232,7 +274,8 @@ const handleSubmit = () => {
   display: flex;
   column-gap: 10rpx;
   .img-item {
-    flex: 1;
+    //flex: 1;
+    width: 30%;
     image {
       width: 100%;
       height: 50rpx;
@@ -313,5 +356,15 @@ const handleSubmit = () => {
 .setting-mode {
   color: #3c9cff;
   font-weight: normal;
+}
+
+.empty {
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  color: #999;
+  width: 100%;
 }
 </style>

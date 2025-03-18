@@ -3,9 +3,10 @@
 import {ref} from "vue";
 import {Regs} from "../../globalConfig";
 import {Login} from "../../api/login";
-import {getShopCheck} from "../../api/public";
 import {setToken} from "../../utils";
+import {useUserStore} from "../../model/user";
 
+const userStore = useUserStore()
 const formData = ref({
   mobile: "",
   password: '',
@@ -40,10 +41,11 @@ const handleLogin = () => {
     return
   }
 
-  Login({...formData.value, prefix: `+${formData.value.prefix}`}).then(async res => {
+  Login({...formData.value, prefix: formData.value.prefix}).then(async res => {
     const {access_token, check_status, token_type, expires_in} = res.data || {}
     setToken(access_token, expires_in)
     uni.setStorageSync('token_type', token_type)
+    userStore.getInfo()
     if (check_status !== 4) {
       uni.navigateTo({
         url: '/pages/register/set-info'

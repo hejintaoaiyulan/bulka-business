@@ -2,21 +2,23 @@
 import {ref} from 'vue'
 import {Toast} from "../../utils";
 import UvInput from "../../uni_modules/uv-input/components/uv-input/uv-input.vue";
-import {changePwd} from "../../api/user";
+import {changePwd, forgetPwd} from "../../api/user";
 import {useUserStore} from "../../model/user";
+import {getSMSCode, verifySms} from "../../api/public";
 
-const tabs = [{name: '驗證碼重置', key: 1, disabled: true}, {name: '舊密碼重置', key: 2}]
+const tabs = [{name: '驗證碼重置', key: 1}, {name: '舊密碼重置', key: 2}]
 const tips = ref('')
 const oldCode = ref()
 const isCheckOldMobile = ref(false)
 const userStore = useUserStore()
 
-const currentType = ref(1)
+const currentType = ref(0)
 
 const formData = ref({
   old_pwd: '',
   new_pwd: '',
-  re_new_pwd: ''
+  re_new_pwd: '',
+  code: ''
 })
 
 const codeChange = (text) => {
@@ -24,8 +26,11 @@ const codeChange = (text) => {
 }
 
 const getCode = () => {
-  console.log('get code')
-  oldCode.value?.start()
+  if(oldCode.value.canGetCode)
+  getSMSCode({prefix: userStore.userInfo.prefix, mobile: userStore.userInfo.mobile, type: 'forget'}).then(res => {
+    oldCode.value?.start()
+    Toast.success('驗證碼已發送')
+  })
 }
 
 const handleChangeType = (evt) => {
@@ -34,10 +39,27 @@ const handleChangeType = (evt) => {
 }
 
 const handleNext = () => {
-  if (!formData.value.old_pwd) {
-    return Toast.info('請輸入舊密碼')
+  if(currentType.value === 1) {
+    if (!formData.value.old_pwd) {
+      return Toast.info('請輸入舊密碼')
+    }
+    isCheckOldMobile.value = true
   }
-  isCheckOldMobile.value = true
+
+  if(currentType.value === 0) {
+    if(!formData.value.code) {
+      return Toast.info('請輸入驗證碼')
+    }
+     verifySms({
+       prefix: userStore.userInfo.prefix,
+       mobile: userStore.userInfo.mobile,
+       type: 'forget',
+       code: formData.value.code
+     }).then(res => {
+       formData.value.verify_code = res.data.verify_code || ''
+       isCheckOldMobile.value = true
+     })
+  }
 }
 
 const handleSubmit = () => {
@@ -50,12 +72,24 @@ const handleSubmit = () => {
   if (formData.value.re_new_pwd !== formData.value.new_pwd) {
     return Toast.info('兩次輸入密碼不一致')
   }
+  if(currentType.value === 1)
   changePwd({new_pwd: formData.value.new_pwd, old_pwd: formData.value.new_pwd}).then(() => {
     Toast.info('修改密碼成功')
     setTimeout(() => {
       userStore.logOut()
     }, 1000)
   })
+  if(currentType.value === 0) {
+    forgetPwd({
+      password: formData.value.new_pwd,
+      verify_code: formData.value.verify_code,
+    }).then(() => {
+      Toast.info('修改密碼成功')
+      setTimeout(() => {
+        userStore.logOut()
+      }, 1000)
+    })
+  }
 }
 
 const handlePrev = () => {
@@ -63,7 +97,8 @@ const handlePrev = () => {
   formData.value = {
     new_pwd: '',
     old_pwd: '',
-    re_new_pwd: ''
+    re_new_pwd: '',
+    code: ''
   }
 }
 </script>
@@ -76,9 +111,9 @@ const handlePrev = () => {
                  line-color="transparent" active-style="color: #000" inactive-style="color: #999"></uv-tabs>
       </view>
       <view class="content" v-if="currentType === 0">
-        <view class="old-mobile form-item">原手機號碼：130 xxxx 234</view>
+        <view class="old-mobile form-item">原手機號碼：{{userStore.userInfo.mobile}}</view>
         <view class="form-item">
-          <uv-input placeholder="請輸入驗證碼">
+          <uv-input placeholder="請輸入驗證碼" v-model="formData.code">
             <template v-slot:suffix>
               <uv-code ref="oldCode" @change="codeChange" seconds="60" change-text="x秒後重新獲取"
                        unique-key="oldCode"></uv-code>

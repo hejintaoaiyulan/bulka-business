@@ -92,7 +92,9 @@ export const usePageLoading = (
   const loadNext = () => {
     if (loading.value || !hasMore.value) return console.log('load-next page padding')
     pageParams.value.page++
-    return getData(loadDataParams)
+    return getData(loadDataParams).catch(err => {
+      pageParams.value.page --
+    })
   }
 
   const delItem = (id) => {
