@@ -52,12 +52,39 @@ const getInfo = (id) => {
       }
       return item
     })
+    const goods = [];
+    (res.data?.goods || []).forEach(goods => {
+      if(goods.goods_spec_type === 2) {
+        goods.goods_spec_attr.forEach(item => {
+          const obj = {
+            goods_id: goods.id,
+            price: item.sale_price,
+            goods_spec_attr_id: item.id,
+            max_stock: item.max_stock || 1,
+            stock: item.stock,
+          }
+          goods.push(obj)
+        })
+      }
+      else {
+        // 单规格的
+        const obj = {
+          goods_id: goods.id,
+          price: goods.price,
+          goods_spec_attr_id: 0,
+          max_stock: goods.max_stock || 1,
+          stock: goods.goods_stock,
+        }
+        goods.push(obj)
+      }
+    })
+    formData.value.goods = goods
   })
 }
 
 const handleToChoose = () => {
   if(formData.value.goods.length) {
-    uni.setStorageSync('exchange-goods-list', formData.value.goods)
+    uni.setStorageSync('exchange-goods-list', formData.value.show_goods)
   }
   uni.navigateTo({
     url: '/pages/manages/exchange/choose-exchange?isEdit=1'

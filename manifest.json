@@ -74,7 +74,7 @@
             "ignoreUploadUnusedFiles" : false
         },
         "usingComponents" : true,
-        "requiredPrivateInfos": ["getLocation", "chooseAddress"]
+        "requiredPrivateInfos" : [ "getLocation", "chooseAddress" ]
     },
     "mp-alipay" : {
         "usingComponents" : true
