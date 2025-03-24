@@ -2,10 +2,12 @@ import dayjs from "dayjs"
 
 export const toPromise = (fn, options) => {
   return new Promise((resolve, reject) => {
-    fn({
-      ...options,
-      success: resolve,
-      fail: reject
+    setTimeout(() => {
+      fn({
+        ...options,
+        success: resolve,
+        fail: reject
+      })
     })
   })
 }
