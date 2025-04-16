@@ -1,6 +1,6 @@
 // utils/uploadFile.ts
 import {ref, watch} from 'vue'
-import {toPromise} from '@/utils/index'
+import {Toast, toPromise} from '@/utils/index'
 import {getToken} from "./index";
 // import { BaseUrl } from '@/api/config'
 import request from "../api/index";
@@ -14,7 +14,7 @@ const defaultOptions = {
   name: 'file',
   fileType: ['image', 'video'],
   camera: 'back',
-  maxSize: 15 * 1024 * 1024, // 默认10MB
+  maxSize: 45 * 1024 * 1024, // 默认15MB
   count: 9, // 默认最多选择9个文件
   sourceType: ['album', 'camera'], // 默认从相册或相机选择
   onSuccess: () => {},
@@ -46,18 +46,18 @@ export function useFileUpload(c = { showUploadLoading: false }) {
 
     try {
       // 1. 选择文件
-      const res = await toPromise(uni.chooseMedia, {
+      const res = await toPromise(uni.chooseMedia || uni.chooseImage, {
         count: config.count,
         mediaType: config.fileType,
         sourceType: config.sourceType,
         camera: config.camera,
         sizeType: config.sizeType
       })
-
       // 2. 校验文件
       const validFiles = res.tempFiles.filter((file) => {
         if (file.size > config.maxSize) {
-          config.onFail(`文件大小不能超过${config.maxSize / 1024 / 1024}MB`)
+          Toast.info('文件大小超出限制')
+          config.onFail?.(`文件大小不能超过${config.maxSize / 1024 / 1024}MB`)
           return false
         }
         return true
@@ -76,7 +76,7 @@ export function useFileUpload(c = { showUploadLoading: false }) {
         return new Promise((resolve, reject) => {
           uni.uploadFile({
             url: BaseUrl + config.url,
-            filePath: file.tempFilePath,
+            filePath: file.tempFilePath || file.path,
             name: config.name,
             header: {
               Authorization: uni.getStorageSync('token_type') + ' ' + getToken(), // 示例token
