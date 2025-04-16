@@ -35,30 +35,14 @@ const getInfo = (id) => {
   getExchangeDetail({id}).then(res => {
     console.log(res)
     formData.value = res.data || {}
-    formData.value.show_goods = (res.data.goods || []).map(item => {
-      if(item.goods_spec_type === 1) {
-        return {
-          ...item, sale_price: item.price || item.pirce,
-          show_goods_image: item.goods_image,
-          _editend: true
-        }
-      }
-      if(item.goods_spec_type === 2) {
-        return {
-          ...item, sale_price: item.price || item.pirce,
-          show_goods_image: item.goods_image,
-          _editend: true
-        }
-      }
-      return item
-    })
+
     const goods = [];
-    (res.data?.goods || []).forEach(goods => {
-      if(goods.goods_spec_type === 2) {
-        goods.goods_spec_attr.forEach(item => {
+    (res.data?.goods || []).forEach(goodsItem => {
+      if(goodsItem.goods_spec_type === 2) {
+        goodsItem.goods_spec_attr.forEach(item => {
           const obj = {
-            goods_id: goods.id,
-            price: item.sale_price,
+            goods_id: goodsItem.id,
+            price: item.sale_price || item.price,
             goods_spec_attr_id: item.id,
             max_stock: item.max_stock || 1,
             stock: item.stock,
@@ -69,16 +53,37 @@ const getInfo = (id) => {
       else {
         // 单规格的
         const obj = {
-          goods_id: goods.id,
-          price: goods.price,
+          goods_id: goodsItem.id,
+          price: goodsItem.price || goodsItem.pirce,
           goods_spec_attr_id: 0,
-          max_stock: goods.max_stock || 1,
-          stock: goods.goods_stock,
+          max_stock: goodsItem.max_stock || 1,
+          stock: goodsItem.goods_stock,
         }
         goods.push(obj)
       }
     })
-    formData.value.goods = goods
+    formData.value = {
+      ...res.data,
+      goods
+    }
+    formData.value.show_goods = (res.data.goods || []).map(item => {
+      if(item.goods_spec_type === 1) {
+        return {
+          ...item, sale_price: item.price ,
+          show_goods_image: item.goods_image,
+          _editend: true
+        }
+      }
+      if(item.goods_spec_type === 2) {
+        return {
+          ...item, sale_price: item.price ,
+          show_goods_image: item.goods_image,
+          _editend: true
+        }
+      }
+      return item
+    })
+
   })
 }
 

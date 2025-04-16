@@ -15,21 +15,21 @@ export const toPromise = (fn, options) => {
 
 export const Toast = {
   success: (title, options) => {
-    wx.showToast({
+    uni.showToast({
       icon: 'success',
       title,
       ...options
     })
   },
   fail: (title, options) => {
-    wx.showToast({
+    uni.showToast({
       icon: 'error',
       title,
       ...options
     })
   },
   info: (title, options) => {
-    wx.showToast({
+    uni.showToast({
       icon: 'none',
       title,
       ...options
