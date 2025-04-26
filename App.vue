@@ -42,4 +42,14 @@ view, scrollview, text {
   justify-content: flex-end;
   align-items: center;
 }
+
+.rotate-loading {
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>

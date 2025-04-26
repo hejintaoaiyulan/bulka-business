@@ -9,7 +9,7 @@ import {pick} from "lodash";
 import {getGoodsInfo, getGoodsTypes, saveGoods} from "../../../api/goods";
 import {Toast} from "../../../utils";
 
-const {uploadFile} = useFileUpload({showUploadLoading: true})
+const {uploadFile, isUploading} = useFileUpload({showUploadLoading: true})
 const types = ref([])
 const categories = ref([])
 const formData = ref({
@@ -36,7 +36,7 @@ const single = computed(() => {
 })
 
 onLoad((query) => {
-  if(query?.id) {
+  if (query?.id) {
     getInfo(query.id)
     uni.setNavigationBarTitle({
       title: '編輯商品'
@@ -47,7 +47,7 @@ onLoad((query) => {
 const getInfo = (id) => {
   getGoodsInfo({id}).then(res => {
     formData.value = res.data || {}
-    if(formData.value.goods_spec_type === 2){
+    if (formData.value.goods_spec_type === 2) {
       formData.value.goods_spec_name = formData.value.goods_spec.map(item => item.goods_spec_name).join('、')
     }
 
@@ -85,16 +85,20 @@ const handleToSetSpecification = () => {
 }
 
 const handleChooseImage = () => {
-  uploadFile({
-    count: 1,
-    url: UploadUrl,
-    name: 'image',
-    fileType: ['image']
-  }).then(res => {
-    const [result] = res || []
-    formData.value.goods_image = result?.path
-    formData.value.show_goods_image = result?.url
-  })
+  if (!isUploading.value)
+    uploadFile({
+      count: 1,
+      url: UploadUrl,
+      name: 'image',
+      fileType: ['image']
+    }).then(res => {
+      console.log(res)
+      const [result] = res || []
+      formData.value.goods_image = result?.path
+      formData.value.show_goods_image = result?.url
+    }).catch(err => {
+      console.log(err)
+    })
 }
 
 const handleChangeType = (val) => {
@@ -138,7 +142,8 @@ const handleSave = () => {
             </view>
             <view class="form-value flex-right">
               <view class="add-file-box" v-if="!formData.goods_image" @click="handleChooseImage">
-                <view class="iconfont icon-jiajianzujianjiahao"></view>
+                <view class="iconfont icon-jiajianzujianjiahao" v-if="!isUploading"></view>
+                <view v-else class="iconfont icon-loading rotate-loading" style="display: inline-block"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseImage">
                 <uv-image :src="formData.show_goods_image" mode="aspectFit" width="100%" height="100%" radius="5"/>

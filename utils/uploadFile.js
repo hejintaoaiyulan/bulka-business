@@ -1,6 +1,6 @@
 // utils/uploadFile.ts
 import {ref, watch} from 'vue'
-import {toPromise} from '@/utils/index'
+import {Toast, toPromise} from '@/utils/index'
 import {getToken} from "./index";
 // import { BaseUrl } from '@/api/config'
 import request from "../api/index";
@@ -80,7 +80,8 @@ export function useFileUpload(c = { showUploadLoading: false }) {
       // 校验文件大小
       const validFiles = res.tempFiles.filter((file) => {
         if (file.size > config.maxSize) {
-          config.onFail(`文件大小不能超过${config.maxSize / 1024 / 1024}MB`)
+          Toast.info('文件大小超出限制')
+          config.onFail?.(`文件大小不能超过${config.maxSize / 1024 / 1024}MB`)
           return false
         }
         return true
@@ -101,7 +102,7 @@ export function useFileUpload(c = { showUploadLoading: false }) {
         return new Promise((resolve, reject) => {
           uni.uploadFile({
             url: BaseUrl + config.url,
-            filePath: file.tempFilePath,
+            filePath: file.tempFilePath || file.path,
             name: config.name,
             header: {
               Authorization: uni.getStorageSync('token_type') + ' ' + getToken(),
