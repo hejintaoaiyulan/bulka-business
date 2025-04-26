@@ -173,7 +173,7 @@ const handleSave = () => {
               <text>贈品名稱</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.freebies_name" placeholder="請輸入贈品名稱" type="digit" :border="false"
+              <uv-input v-model="formData.freebies_name" placeholder="請輸入贈品名稱" :border="false"
                         input-align="right" fontSize="26rpx"/>
             </view>
           </view>

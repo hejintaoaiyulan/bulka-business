@@ -26,35 +26,58 @@ export function useFileUpload(c = { showUploadLoading: false }) {
   const isUploading = ref(false)
   const uploadProgress = ref(0)
 
-  watch(()=> isUploading.value, (val)=> {
-    if(c?.showUploadLoading) {
-      if(val) {
+  watch(() => isUploading.value, (val) => {
+    if (c?.showUploadLoading) {
+      if (val) {
         uni.showLoading({
           title: '上传中'
         })
-      }else {
+      } else {
         uni.hideLoading()
       }
     }
   })
-
-  // 核心上传方法
-  const uploadFile = async (
-    options
-  ) => {
-    const config = {...defaultOptions, ...options}
+  const uploadFile = async (options) => {
+    const config = { ...defaultOptions, ...options }
 
     try {
-      // 1. 选择文件
-      const res = await toPromise(uni.chooseMedia, {
-        count: config.count,
-        mediaType: config.fileType,
-        sourceType: config.sourceType,
-        camera: config.camera,
-        sizeType: config.sizeType
-      })
+      const platform = uni.getSystemInfoSync().platform
+      let res
 
-      // 2. 校验文件
+      if (platform === 'ios') {
+        // iOS 兼容使用 chooseImage
+        const imageRes = await toPromise(uni.chooseImage, {
+          count: config.count,
+          sizeType: config.sizeType,
+          sourceType: config.sourceType,
+        })
+
+        // 统一结构：模拟 chooseMedia 的 res.tempFiles
+        res = {
+          tempFiles: imageRes.tempFiles?.length
+            ? imageRes.tempFiles.map(file => ({
+              tempFilePath: file.path,
+              size: file.size || 0,
+              fileType: 'image'
+            }))
+            : imageRes.tempFilePaths.map(path => ({
+              tempFilePath: path,
+              size: 0,
+              fileType: 'image'
+            }))
+        }
+      } else {
+        // 其他平台使用 chooseMedia
+        res = await toPromise(uni.chooseMedia, {
+          count: config.count,
+          mediaType: config.fileType,
+          sourceType: config.sourceType,
+          camera: config.camera,
+          sizeType: config.sizeType,
+        })
+      }
+
+      // 校验文件大小
       const validFiles = res.tempFiles.filter((file) => {
         if (file.size > config.maxSize) {
           config.onFail(`文件大小不能超过${config.maxSize / 1024 / 1024}MB`)
@@ -64,13 +87,15 @@ export function useFileUpload(c = { showUploadLoading: false }) {
       })
 
       if (validFiles.length === 0) return Promise.reject('没有符合要求的文件')
-      if (validFiles.length > config.count)
+
+      if (validFiles.length > config.count) {
         await uni.showToast({
           title: `最多上传${config.count}个文件`,
-          icon: 'none'
+          icon: 'none',
         })
+      }
 
-      // 3. 执行上传
+      // 上传文件
       isUploading.value = true
       const uploadTasks = validFiles.map((file) => {
         return new Promise((resolve, reject) => {
@@ -79,8 +104,8 @@ export function useFileUpload(c = { showUploadLoading: false }) {
             filePath: file.tempFilePath,
             name: config.name,
             header: {
-              Authorization: uni.getStorageSync('token_type') + ' ' + getToken(), // 示例token
-              ...config.header
+              Authorization: uni.getStorageSync('token_type') + ' ' + getToken(),
+              ...config.header,
             },
             formData: config.formData,
             success: (res) => {
@@ -93,13 +118,13 @@ export function useFileUpload(c = { showUploadLoading: false }) {
                 reject(res)
               }
             },
-            fail: err => {
+            fail: (err) => {
               config.onFail('上传请求失败')
               reject(err)
             },
             complete: () => {
               isUploading.value = false
-            }
+            },
           })
         })
       })
@@ -116,4 +141,5 @@ export function useFileUpload(c = { showUploadLoading: false }) {
     uploadProgress,
     uploadFile
   }
+
 }
