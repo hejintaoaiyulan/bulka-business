@@ -49,7 +49,7 @@ onShow(() => {
   })
   uni.$on('editGoods', (d) => {
     formData.value.goods = formData.value.goods.map(item => {
-      if ((item.id !== d.id && item.id) || (item._id === d._id && item._id)) {
+      if ((item.id === d.id && item.id) || (item._id === d._id && item._id)) {
         return d
       }
       return item
@@ -86,7 +86,7 @@ const handleRemoveGoods = (goods) => {
 }
 
 const handleEditGoods = (goods) => {
-  uni.setStorageSync('PromotionGoods', goods)
+  uni.setStorageSync('PromotionGoods', JSON.parse(JSON.stringify(goods)))
   uni.navigateTo({
     url: '/pages/manages/promotions/add-goods?isEdit=1',
     success: () => {
