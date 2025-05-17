@@ -250,6 +250,14 @@
 				"navigationBarBackgroundColor": "#000",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/map-webview/index",
+			"style": {
+				"navigationBarTitleText": "选择位置",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
 	"globalStyle": {

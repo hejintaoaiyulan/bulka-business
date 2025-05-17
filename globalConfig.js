@@ -1,3 +1,6 @@
 export const Regs = {
-    mobile: /^1[3-9]\d{9}$/,
+    mobile: /^\d+$/,
+    // mobile: /^1[3-9]\d{9}$/,
 }
+
+export const googleMapAppKey = 'AIzaSyC2dpdvm87rWSY3pocUfpxpkTawMHebSjw'

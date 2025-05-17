@@ -41,12 +41,17 @@
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "ACCESS_FINE_LOCATION",
+                    "ACCESS_COARSE_LOCATION"
                 ]
             },
             /* ios打包配置 */
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "privacyDescription": {
+                    "NSLocationWhenInUseUsageDescription": "需要使用定位权限获取当前位置"
+                }
             },
             /* SDK配置 */
             "sdkConfigs" : {

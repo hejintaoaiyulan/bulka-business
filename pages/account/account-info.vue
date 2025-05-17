@@ -55,6 +55,7 @@ const getInfo = () => {
   getShopInfo().then((res) => {
     const d = res.data || {}
     ImageBaseUrl.value = d.base_url
+    console.log(d)
     formData.value = {
       ...formData.value,
       ...d,
@@ -66,7 +67,13 @@ const getInfo = () => {
 
 onShow(() => {
   // getInfo()
-
+  uni.$off('setLocationData')
+  uni.$on('setLocationData', (location) => {
+    formData.value.latitude = location.lat?.toString();
+    formData.value.longitude = location.lng?.toString();
+    formData.value.address = location.address;
+    formData.value.address_name = location.name
+  })
 })
 
 const handleChooseAvatar = () => {
@@ -109,20 +116,27 @@ const handleSubmit = () => {
   })
 }
 
+
 const handleLocation = () => {
-  uni.chooseLocation({
-    success: (result) => {
-      console.log(result)
-      const {latitude, longitude, address, name} = result || {}
-      formData.value.longitude = longitude.toString()
-      formData.value.latitude = latitude.toString()
-      formData.value.address = address || ''
-      formData.value.address_name = name || ''
-    },
-    complete: (result) => {
-      console.log(result, 'complete')
-    }
-  })
+	
+	 uni.navigateTo({
+	 	url: '/pages/map-webview/index'
+	 })
+  //
+  // uni.chooseLocation({
+  //   success: (result) => {
+  //     console.log(result)
+  //     const {latitude, longitude, address, name} = result || {}
+  //     formData.value.longitude = longitude.toString()
+  //     formData.value.latitude = latitude.toString()
+  //     formData.value.address = address || ''
+  //     formData.value.address_name = name || ''
+  //   },
+  //   complete: (result) => {
+  //     console.log(result, 'complete')
+  //   }
+  // })
+  
 }
 </script>
 

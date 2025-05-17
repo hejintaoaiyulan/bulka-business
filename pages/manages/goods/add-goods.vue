@@ -116,6 +116,15 @@ onShow(() => {
   getCategories()
 })
 
+const discount = computed(() => {
+  if(!formData.value.original_price || !formData.value.sale_price) {
+    return 0
+  }
+  const value = +((formData.value.sale_price || 0) / (formData.value.original_price || 0) * 10).toFixed(2)
+  formData.value.discount = value
+  return value
+})
+
 const handleSave = () => {
   const baseFields = ['goods_image', 'id', 'goods_name', 'goods_desc', 'goods_type_id', 'goods_category_id', 'goods_spec_type', 'goods_stock', 'original_price', 'sale_price', 'discount', 'top_status', 'publish_status', 'weigh', 'goods_spec']
   const singleFields = formData.value.goods_spec_type === 1 ? baseFields.filter(key => !['goods_spec'].includes(key)) : baseFields.filter(key => !['goods_stock', 'original_price', 'sale_price'].includes(key))
@@ -277,9 +286,11 @@ const handleSave = () => {
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
               <text>商品折扣</text>
+              <text class="form-label-tip">(超过50%折扣自动参加首页试食活动)</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.discount" placeholder="請輸入商品折扣" type="digit" :border="false"
+              <text v-if="single">{{discount}}</text>
+              <uv-input v-else v-model="formData.discount" placeholder="請輸入商品折扣" type="digit" :border="false"
                         input-align="right" fontSize="26rpx"/>
             </view>
           </view>
@@ -349,6 +360,11 @@ const handleSave = () => {
   padding: 20rpx;
   overflow-y: auto;
   flex: 1;
+}
+
+.form-label-tip {
+  font-size: 20rpx;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .placeholder {

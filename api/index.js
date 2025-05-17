@@ -1,7 +1,7 @@
 import request from './request'
-
+const baseUrl = 'https://storeapi.totxlive.com'
 // 设置全局配置
-request.config.baseUrl = 'https://storeapi.totxlive.com'
+request.config.baseUrl = baseUrl
 
 // 添加请求拦截器（示例：添加时间戳）
 request.addRequestInterceptor(async (config) => {
@@ -21,3 +21,5 @@ request.addResponseInterceptor(async (response) => {
 })
 
 export default request
+
+export const BaseUrl = baseUrl
