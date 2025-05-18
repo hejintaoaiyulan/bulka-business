@@ -230,7 +230,7 @@ const handleLocation = () => {
         </view>
         <view class="card-content">
           <view class="img-list" style="height: 150rpx">
-            <view class="empty" v-if="!formData.images.length">暫無相片</view>
+            <view class="empty" v-if="!formData.images?.length">暫無相片</view>
             <view class="img-item" @click="handlePreviewImage" v-for="(img, index) in formData.images" :key="index">
               <uv-image :src="ImageBaseUrl + img" mode="widthFix" height="150rpx" width="100%"  />
             </view>
