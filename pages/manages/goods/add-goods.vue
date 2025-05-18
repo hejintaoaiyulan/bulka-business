@@ -117,7 +117,7 @@ onShow(() => {
 })
 
 const discount = computed(() => {
-  if(!formData.value.original_price || !formData.value.sale_price) {
+  if (!formData.value.original_price || !formData.value.sale_price) {
     return 0
   }
   const value = +((formData.value.sale_price || 0) / (formData.value.original_price || 0) * 10).toFixed(2)
@@ -221,7 +221,7 @@ const handleSave = () => {
               </view>
               <view class="form-value flex-right">
                 <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx"
-                                v-model="formData.goods_spec_type">
+                                v-model="formData.goods_spec_type" @change="formData.discount = ''">
                   <uv-radio :name="1" label="單規格"></uv-radio>
                   <uv-radio :name="2" label="多規格"></uv-radio>
                 </uv-radio-group>
@@ -289,7 +289,7 @@ const handleSave = () => {
               <text class="form-label-tip">(超过50%折扣自动参加首页试食活动)</text>
             </view>
             <view class="form-value">
-              <text v-if="single">{{discount}}</text>
+              <text v-if="single">{{ discount }}</text>
               <uv-input v-else v-model="formData.discount" placeholder="請輸入商品折扣" type="digit" :border="false"
                         input-align="right" fontSize="26rpx"/>
             </view>
