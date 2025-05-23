@@ -27,5 +27,6 @@ export const ServingFood = (params) => {
 
 // 扫码取餐
 export const scanOrder = (params) => {
+  console.log(params)
   return request.post('/store/order/scanOrder', params)
 }

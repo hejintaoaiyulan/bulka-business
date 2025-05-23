@@ -108,9 +108,18 @@ import {onShow} from '@dcloudio/uni-app'
 import {shopStatictis} from "../../api/shop";
 import {ref} from "vue";
 import {useUserStore} from "../../model/user";
+import {scanCodeByOrder, Toast, toPromise} from "@/utils";
+import {scanOrder} from "@/api/order";
 // header掃碼
 const handleRight = () => {
-
+  scanCodeByOrder().then(({order_no}) => {
+    Toast.success('扫码成功')
+    setTimeout(() => {
+      uni.navigateTo({
+        url: `/pages/orders/order-info?order_no=${order_no}`
+      })
+    }, 2000)
+  })
 }
 
 const userStore = useUserStore()

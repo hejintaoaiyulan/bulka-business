@@ -5,7 +5,24 @@ import {countComment, getCommentList} from "../../../api/commentary";
 import {onShow, onLoad, onReachBottom} from '@dcloudio/uni-app'
 
 const {dataList, getData, loadNext, reload} = usePageLoading(getCommentList, {
-  onFinish: uni.stopPullDownRefresh
+  onFinish: uni.stopPullDownRefresh,
+  transform: (data) => {
+    return data.map((item) => {
+      let imgUrls = typeof item.images === 'string' && item.images ? JSON.parse(item.images) : item.images
+      
+      imgUrls = imgUrls.map(img => {
+        if (img.indexOf('http') === -1) {
+          return item.base_url + img
+        }
+        return img
+      })
+
+      return {
+        ...item,
+        images: imgUrls
+      }
+    })
+  }
 })
 
 const requestParams = ref({
@@ -58,15 +75,18 @@ const tabs = ref([
 ])
 
 const search = () => {
-  reload(requestParams.value)
+  reload(requestParams.value).then(res => {
+    console.log(dataList.value)
+  })
 }
 onReachBottom(() => {
   console.log('刷新')
+  loadNext()
 })
 
 const getCount = () => {
   countComment().then(res => {
-    console.log(res)
+    // console.log(res)
     const obj = {
       1: 'count',
       2: 'img_status',
@@ -96,7 +116,7 @@ const handleStatus = ({key}) => {
     5: {star_status: 3, img_status: '', response_status: ''},
   };
 
-  if (Object.hasOwn(config, key)) {
+  if (Object.prototype.hasOwnProperty.call(config, key)) {
     requestParams.value = config[key];
   }
 
@@ -218,6 +238,7 @@ const handleStatus = ({key}) => {
     display: flex;
     column-gap: 20rpx;
     align-items: center;
+    flex-wrap: wrap;
 
     .picture-item {
       width: 180rpx;
