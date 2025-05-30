@@ -49,8 +49,8 @@
             /* ios打包配置 */
             "ios" : {
                 "dSYMs" : false,
-                "privacyDescription": {
-                    "NSLocationWhenInUseUsageDescription": "需要使用定位权限获取当前位置"
+                "privacyDescription" : {
+                    "NSLocationWhenInUseUsageDescription" : "需要使用定位权限获取当前位置"
                 }
             },
             /* SDK配置 */
