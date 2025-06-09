@@ -27,10 +27,10 @@ const list = [{
   name: '全部',
   id: -1
 },
-  {
-    name: '未上架',
-    id: 0
-  },
+  // {
+  //   name: '未上架',
+  //   id: 0
+  // },
   {
     name: '上架',
     id: 1
@@ -89,7 +89,7 @@ const handleSoldOut = (val) => {
 const handleSoldIn = (val, flag) => {
   uni.showModal({
     title: '提示',
-      content: `是否${flag ? '重新': ''}上架该商品？`,
+    content: `是否${flag ? '重新' : ''}上架该商品？`,
     success: function (res) {
       if (res.confirm) {
         console.log('用户点击确定');
@@ -105,7 +105,7 @@ const handleSoldIn = (val, flag) => {
 
 const getTypes = () => {
   getGoodsTypes().then(res => {
-    types.value = res.data || []
+    types.value = [{id: '', goods_type_name: '全部'}, ...(res.data || [])]
   })
 }
 
@@ -123,7 +123,7 @@ const handleToEdit = (val) => {
 
 const handleChangeTab = (evt) => {
   let type = evt.id
-  if(type === -1) {
+  if (type === -1) {
     type = ''
   }
   requestParams.value.publish_status = type
@@ -146,7 +146,7 @@ onShow(() => {
       <view class="search-box">
         <view class="left-search">
           <uv-input v-model="requestParams.goods_name" placeholder="請輸入商品名稱" prefixIcon="search" fontSize="28rpx"
-                    style="width: 100%" :border="false" @confirm="search" />
+                    style="width: 100%" :border="false" @confirm="search"/>
         </view>
         <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeSearchType">
           <view class="right-search">
@@ -160,7 +160,8 @@ onShow(() => {
       </view>
     </view>
     <view class="content">
-      <scroll-view :scroll-y="true" style="height: 100%;overflow: hidden;" @scrolltolower="loadNext" enhanced :show-scrollbar="false">
+      <scroll-view :scroll-y="true" style="height: 100%;overflow: hidden;" @scrolltolower="loadNext" enhanced
+                   :show-scrollbar="false">
         <view class="goods-list">
           <view class="goods-item" v-for="item in dataList" :key="item.id">
             <view class="goods-title">
@@ -311,6 +312,7 @@ onShow(() => {
 .is_stock_status_error {
   color: #c74336 !important;
 }
+
 .container {
   //padding: 30rpx;
   height: 100%;

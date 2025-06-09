@@ -128,7 +128,7 @@ const discount = computed(() => {
 const handleSave = () => {
   const baseFields = ['goods_image', 'id', 'goods_name', 'goods_desc', 'goods_type_id', 'goods_category_id', 'goods_spec_type', 'goods_stock', 'original_price', 'sale_price', 'discount', 'top_status', 'publish_status', 'weigh', 'goods_spec']
   const singleFields = formData.value.goods_spec_type === 1 ? baseFields.filter(key => !['goods_spec'].includes(key)) : baseFields.filter(key => !['goods_stock', 'original_price', 'sale_price'].includes(key))
-  formData.value.discount = (formData.value.discount || 0).toFixed(2)
+  formData.value.discount = Number(formData.value.discount || 0).toFixed(2)
   const saveParams = pick(formData.value, singleFields)
   saveGoods(saveParams).then(res => {
     Toast.success('保存成功')

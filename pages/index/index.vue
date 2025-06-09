@@ -52,7 +52,7 @@
             </view>
             <view class="msg">
               <view>商品管理</view>
-              <view class="tip">當前已上架商品999件</view>
+              <view class="tip">當前已上架商品{{info.goods_num}}件</view>
             </view>
             <view class="right-icon">
               <text class="iconfont icon-arrow-right-copy"></text>
