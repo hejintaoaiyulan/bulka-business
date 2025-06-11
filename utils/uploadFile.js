@@ -41,7 +41,7 @@ export function useFileUpload(c = { showUploadLoading: false }) {
     const config = { ...defaultOptions, ...options }
 
     try {
-      const platform = uni.getSystemInfoSync().platform
+      const platform = uni.getSystemInfoSync().osName
       let res
 
       if (platform === 'ios') {
