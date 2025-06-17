@@ -17,14 +17,11 @@ const formData = ref({
 const types = ref([])
 
 const ImageBaseUrl = ref('')
+const viewAlbum = ref([])
 
 onLoad(async () => {
   getInfo()
   getTypes()
-  uni.$off('store-images')
-  uni.$on('store-images', (d) => {
-    formData.value.images = d
-  })
 })
 
 const { uploadFile } = useFileUpload({showUploadLoading: true})
@@ -44,10 +41,13 @@ const getTypes = () => {
 }
 
 const handleToAlbum = () => {
-  const images = formData.value.images || []
-  uni.setStorageSync('storeImages', images)
+  const images = viewAlbum.value || []
+  uni.setStorageSync('storeImages', {
+    paths: formData.value.images,
+    viewUrls: images,
+  })
   uni.navigateTo({
-    url: '/pages/account/album?base_url=' + ImageBaseUrl.value
+    url: '/pages/account/album'
   })
 }
 
@@ -62,11 +62,18 @@ const getInfo = () => {
       show_bg_image: d.base_url + d.bg_image,
       show_shop_avatar: d.base_url + d.shop_avatar,
     }
+    viewAlbum.value = (d.images || []).map(i => d.base_url + i)
   })
 }
 
 onShow(() => {
   // getInfo()
+  uni.$off('store-images')
+  uni.$on('store-images', (d) => {
+    // console.log(d)
+    formData.value.images = d.paths
+    viewAlbum.value = d.viewUrls
+  })
   uni.$off('setLocationData')
   uni.$on('setLocationData', (location) => {
     formData.value.latitude = location.lat?.toString();
@@ -108,8 +115,8 @@ const handleSelectType = (val) => {
 }
 
 const handleSubmit = () => {
-  console.log('submit', formData.value)
   const params = pick(formData.value, ['shop_name', 'shop_type', 'shop_avatar', 'bg_image','images', 'address', 'order_on', 'takeout_on', 'dine_on', 'longitude', 'latitude'])
+  console.log(params)
   updateShopInfo(params).then(() => {
     Toast.success('保存成功')
     getInfo()
@@ -120,7 +127,7 @@ const handleSubmit = () => {
 const handleLocation = () => {
 	
 	 uni.navigateTo({
-	 	url: '/pages/map-webview/index'
+	 	url: '/pages/map-webview/index?longitude='+ (formData.value.longitude || '') + '&latitude=' + (formData.value.latitude || '')
 	 })
   //
   // uni.chooseLocation({
@@ -186,7 +193,7 @@ const handleLocation = () => {
             </view>
           </view>
 
-          <view class="form-item">
+          <view class="form-item" style="display: none">
             <view class="form-label">
               <text class="red-text">*</text>
               <text>門店定位</text>
@@ -200,8 +207,9 @@ const handleLocation = () => {
             <view class="form-label">
               <text class="red-text">*</text>
               <text>店鋪地址</text>
+              <text style="font-size: 20rpx; color: #007aff" @click="handleLocation">(點擊獲取)</text>
             </view>
-            <view class="form-value">
+            <view class="form-value" >
               <uv-input v-model="formData.address" inputAlign="right" fontSize="26rpx" :border="false" placeholder="請輸入店鋪地址"/>
             </view>
           </view>
@@ -229,10 +237,10 @@ const handleLocation = () => {
           <view class="setting-mode" @click="handleToAlbum">管理相冊</view>
         </view>
         <view class="card-content">
-          <view class="img-list" style="height: 150rpx">
-            <view class="empty" v-if="!formData.images?.length">暫無相片</view>
-            <view class="img-item" @click="handlePreviewImage" v-for="(img, index) in formData.images" :key="index">
-              <uv-image :src="ImageBaseUrl + img" mode="widthFix" height="150rpx" width="100%"  />
+          <view class="img-list" style="min-height: 150rpx">
+            <view class="empty" v-if="!viewAlbum?.length">暫無相片</view>
+            <view class="img-item" @click="handlePreviewImage" v-for="(img, index) in viewAlbum" :key="index">
+              <uv-image :src="img" mode="widthFix" width="100%" height="150rpx"  />
             </view>
           </view>
         </view>

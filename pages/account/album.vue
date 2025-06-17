@@ -3,19 +3,21 @@ import {computed, ref, unref} from "vue";
 import {onLoad} from '@dcloudio/uni-app'
 import {useFileUpload} from "../../utils/uploadFile";
 import {UploadUrl} from "../../api/public";
-import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
+// import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 
 const {uploadFile} = useFileUpload({
   showUploadLoading: true
 })
 
 const urls = ref([])
+const paths = ref([])
 
 let option = {}
 onLoad((query) => {
   option = query
-  const images = uni.getStorageSync('storeImages') || []
-  urls.value = images || []
+  const imagesObj = uni.getStorageSync('storeImages') || []
+  urls.value = imagesObj.viewUrls || []
+  paths.value = imagesObj.paths || []
 })
 
 const handlePreviewImage = (index) => {
@@ -33,14 +35,19 @@ const handleAddImage = () => {
     url: UploadUrl,
     fileType: ['image']
   }).then(res => {
+    // console.log(res)
     urls.value.push(...res.map(item => item.url))
-    uni.$emit('store-images', unref(urls))
+    paths.value.push(...res.map(item => item.path))
+    uni.$emit('store-images', {
+      viewUrls: unref(urls),
+      paths: unref(paths)
+    })
   })
 }
 
 const viewUrls = computed(() => {
   return urls.value.filter(Boolean).map(url => {
-    if(url.indexOf('http')) {
+    if(url.indexOf('http') !== -1) {
       return url
     }
     return option.base_url + url
@@ -58,7 +65,11 @@ const handleRemove = (url, index) => {
     success: (res) => {
       if(res.confirm) {
         urls.value.splice(index, 1)
-        uni.$emit('store-images', unref(urls))
+        paths.value.splice(index, 1)
+        uni.$emit('store-images', {
+          viewUrls: unref(urls),
+          paths: unref(paths)
+        })
       }
     }
   })
