@@ -12,7 +12,7 @@ const isCheckOldMobile = ref(false)
 
 const formData = ref({
   mobile: '',
-  prefix: '86'
+  prefix: '852'
 })
 
 const codeChange = (text) => {

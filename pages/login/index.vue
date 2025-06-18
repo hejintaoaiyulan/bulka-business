@@ -10,7 +10,7 @@ const userStore = useUserStore()
 const formData = ref({
   mobile: "",
   password: '',
-  prefix: '86'
+  prefix: '852'
 })
 
 const handleToPassword = () => {
