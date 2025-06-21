@@ -1,6 +1,6 @@
 <script setup>
 import {getGoodsTypes, goodsList} from "../../../api/goods";
-import { onShow, onLoad } from '@dcloudio/uni-app'
+import { onShow, onLoad, onReachBottom } from '@dcloudio/uni-app'
 import {usePageLoading} from "../../../hooks";
 import {ref} from "vue";
 import {pick} from "lodash";
@@ -91,7 +91,7 @@ const handleSubmit = () => {
       </PickerSelect>
     </view>
   </view>
-  <scroll-view :scroll-y="true" style="flex: 1">
+  <scroll-view :scroll-y="true" style="flex: 1; height: 100%; overflow: hidden" @scrolltolower="loadNext">
     <view class="content">
       <uv-checkbox-group @change="handleSelectId" v-model="selection">
         <view class="goods-item" v-for="goods in dataList" :key="goods.id">
@@ -112,7 +112,7 @@ const handleSubmit = () => {
                 <view class="inventory">
                   <text>銷量{{goods.sales}}</text>
                   <text>|</text>
-                  <text>庫存{{goods.stock_status}}</text>
+                  <text>庫存{{goods.goods_stock}}</text>
                 </view>
               </view>
             </view>
