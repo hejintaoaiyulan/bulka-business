@@ -119,3 +119,41 @@ export const usePageLoading = (
     dataMap
   }
 }
+
+
+// 控制十分钟内只显示一次的弹窗
+export const useShowModalTime = () => {
+  const visible = ref(false)
+  const open = (shop_id, debug) => {
+    let time = 1000 * 60 * 5
+    if(!shop_id) return false
+    if(debug) {
+      time = 1000 * 10 // 调试模式下每10秒允许弹窗
+    }
+    // 最后一次弹窗时间
+    const lastTime = uni.getStorageSync('shopActiveModal_' + shop_id)
+    if(!lastTime) {
+      visible.value = true
+      uni.setStorageSync('shopActiveModal_' + shop_id, Date.now())
+    }else {
+      const now = Date.now()
+      if(now - lastTime > time) {
+        visible.value = true
+        uni.setStorageSync('shopActiveModal_' + shop_id, Date.now())
+      } else {
+        console.log('5分钟内已弹窗')
+      }
+    }
+    return visible.value
+  }
+
+  const close = () => {
+    visible.value = false
+  }
+
+  return {
+    visible,
+    open,
+    close
+  }
+}

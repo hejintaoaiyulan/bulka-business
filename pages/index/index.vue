@@ -52,7 +52,7 @@
             </view>
             <view class="msg">
               <view>商品管理</view>
-              <view class="tip">當前已上架商品{{info.goods_num}}件</view>
+              <view class="tip">當前已上架商品{{ info.goods_num }}件</view>
             </view>
             <view class="right-icon">
               <text class="iconfont icon-arrow-right-copy"></text>
@@ -100,16 +100,66 @@
         </view>
       </view>
     </view>
+
+    <uv-popup ref="popup" mode="center" :closeable="true" @change="handleChangeModal" bg-color="white" round="20rpx">
+      <view class="stock-container">
+        <view class="stock-content">
+          <view class="stock-title">
+            <view>庫存提醒</view>
+            <view class="close-icon" @click="close">
+              <text class="iconfont icon-icon-close"></text>
+            </view>
+          </view>
+          <view class="stock-list">
+            <view class="stock-item" v-for="activity in showActiveList" :key="activity.id">
+              <view class="stock-item-title">
+                <view class="activity-name">{{ activity.name }}</view>
+              </view>
+              <view class="activity-list">
+                <view class="activity-item" v-for="(goods, index) in activity.children" :key="index">
+                  <view class="goods-item">
+                    <view class="goods_name">{{ goods.goods_name }}</view>
+                    <view class="tip">库存不足</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+      </view>
+    </uv-popup>
   </view>
 </template>
 
 <script setup>
 import {onShow} from '@dcloudio/uni-app'
 import {shopStatictis} from "../../api/shop";
-import {ref} from "vue";
+import {ref, watch, computed} from "vue";
 import {useUserStore} from "../../model/user";
 import {scanCodeByOrder, Toast, toPromise} from "@/utils";
-import {scanOrder} from "@/api/order";
+// import {scanOrder} from "@/api/order";
+import {useShowModalTime} from "@/hooks";
+
+const popup = ref(null)
+
+const {open, visible, close} = useShowModalTime()
+
+watch(() => visible.value, (newVal) => {
+  if (newVal) {
+    popup.value?.open()
+  } else {
+    popup.value?.close()
+  }
+}, {
+  immediate: true,
+})
+const handleChangeModal = (e) => {
+  if (e.show === false) {
+    close()
+  }
+}
+
 // header掃碼
 const handleRight = () => {
   scanCodeByOrder().then(({order_no}) => {
@@ -131,8 +181,34 @@ const info = ref({
   shop_uv: ''
 })
 
+const activeList = ref([])
+
+const showActiveList = computed(() => {
+  const obj = activeList.value.reduce((acc, cur) => {
+    if (acc[cur.discount_activity_id]) {
+      acc[cur.discount_activity_id] = {
+        name: cur.activity_name,
+        id: cur.discount_activity_id,
+        children: (acc[cur.discount_activity_id]?.children || []).concat(cur)
+      }
+    } else {
+      acc[cur.discount_activity_id] = {
+        name: cur.activity_name,
+        id: cur.discount_activity_id,
+        children: [cur]
+      }
+    }
+    return acc
+  }, {}) || {}
+  return Object.values(obj || {})
+})
+
+
 const getInfo = () => {
   shopStatictis().then(res => {
+    activeList.value = res.data?.sold_out || []
+    if (activeList.value.length)
+      open(userStore.userInfo.mobile, true)
     info.value = res.data || {};
   })
 }
@@ -166,6 +242,109 @@ page {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.stock-container {
+  max-height: 80vh;
+  width: 90vw;
+
+  .stock-content {
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+
+    .stock-title {
+      position: sticky;
+      text-align: center;
+      top: 0;
+      left: 0;
+      padding: 20rpx 0;
+      background-color: #fff;
+      z-index: 10;
+
+      .close-icon {
+        color: #999;
+        z-index: 10;
+        font-size: 24rpx;
+        position: absolute;
+        right: 20rpx;
+        top: 20rpx;
+      }
+    }
+  }
+
+  .stock-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20rpx;
+    padding: 20rpx;
+
+    .stock-item-title {
+      margin-bottom: 10rpx;
+      //border-left: 8rpx solid #f56c6c;
+      border-radius: 6rpx;
+      //color: #333;
+      font-size: 28rpx;
+      padding: 10rpx;
+      position: relative;
+
+      .activity-name {
+        position: relative;
+        z-index: 5;
+      }
+
+      color: #fff;
+
+      &:before {
+        content: '';
+        position: absolute;
+        z-index: 0;
+        border-radius: 6rpx;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 60%;
+        background: linear-gradient(to right, rgba(245, 108, 108, 1), rgba(245, 108, 108, 0));
+      }
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10rpx;
+
+      .activity-item {
+        display: flex;
+        align-items: center;
+        padding: 10rpx;
+        background-color: #f5f5f5;
+        border-radius: 6rpx;
+
+        .goods-item {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #666;
+          font-size: 26rpx;
+
+          .goods_name {
+            font-weight: bold;
+            white-space: nowrap;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .tip {
+            color: #f56c6c;
+            font-size: 24rpx;
+            flex: none;
+          }
+        }
+      }
+    }
+  }
 }
 
 .grid {

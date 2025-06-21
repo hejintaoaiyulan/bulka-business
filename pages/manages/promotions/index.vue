@@ -12,7 +12,7 @@ const {getData, reload, dataList, delItem, loadNext } = usePageLoading(getDiscou
   transform: (list) => {
     return list.map((item) => {
       item.goods =( item.goods || []).map(goods => {
-        goods.show_goods_image = goods.base_url + goods.goods_image
+        goods.show_goods_image = (goods.base_url || '') + goods.goods_image
         return goods;
       });
       return item
