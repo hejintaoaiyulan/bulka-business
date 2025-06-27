@@ -1,16 +1,22 @@
 <script setup>
 import {onLoad, onShow} from '@dcloudio/uni-app'
-import {ref, unref} from "vue";
+import {ref, unref, toRef} from "vue";
 import UvDatetimePicker
   from "../../../uni_modules/uv-datetime-picker/components/uv-datetime-picker/uv-datetime-picker.vue";
 import dayjs from "dayjs";
 import {pick} from "lodash";
 import {getDiscountActivityInfo, updateDiscountActivity} from "../../../api/discount";
 import {Toast} from "../../../utils";
+import {useUserStore} from "@/model/user";
 
 const startTimePicker = ref()
 const endTimePicker = ref()
 const timeFormat = 'YYYY-MM-DD HH:mm:ss'
+
+const userStore = useUserStore()
+
+// 活动商品限制数据
+const shopConfig = toRef(userStore.shopConfig, 'shopConfig')
 
 const formData = ref({
   activity_name: '',
@@ -58,6 +64,11 @@ onShow(() => {
 })
 
 const handleToAddGoods = () => {
+  if(shopConfig.value.discount_activity_max_count) {
+    if(formData.value.goods.length >= shopConfig.value.discount_activity_max_count) {
+      return Toast.info(`最多只能添加${shopConfig.value.discount_activity_max_count}件商品`)
+    }
+  }
   uni.navigateTo({
     url: '/pages/manages/promotions/add-goods',
   })

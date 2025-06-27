@@ -53,3 +53,8 @@ export const getQuestionAnswer = () => {
 export const verifySms = (params) => {
     return request.post('/store/index/verifySms',params)
 }
+
+/** 获取店铺设置 */
+export const getShopSetting = () => {
+    return request.get('/store/index/config', {})
+}
