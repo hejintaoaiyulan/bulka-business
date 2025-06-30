@@ -154,6 +154,7 @@ function retryRequest(task, options, count = 0) {
  */
 function handleError(error, options) {
   console.log('请求错误:', error)
+  console.log(options)
 
   // 显示错误提示
   if (options.showErrorToast !== false) {

@@ -1,4 +1,4 @@
-import {ref, computed} from 'vue'
+import {ref, computed, onUnmounted} from 'vue'
 import {isFunction} from "lodash";
 
 let isOpened = false
@@ -155,5 +155,88 @@ export const useShowModalTime = () => {
     visible,
     open,
     close
+  }
+}
+
+export function useWebSocket(url, options = {}) {
+  const {
+    autoConnect = true,
+    reconnectInterval = 5000,
+    onMessage,
+    onOpen,
+    onClose,
+    onError,
+  } = options
+
+  const socket = ref(null)
+  const isConnected = ref(false)
+  const reconnectTimer = ref(null)
+
+  const connect = () => {
+    if (!url) return
+
+    socket.value = uni.connectSocket({ url, method: options.method || 'GET', complete: () => {} })
+
+    socket.value.onOpen?.((res) => {
+      isConnected.value = true
+      onOpen && onOpen(res)
+    })
+
+    socket.value.onMessage?.((msg) => {
+      const data = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data
+      onMessage && onMessage(data)
+    })
+
+    socket.value.onClose?.((res) => {
+      isConnected.value = false
+      onClose && onClose(res)
+      reconnect()
+    })
+
+    socket.value.onError?.((err) => {
+      console.log(url)
+      isConnected.value = false
+      onError && onError(err)
+      reconnect()
+    })
+  }
+
+  const reconnect = () => {
+    if (reconnectTimer.value) return
+    reconnectTimer.value = setTimeout(() => {
+      reconnectTimer.value = null
+      connect()
+    }, reconnectInterval)
+  }
+
+  const send = (data) => {
+    if (isConnected.value && socket.value) {
+      socket.value.send({
+        data: typeof data === 'string' ? data : JSON.stringify(data),
+      })
+    } else {
+      console.warn('WebSocket 未连接，消息未发送')
+    }
+  }
+
+  const close = () => {
+    if (socket.value) {
+      socket.value.close()
+    }
+  }
+
+  onUnmounted(() => {
+    close()
+    if (reconnectTimer.value) clearTimeout(reconnectTimer.value)
+  })
+
+  if (autoConnect) connect()
+
+  return {
+    socket,
+    isConnected,
+    connect,
+    send,
+    close,
   }
 }

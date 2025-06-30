@@ -1,5 +1,5 @@
 import request from './request'
-const baseUrl = 'https://storeapi.totxlive.com'
+export const baseUrl = 'https://storeapi.totxlive.com'
 // 设置全局配置
 request.config.baseUrl = baseUrl
 
