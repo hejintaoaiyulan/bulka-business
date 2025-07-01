@@ -3,10 +3,11 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import dayjs from "dayjs";
 import {useUserStore} from "./model/user";
-import { onLaunch } from '@dcloudio/uni-app'
+import {onLaunch} from '@dcloudio/uni-app'
 import {useWebSocket} from "@/hooks";
 import {baseUrl} from "@/api";
-import { onMounted, onUnmounted, nextTick } from 'vue'
+import {onMounted, onUnmounted, nextTick} from 'vue'
+import {bindClientId} from "@/api/public";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -18,7 +19,7 @@ audio.obeyMuteSwitch = false
 audio.src = '/static/order_bg.mp3'
 audio.autoplay = false
 audio.onError(err => {
-	console.log(err,'play error')
+  console.log(err, 'play error')
 })
 
 const playAudio = () => {
@@ -27,7 +28,7 @@ const playAudio = () => {
   audio.play()
 }
 
-const { send, connect } = useWebSocket(`${baseUrl.replace(/^https?:\/\//, 'ws://')}:7272/store/index/bindws`, {
+const {send, connect} = useWebSocket(`${baseUrl.replace(/^https?:\/\//, 'ws://')}:7272/store/index/bindws`, {
   autoConnect: true,
   method: 'POST',
   onMessage: (res) => {
@@ -36,6 +37,17 @@ const { send, connect } = useWebSocket(`${baseUrl.replace(/^https?:\/\//, 'ws://
       data = JSON.parse(res)
     } catch (err) {
       console.warn('非JSON消息:', res)
+    }
+    if (data.client_id) {
+      bindClientId({
+        client_id: data.client_id,
+      }).then(res => {
+        if (res.data.result === 1) {
+          console.log('绑定客户端ID成功:', data.client_id)
+        } else {
+          console.error('绑定客户端ID失败:', res.data.message)
+        }
+      })
     }
     // 播放条件：type !== 'ping'
     if (data.type !== 'ping' && data.type !== 'init') {
@@ -69,7 +81,7 @@ onLaunch(() => {
 
 <style lang="scss">
 @import "static/font/iconfont.css";
-	/*每个页面公共css */
+/*每个页面公共css */
 
 view, scrollview, text {
   box-sizing: border-box;

@@ -58,3 +58,8 @@ export const verifySms = (params) => {
 export const getShopSetting = () => {
     return request.get('/store/index/config', {})
 }
+
+/** 绑定clientID ws */
+export const bindClientId = (params) => {
+    return request.post('/store/index/bindws', params)
+}
