@@ -258,6 +258,14 @@
 				"navigationBarBackgroundColor": "#000",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/feedback/index",
+			"style": {
+				"navigationBarTitleText": "意见反馈",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
 		}
 	],
 	"globalStyle": {
@@ -271,8 +279,7 @@
 		"selectedColor": "#c74336",
 		"backgroundColor": "#ffffff",
 		"borderStyle": "black",
-		"list": [
-			{
+		"list": [{
 				"pagePath": "pages/index/index",
 				"text": "首頁",
 				"iconPath": "static/tabbar/home.png",

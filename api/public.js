@@ -63,3 +63,8 @@ export const getShopSetting = () => {
 export const bindClientId = (params) => {
     return request.post('/store/index/bindws', params)
 }
+
+/** 用户反馈 */
+export const sendFeedback = (params) => {
+    return request.post('/store/index/feedback', params)
+}
