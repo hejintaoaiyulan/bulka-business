@@ -3,6 +3,7 @@ import {useUserStore} from "../../model/user";
 import {computed} from "vue";
 import {onShow} from '@dcloudio/uni-app'
 import {useNotAuthModal} from "../../hooks";
+import PageWrapper from "@/components/PageWrapper.vue";
 
 const {open} = useNotAuthModal()
 
@@ -27,63 +28,65 @@ onShow(() => {
 </script>
 
 <template>
-  <view class="container">
-    <view class="header">
-      <view class="avatar">
-        <uv-avatar :size="60" shape="square" :src="userInfo.shop_avatar"/>
+  <PageWrapper>
+    <view class="container">
+      <view class="header">
+        <view class="avatar">
+          <uv-avatar :size="60" shape="square" :src="userInfo.shop_avatar"/>
+        </view>
+        <view class="content">
+          <view class="user-name">{{ userInfo.shop_name }}</view>
+          <view class="sub-title" v-if="!userInfo.shop_no">電話：{{ userInfo.prefix }}{{ userInfo.mobile }}</view>
+          <view v-else class="sub-title">ID: {{ userInfo.shop_no }}</view>
+        </view>
       </view>
-      <view class="content">
-        <view class="user-name">{{ userInfo.shop_name }}</view>
-        <view class="sub-title" v-if="!userInfo.shop_no">電話：{{ userInfo.prefix }}{{ userInfo.mobile }}</view>
-        <view v-else class="sub-title">ID: {{ userInfo.shop_no }}</view>
+      <view class="action-content">
+        <view class="action-item" @click="handleToRoute('/pages/account/account-info')">
+          <view class="action-item-icon">
+            <text class="iconfont icon-shangjiaziliao"></text>
+            <!--        <uv-avatar text="資料" :size="40" />-->
+          </view>
+          <view class="item-content">
+            <view class="item-title">商家資料</view>
+            <view class="item-sub-title">管理商家門店信息</view>
+          </view>
+        </view>
+
+        <view class="action-item">
+          <view class="action-item-icon">
+            <text class="iconfont icon-yonghushouce"></text>
+            <!--        <uv-avatar text="資料" :size="40" />-->
+          </view>
+          <view class="item-content">
+            <view class="item-title">新手教程</view>
+            <view class="item-sub-title">查看APP使用教程</view>
+          </view>
+        </view>
+
+        <view class="action-item" @click="handleToRoute('/pages/account/helper')">
+          <view class="action-item-icon">
+            <text class="iconfont icon-xinshoujiaocheng"></text>
+            <!--        <uv-avatar text="資料" :size="40" />-->
+          </view>
+          <view class="item-content">
+            <view class="item-title">幫助中心</view>
+            <view class="item-sub-title">相關問題解答</view>
+          </view>
+        </view>
+
+        <view class="action-item" @click="handleToRoute('/pages/settings/index')">
+          <view class="action-item-icon">
+            <text class="iconfont icon-shezhi"></text>
+            <!--        <uv-avatar text="資料" :size="40" />-->
+          </view>
+          <view class="item-content">
+            <view class="item-title">設置</view>
+            <view class="item-sub-title">關於APP設置</view>
+          </view>
+        </view>
       </view>
     </view>
-    <view class="action-content">
-      <view class="action-item" @click="handleToRoute('/pages/account/account-info')">
-        <view class="action-item-icon">
-          <text class="iconfont icon-shangjiaziliao"></text>
-          <!--        <uv-avatar text="資料" :size="40" />-->
-        </view>
-        <view class="item-content">
-          <view class="item-title">商家資料</view>
-          <view class="item-sub-title">管理商家門店信息</view>
-        </view>
-      </view>
-
-      <view class="action-item">
-        <view class="action-item-icon">
-          <text class="iconfont icon-yonghushouce"></text>
-          <!--        <uv-avatar text="資料" :size="40" />-->
-        </view>
-        <view class="item-content">
-          <view class="item-title">新手教程</view>
-          <view class="item-sub-title">查看APP使用教程</view>
-        </view>
-      </view>
-
-      <view class="action-item" @click="handleToRoute('/pages/account/helper')">
-        <view class="action-item-icon">
-          <text class="iconfont icon-xinshoujiaocheng"></text>
-          <!--        <uv-avatar text="資料" :size="40" />-->
-        </view>
-        <view class="item-content">
-          <view class="item-title">幫助中心</view>
-          <view class="item-sub-title">相關問題解答</view>
-        </view>
-      </view>
-
-      <view class="action-item" @click="handleToRoute('/pages/settings/index')">
-        <view class="action-item-icon">
-          <text class="iconfont icon-shezhi"></text>
-          <!--        <uv-avatar text="資料" :size="40" />-->
-        </view>
-        <view class="item-content">
-          <view class="item-title">設置</view>
-          <view class="item-sub-title">關於APP設置</view>
-        </view>
-      </view>
-    </view>
-  </view>
+  </PageWrapper>
 </template>
 
 <style scoped lang="scss">

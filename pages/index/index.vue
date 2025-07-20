@@ -1,135 +1,137 @@
 <template>
-  <view class="content">
-    <uv-navbar title="" bg-color="#000000" left-icon-color="#ffffff" leftText="店鋪詳情" safeAreaInsetTop placeholder
-               fixed
-               leftIcon="">
-      <template #right>
-        <view class="right" @click="handleRight">
-          <text class="iconfont icon-saoma"></text>
-        </view>
-      </template>
-    </uv-navbar>
-    <view class="header-bg"></view>
-    <view class="main">
-      <view class="grid">
-        <view class="grid-item">
-          <view class="tip">今日營業額(HK$)</view>
-          <view class="count">{{ info.sales_price }}</view>
-        </view>
-        <view class="grid-item">
-          <view class="tip">今日訂單量</view>
-          <view class="count">{{ info.order_num }}</view>
-        </view>
-        <view class="grid-item">
-          <view class="tip">今日已售商品(件)</view>
-          <view class="count">{{ info.sales_num }}</view>
-        </view>
-        <view class="grid-item">
-          <view class="tip">今日訪客(人)</view>
-          <view class="count">{{ info.shop_uv }}</view>
-        </view>
-      </view>
-      <view class="work-platform">
-        <view class="title">工作臺</view>
-        <view class="manage-list">
-          <view class="manage-item" @click="handleToCategory">
-            <view class="icon">
-              <text class="iconfont icon-fenleiguanli"></text>
-              <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
-            </view>
-            <view class="msg">
-              <view>商品分類管理</view>
-              <view class="tip">設置門店商品分類</view>
-            </view>
-            <view class="right-icon">
-              <text class="iconfont icon-arrow-right-copy"></text>
-            </view>
+  <PageWrapper>
+    <view class="content">
+      <uv-navbar title="" bg-color="#000000" left-icon-color="#ffffff" leftText="店鋪詳情" safeAreaInsetTop placeholder
+                 fixed
+                 leftIcon="">
+        <template #right>
+          <view class="right" @click="handleRight">
+            <text class="iconfont icon-saoma"></text>
           </view>
-          <view class="manage-item" @click="handleToRouter('/pages/manages/goods/index')">
-            <view class="icon">
-              <text class="iconfont icon-shangpinguanli"></text>
-              <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
-            </view>
-            <view class="msg">
-              <view>商品管理</view>
-              <view class="tip">當前已上架商品{{ info.goods_num }}件</view>
-            </view>
-            <view class="right-icon">
-              <text class="iconfont icon-arrow-right-copy"></text>
-            </view>
+        </template>
+      </uv-navbar>
+      <view class="header-bg"></view>
+      <view class="main">
+        <view class="grid">
+          <view class="grid-item">
+            <view class="tip">今日營業額(HK$)</view>
+            <view class="count">{{ info.sales_price }}</view>
           </view>
-          <view class="manage-item" @click="handleToRouter('/pages/manages/promotions/index')">
-            <view class="icon">
-              <text class="iconfont icon-a-ziyuan595"></text>
-              <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
-            </view>
-            <view class="msg">
-              <view>優惠活動管理</view>
-              <view class="tip">設置多充商品組合優惠活動</view>
-            </view>
-            <view class="right-icon">
-              <text class="iconfont icon-arrow-right-copy"></text>
-            </view>
+          <view class="grid-item">
+            <view class="tip">今日訂單量</view>
+            <view class="count">{{ info.order_num }}</view>
           </view>
-          <view class="manage-item" @click="handleToRouter('/pages/manages/exchange/index')">
-            <view class="icon">
-              <text class="iconfont icon-shouye1"></text>
-              <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
-            </view>
-            <view class="msg">
-              <view>換購活動管理</view>
-              <view class="tip">設置商品換購活動</view>
-            </view>
-            <view class="right-icon">
-              <text class="iconfont icon-arrow-right-copy"></text>
-            </view>
+          <view class="grid-item">
+            <view class="tip">今日已售商品(件)</view>
+            <view class="count">{{ info.sales_num }}</view>
           </view>
-          <view class="manage-item" @click="handleToRouter('/pages/manages/comments/index')">
-            <view class="icon">
-              <text class="iconfont icon-dingdanguanli"></text>
-              <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
-            </view>
-            <view class="msg">
-              <view>評論管理</view>
-              <view class="tip">查看門店所有用戶評論</view>
-            </view>
-            <view class="right-icon">
-              <text class="iconfont icon-arrow-right-copy"></text>
-            </view>
+          <view class="grid-item">
+            <view class="tip">今日訪客(人)</view>
+            <view class="count">{{ info.shop_uv }}</view>
           </view>
         </view>
-      </view>
-    </view>
-
-    <uv-popup ref="popup" mode="center" :closeable="true" @change="handleChangeModal" bg-color="white" round="20rpx">
-      <view class="stock-container">
-        <view class="stock-content">
-          <view class="stock-title">
-            <view>庫存提醒</view>
-            <view class="close-icon" @click="close">
-              <text class="iconfont icon-icon-close"></text>
-            </view>
-          </view>
-          <view class="stock-list">
-            <view class="stock-item" v-for="activity in showActiveList" :key="activity.id">
-              <view class="stock-item-title">
-                <view class="activity-name">{{ activity.name }}</view>
+        <view class="work-platform">
+          <view class="title">工作臺</view>
+          <view class="manage-list">
+            <view class="manage-item" @click="handleToCategory">
+              <view class="icon">
+                <text class="iconfont icon-fenleiguanli"></text>
+                <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
               </view>
-              <view class="activity-list">
-                <view class="activity-item" v-for="(goods, index) in activity.children" :key="index">
-                  <view class="goods-item">
-                    <view class="goods_name">{{ goods.goods_name }}</view>
-                    <view class="tip">库存不足</view>
+              <view class="msg">
+                <view>商品分類管理</view>
+                <view class="tip">設置門店商品分類</view>
+              </view>
+              <view class="right-icon">
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </view>
+            </view>
+            <view class="manage-item" @click="handleToRouter('/pages/manages/goods/index')">
+              <view class="icon">
+                <text class="iconfont icon-shangpinguanli"></text>
+                <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              </view>
+              <view class="msg">
+                <view>商品管理</view>
+                <view class="tip">當前已上架商品{{ info.goods_num }}件</view>
+              </view>
+              <view class="right-icon">
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </view>
+            </view>
+            <view class="manage-item" @click="handleToRouter('/pages/manages/promotions/index')">
+              <view class="icon">
+                <text class="iconfont icon-a-ziyuan595"></text>
+                <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              </view>
+              <view class="msg">
+                <view>優惠活動管理</view>
+                <view class="tip">設置多充商品組合優惠活動</view>
+              </view>
+              <view class="right-icon">
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </view>
+            </view>
+            <view class="manage-item" @click="handleToRouter('/pages/manages/exchange/index')">
+              <view class="icon">
+                <text class="iconfont icon-shouye1"></text>
+                <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              </view>
+              <view class="msg">
+                <view>換購活動管理</view>
+                <view class="tip">設置商品換購活動</view>
+              </view>
+              <view class="right-icon">
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </view>
+            </view>
+            <view class="manage-item" @click="handleToRouter('/pages/manages/comments/index')">
+              <view class="icon">
+                <text class="iconfont icon-dingdanguanli"></text>
+                <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
+              </view>
+              <view class="msg">
+                <view>評論管理</view>
+                <view class="tip">查看門店所有用戶評論</view>
+              </view>
+              <view class="right-icon">
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <uv-popup ref="popup" mode="center" :closeable="true" @change="handleChangeModal" bg-color="white" round="20rpx">
+        <view class="stock-container">
+          <view class="stock-content">
+            <view class="stock-title">
+              <view>庫存提醒</view>
+              <view class="close-icon" @click="close">
+                <text class="iconfont icon-icon-close"></text>
+              </view>
+            </view>
+            <view class="stock-list">
+              <view class="stock-item" v-for="activity in showActiveList" :key="activity.id">
+                <view class="stock-item-title">
+                  <view class="activity-name">{{ activity.name }}</view>
+                </view>
+                <view class="activity-list">
+                  <view class="activity-item" v-for="(goods, index) in activity.children" :key="index">
+                    <view class="goods-item">
+                      <view class="goods_name">{{ goods.goods_name }}</view>
+                      <view class="tip">库存不足</view>
+                    </view>
                   </view>
                 </view>
               </view>
             </view>
           </view>
-        </view>
 
-      </view>
-    </uv-popup>
-  </view>
+        </view>
+      </uv-popup>
+    </view>
+  </PageWrapper>
 </template>
 
 <script setup>
@@ -140,6 +142,7 @@ import {useUserStore} from "../../model/user";
 import {scanCodeByOrder, Toast, toPromise} from "@/utils";
 // import {scanOrder} from "@/api/order";
 import {useShowModalTime} from "@/hooks";
+import PageWrapper from "@/components/PageWrapper.vue";
 
 const popup = ref(null)
 

@@ -36,7 +36,7 @@ const {send, connect} = useWebSocket(`${baseUrl.replace(/^https?:\/\//, 'ws://')
     try {
       data = JSON.parse(res)
     } catch (err) {
-      console.warn('非JSON消息:', res)
+      // console.warn('非JSON消息:', res)
     }
     if (data.client_id) {
       bindClientId({
