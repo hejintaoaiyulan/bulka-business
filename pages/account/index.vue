@@ -52,6 +52,17 @@ onShow(() => {
           </view>
         </view>
 
+        <view class="action-item" @click="handleToRoute('/pages/wallet/index')">
+          <view class="action-item-icon">
+            <text class="iconfont icon-qianbao"></text>
+            <!--        <uv-avatar text="資料" :size="40" />-->
+          </view>
+          <view class="item-content">
+            <view class="item-title">商家钱包</view>
+            <view class="item-sub-title">查看钱包余额以及结算订单</view>
+          </view>
+        </view>
+
         <view class="action-item">
           <view class="action-item-icon">
             <text class="iconfont icon-yonghushouce"></text>

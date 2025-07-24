@@ -266,6 +266,73 @@
 				"navigationBarBackgroundColor": "#000",
 				"navigationBarTextStyle": "white"
 			}
+		},
+		{
+			"path": "pages/wallet/index",
+			"style": {
+				"navigationBarTitleText": "商家錢包",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/wallet/detail",
+			"style": {
+				"navigationBarTitleText": "订单明细",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/wallet/withdrawal",
+			"style": {
+				"navigationBarTitleText": "提现",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/wallet/result",
+			"style": {
+				"navigationBarTitleText": "提现结果",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/wallet/withdrawal-record",
+			"style": {
+				"navigationBarTitleText": "提现记录",
+				"navigationBarBackgroundColor": "#2133ff",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/wallet/bank-card",
+			"style": {
+				"navigationBarTitleText": "银行卡管理",
+				"navigationBarBackgroundColor": "#2133ff",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/wallet/add-bank",
+			"style": {
+				"navigationBarTitleText": "添加银行卡",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/wallet/bind-result",
+			"style": {
+				"navigationBarTitleText": "添加银行卡",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
