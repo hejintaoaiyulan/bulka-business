@@ -22,7 +22,7 @@ onShow(() => {
 
 const handleDetail = (record) => {
   uni.navigateTo({
-    url: '/pages/wallet/detail'
+    url: '/pages/wallet/detail?settled_date=' + record.settled_date + '&settled_no=' + record.settled_no + '&id=' + record.id
   })
 }
 
@@ -83,7 +83,7 @@ onReachBottom(() => {
               <view class="order-msg">
                 <view class="order-msg-left">
                   <view>{{ item.title }}</view>
-                  <view v-if="item.type === 1" class="detail" @click="handleDetail()">查看明细</view>
+                  <view v-if="item.type === 1" class="detail" @click="handleDetail(item)">查看明细</view>
                 </view>
                 <view class="order-msg-right">{{ item.money }}</view>
               </view>

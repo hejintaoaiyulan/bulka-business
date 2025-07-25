@@ -1,4 +1,38 @@
 <script setup>
+import {ref} from 'vue'
+import {onLoad, onShow, onPullDownRefresh, onReachBottom} from '@dcloudio/uni-app'
+import {usePageLoading} from "@/hooks";
+import {sellerOrder} from "@/api/wallet";
+
+const {dataList, loadNext, reload, pageParams} = usePageLoading(sellerOrder, {
+  onFinish: uni.stopPullDownRefresh
+})
+
+const queryParams = ref({
+  key_word: '',
+  settled_date: '',
+  settled_id: '',
+})
+
+const getData = () => {
+  reload(queryParams.value)
+}
+
+onLoad((query) => {
+  // 页面加载时的逻辑
+  queryParams.value.settled_date = query?.settled_date
+  queryParams.value.settled_id = query?.id
+  getData()
+})
+
+onReachBottom(() => {
+  // 滚动到底部时加载更多数据
+  loadNext()
+})
+
+onPullDownRefresh(() => {
+  getData()
+})
 </script>
 
 <template>
@@ -6,46 +40,47 @@
     <view class="content">
       <view class="header">
         <view class="search">
-          <uv-input prefix-icon="search" placeholder="请输入订单编号、商品名称、所属用户" clearable/>
+          <uv-input v-model="queryParams.key_word" prefix-icon="search" placeholder="请输入订单编号、商品名称、所属用户"
+                    clearable @confirm="getData"/>
         </view>
         <view class="search-box">
-          <text>结算周期：2022-12-12 至 2022-12-12</text>
-          <text>共10笔订单</text>
+          <text>结算日期：{{ queryParams.settled_date }}</text>
+          <text>共{{ pageParams.total }}笔订单</text>
         </view>
       </view>
 
       <view class="order-list">
         <view class="card">
           <view class="card-content">
-            <view class="msg-item">
+            <view class="msg-item" v-for="item in dataList" :key="item.id">
               <view class="msg-item-left">
                 <view class="msg-item-label">订单编号：</view>
-                <view class="msg-item-value">0000000000001</view>
+                <view class="msg-item-value">{{ item.order_no }}</view>
               </view>
-              <view class="msg-item-right red">+HK$2000</view>
+              <view class="msg-item-right red">{{ item.price }}</view>
             </view>
             <view class="msg-item">
               <view class="msg-item-left">
                 <view class="msg-item-label">订单类型：</view>
-                <view class="msg-item-value">自取订单</view>
+                <view class="msg-item-value">{{ item.order_type_txt }}</view>
               </view>
             </view>
             <view class="msg-item">
               <view class="msg-item-left">
                 <view class="msg-item-label">商品名称：</view>
-                <view class="msg-item-value">热烈狂欢锅物套餐：精选食材，尽享无限风味</view>
+                <view class="msg-item-value">{{ item.goods_name.join('|') }}</view>
               </view>
             </view>
             <view class="msg-item">
               <view class="msg-item-left">
                 <view class="msg-item-label">所属用户：</view>
-                <view class="msg-item-value">张三</view>
+                <view class="msg-item-value">{{ item.nickname }}</view>
               </view>
             </view>
             <view class="msg-item">
               <view class="msg-item-left">
                 <view class="msg-item-label">完成时间：</view>
-                <view class="msg-item-value">2020-02-02 11：00：00</view>
+                <view class="msg-item-value">{{ item.ovre_time }}</view>
               </view>
             </view>
           </view>

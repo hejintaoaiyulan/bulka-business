@@ -1,8 +1,35 @@
 <script setup>
+import {ref} from 'vue';
+import {onShow} from '@dcloudio/uni-app';
+import {getBankCardList, unbindBankCard} from "@/api/wallet";
+import {maskBankCard, showModal, Toast} from "@/utils";
+
+const backCardList = ref([]);
 
 const handleAdd = () => {
   uni.navigateTo({
     url: '/pages/wallet/add-bank'
+  })
+}
+
+const getList = () => {
+  getBankCardList().then(res => {
+    backCardList.value = res.data || []
+  })
+}
+
+onShow(() => {
+  getList()
+})
+
+const handleUnbind = (card) => {
+  showModal('是否确认解绑该银行卡？', '提示').then(() => {
+    unbindBankCard({id: card.id}).then(() => {
+      Toast.success('解绑成功')
+      getList(); // 重新获取银行卡列表
+    }).catch(err => {
+      Toast.fail(err.message || '解绑失败')
+    });
   })
 }
 
@@ -17,28 +44,16 @@ const handleAdd = () => {
   </uv-navbar>
   <view class="content">
     <view class="withdrawal-cards">
-      <view class="card-item">
+      <view class="card-item" v-for="card in backCardList" :key="card.id">
         <view class="card-icon">
-          <image src="/static/bank-icon/bjyh.png" style="width: 100rpx; height: 100rpx;" mode="widthFix"/>
+          <image src="/static/bank-card.png" style="width: 100rpx; height: 100rpx;" mode="widthFix"/>
         </view>
         <view class="card-info">
-          <view class="bank-name">中国银行</view>
-          <view class="bank-number">**** **** **** 1234</view>
+          <view class="bank-name">{{card.bank_name}}</view>
+          <view class="bank-number">{{maskBankCard(card.bank_account)}}</view>
         </view>
         <view class="select-icon">
-          <view>解绑</view>
-        </view>
-      </view>
-      <view class="card-item">
-        <view class="card-icon">
-          <image src="/static/bank-icon/bjyh.png" style="width: 100rpx; height: 100rpx;" mode="widthFix"/>
-        </view>
-        <view class="card-info">
-          <view class="bank-name">建设银行</view>
-          <view class="bank-number">**** **** **** 1234</view>
-        </view>
-        <view class="select-icon">
-          <view>解绑</view>
+          <view @click="handleUnbind(card)">解绑</view>
         </view>
       </view>
     </view>

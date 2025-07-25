@@ -1,5 +1,5 @@
 import {ref, computed, onUnmounted} from 'vue'
-import {isFunction} from "lodash";
+import {isFunction, omit} from "lodash";
 
 let isOpened = false
 // 401鉴权失败，重新登录
@@ -43,7 +43,8 @@ export const usePageLoading = (
   const keyName = options?.dataKeyName || 'list'
   const pageParams = ref({
     page: 1,
-    limit: options?.size || 10
+    limit: options?.size || 10,
+    total: 0
   })
   const loading = ref(false)
   const hasMore = ref(true)
@@ -52,11 +53,11 @@ export const usePageLoading = (
     loading.value = true
     try {
       loadDataParams = data
-      const response = await fnRef.value({
+      const response = await fnRef.value(omit({
         ...(options?.requestParams || {}),
         ...data,
         ...pageParams.value
-      })
+      }, ['total']))
       if (replace) {
         (response.data[keyName] || []).forEach(newItem => {
           dataList.value = dataList.value.map(item => {
@@ -74,6 +75,7 @@ export const usePageLoading = (
       if (response.data.count <= dataList.value.length) {
         hasMore.value = false
       }
+      pageParams.value.total = response.data.total || 0
       return response
     } catch (err) {
       return Promise.reject(err)

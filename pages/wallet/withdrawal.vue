@@ -2,6 +2,7 @@
 import {ref, watch} from "vue";
 import {onLoad, onShow} from '@dcloudio/uni-app'
 import {applyWithdraw, getBankCardList} from "@/api/wallet";
+import {maskBankCard} from "@/utils";
 
 const selectedRef = ref('')
 const maxAmount = ref(0)
@@ -78,11 +79,6 @@ const getList = () => {
   })
 }
 
-// 银行卡号脱敏
-const maskBankCard = (cardNumber) => {
-  return cardNumber.replace(/(\d{4})\d+(\d{4})/, '$1 **** **** $2')
-}
-
 onShow(() => {
   getList()
 })
@@ -133,9 +129,9 @@ watch(() => amount.value, (newVal) => {
         </view>
         <uv-radio-group style="width: 100%" v-model="selectedRef">
           <view class="withdrawal-cards">
-            <view class="card-item" v-for="card in backCardList" :key="card.id" @click="handleCard('1')">
+            <view class="card-item" v-for="card in backCardList" :key="card.id" @click="handleCard(card.id)">
               <view class="card-icon">
-                <image src="/static/bank-icon/bjyh.png" style="width: 100rpx; height: 100rpx;" mode="widthFix"/>
+                <image src="/static/bank-card.png" style="width: 100rpx; height: 100rpx;" mode="widthFix"/>
               </view>
               <view class="card-info">
                 <view class="bank-name">{{ card.bank_name }}</view>

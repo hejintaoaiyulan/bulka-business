@@ -224,3 +224,8 @@ export const scanCodeByOrder = () => {
     return scanOrder(dataParams).then(() => (dataParams));
   });
 }
+
+// 银行卡号脱敏
+export const maskBankCard = (cardNumber) => {
+  return cardNumber.replace(/(\d{4})\d+(\d{4})/, '$1 **** **** $2')
+}

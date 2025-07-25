@@ -1,9 +1,44 @@
 <script setup>
+import {ref, computed} from 'vue'
+import {BankMap} from "@/utils/fields";
+import {Toast} from "@/utils";
+import {addBankCard} from "@/api/wallet";
+
+const formData = ref({
+  bank_name: '',
+  user_name: '',
+  bank_account: ''
+})
 
 const handleBind = () => {
-  uni.navigateTo({
-    url: '/pages/wallet/bind-result'
+  if (!formData.value.bank_name) {
+    return Toast.info('请选择银行')
+  }
+  if (!formData.value.user_name) {
+    return Toast.info('请输入账户持有者')
+  }
+  if (!formData.value.bank_account) {
+    return Toast.info('请输入账号号码')
+  }
+  addBankCard(formData.value).then(() => {
+    Toast.success('绑定成功')
+    uni.redirectTo({
+      url: '/pages/wallet/bind-result'
+    })
+  }).catch(err => {
+    Toast.fail(err.message || '绑定失败')
   })
+}
+
+// 银行名称列表
+const banks = computed(() => {
+  return Array.from(BankMap.keys())
+})
+
+// 选择了银行
+const handleSetBank = (evt) => {
+  const index = evt.detail.value
+  formData.value.bank_name = banks.value[index]
 }
 </script>
 
@@ -16,9 +51,12 @@ const handleBind = () => {
             <text class="red">*</text>
             <text>所属银行</text>
           </view>
-          <view class="form-value">
-            <text class="value empty">请选择银行</text>
-          </view>
+          <picker mode="selector" :range="banks" @change="handleSetBank">
+            <view class="form-value">
+              <text v-if="!formData.bank_name" class="value empty">请选择银行</text>
+              <text v-else class="value">{{ formData.bank_name }}</text>
+            </view>
+          </picker>
         </view>
         <view class="form-item">
           <view class="form-label">
@@ -26,7 +64,8 @@ const handleBind = () => {
             <text>账户持有者</text>
           </view>
           <view class="form-value">
-            <uv-input border="none" font-size="24rpx" input-align="right" placeholder="请输入账户持有者"/>
+            <uv-input v-model="formData.user_name" border="none" font-size="24rpx" input-align="right"
+                      placeholder="请输入账户持有者"/>
           </view>
         </view>
         <view class="form-item">
@@ -35,7 +74,8 @@ const handleBind = () => {
             <text>账号号码</text>
           </view>
           <view class="form-value">
-            <uv-input border="none" font-size="24rpx" input-align="right" placeholder="请输入账号号码"/>
+            <uv-input v-model="formData.bank_account" border="none" font-size="24rpx" input-align="right"
+                      placeholder="请输入账号号码"/>
           </view>
         </view>
       </view>
@@ -65,12 +105,18 @@ const handleBind = () => {
   font-size: 24rpx;
 }
 
+.form-value .empty {
+  color: #888;
+}
+
 .footer {
   flex: none;
 }
+
 .red {
   color: #e64340;
 }
+
 .confirm-button {
   display: flex;
   align-items: center;
@@ -86,6 +132,7 @@ const handleBind = () => {
     border-radius: 10rpx;
   }
 }
+
 .form-item {
   line-height: 70rpx;
   display: flex;

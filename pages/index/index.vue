@@ -12,22 +12,36 @@
       </uv-navbar>
       <view class="header-bg"></view>
       <view class="main">
-        <view class="grid">
-          <view class="grid-item">
-            <view class="tip">今日營業額(HK$)</view>
-            <view class="count">{{ info.sales_price }}</view>
+        <view class="top-statictis">
+          <view class="title-statictis">
+            <view class="title-name">數據統計</view>
+            <view class="title-operation">查看更多</view>
           </view>
-          <view class="grid-item">
-            <view class="tip">今日訂單量</view>
-            <view class="count">{{ info.order_num }}</view>
-          </view>
-          <view class="grid-item">
-            <view class="tip">今日已售商品(件)</view>
-            <view class="count">{{ info.sales_num }}</view>
-          </view>
-          <view class="grid-item">
-            <view class="tip">今日訪客(人)</view>
-            <view class="count">{{ info.shop_uv }}</view>
+          <view class="grid">
+            <view class="grid-item">
+              <view class="tip">今日營業額(HK$)</view>
+              <view class="count">{{ info.sales_price }}</view>
+            </view>
+            <view class="grid-item">
+              <view class="tip">今日訂單量</view>
+              <view class="count">{{ info.order_num }}</view>
+            </view>
+            <view class="grid-item">
+              <view class="tip">今日結算訂單</view>
+              <view class="count">{{ info.today_settled_num }}</view>
+            </view>
+            <view class="grid-item">
+              <view class="tip">今日已售商品(件)</view>
+              <view class="count">{{ info.sales_num }}</view>
+            </view>
+            <view class="grid-item">
+              <view class="tip">今日訪客(人)</view>
+              <view class="count">{{ info.shop_uv }}</view>
+            </view>
+            <view class="grid-item">
+              <view class="tip">今日結算金額(HK$)</view>
+              <view class="count">{{ info.today_settled_price }}</view>
+            </view>
           </view>
         </view>
         <view class="work-platform">
@@ -350,21 +364,34 @@ page {
   }
 }
 
-.grid {
+.title-statictis {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 10rpx;
+  .title-name {
+    font-size: 32rpx;
+    color: #333;
+    font-weight: bold;
+  }
+  .title-operation {
+    font-size: 26rpx;
+    color: #007aff;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
   flex-wrap: wrap;
-  border-radius: 10rpx;
-  background-color: #fff;
-  width: 95%;
-  margin: 0 auto;
-  margin-top: -150rpx;
-  box-shadow: 0 0 20rpx 0 rgba(0, 0, 0, 0.1);
+  row-gap: 20rpx;
+  padding: 30rpx 0;
 
   .grid-item {
-    width: 50%;
+    //width: 50%;
     text-align: center;
-    padding: 30rpx;
+    //padding: 30rpx 0;
     color: #333;
   }
 
@@ -397,6 +424,17 @@ page {
   background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
+
+  .top-statictis {
+    flex: none;
+    width: 95%;
+    border-radius: 10rpx;
+    background-color: #fff;
+    box-shadow: 0 0 20rpx 0 rgba(0, 0, 0, 0.1);
+    margin: -180rpx auto 0;
+    //padding-left: 30rpx;
+    //padding-right: 30rpx;
+  }
 
   .grid {
     flex: none;

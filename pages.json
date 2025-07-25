@@ -16,6 +16,14 @@
 			}
 		},
 		{
+			"path": "pages/index/statistics",
+			"style": {
+				"navigationBarTitleText": "統計數據",
+				"navigationBarBackgroundColor": "#000",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
 			"path": "pages/orders/index",
 			"style": {
 				"navigationBarTitleText": "訂單",

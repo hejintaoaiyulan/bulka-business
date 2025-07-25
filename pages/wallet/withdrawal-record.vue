@@ -2,15 +2,23 @@
 
 import {ref, computed} from "vue";
 import dayjs from "dayjs";
+import {usePageLoading} from "@/hooks";
+import {getWallet, getWithdrawList} from "@/api/wallet";
+import {onShow} from '@dcloudio/uni-app'
+
+const walletInfo = ref({})
+
+const {reload, dataList, loadNext} = usePageLoading(getWithdrawList, {})
 
 const date = ref(dayjs());
 const dateStr = computed(() => {
   return date.value.format('YYYY-MM')
 })
 const handleInfo = (record) => {
+  console.log(record)
   uni.showModal({
     title: '提现失败原因',
-    content: '请检查您的银行卡信息是否正确，或联系客服处理。',
+    content: record.reason || '请检查您的银行卡信息是否正确，或联系客服处理。',
     showCancel: false,
     confirmText: '知道了'
   })
@@ -19,25 +27,48 @@ const handleInfo = (record) => {
 // 处理日期选择
 const handleChangeDate = (evt) => {
   const value = evt.detail.value;
-  date.value = dayjs(value);
+  const day = dayjs(value);
+  if(day.isSame(date.value,'d')) return
   // 可以在这里触发数据重新加载
   // console.log('选择的日期:', date.value.format('YYYY-MM'));
-  if(date.value.isAfter(dayjs(), 'd')) {
+  if(day.isAfter(dayjs(), 'd')) {
     uni.showToast({
       title: '不能选择未来的日期',
       icon: 'none'
     });
-    date.value = dayjs();
+    return;
   }
+  date.value = day;
+  getList()
 }
+
+// 获取钱包信息
+const getInfo = () => {
+  getWallet().then(res => {
+    walletInfo.value = res.data || {}
+  }).finally(() => {
+    uni.stopPullDownRefresh()
+  })
+}
+
+const getList = () => {
+  reload({
+    date: dateStr.value,
+  })
+}
+
+onShow(() => {
+  getInfo()
+  getList()
+})
 </script>
 
 <template>
   <view class="container safe-pb">
     <view class="header">
       <view>累计提现(HK$)</view>
-      <view class="price">9999.999</view>
-      <view class="tip-total">提现中：99999.00HK$</view>
+      <view class="price">{{walletInfo.withdrawaled}}</view>
+      <view class="tip-total">提现中：{{walletInfo.withdrawaling}}HK$</view>
     </view>
     <view class="record-list">
       <view class="record-filter">
@@ -54,17 +85,18 @@ const handleChangeDate = (evt) => {
       </view>
 
       <view class="records-content">
-        <view class="record-item">
+        <uv-empty v-if="!dataList.length" />
+        <view class="record-item" v-for="record in dataList" :key="record.id">
           <view class="record-msg">
             <view class="record-type">
-              <text>提现中</text>
-              <text class="red tip" @click="handleInfo()">查看原因</text>
+              <text>{{record.status_txt}}</text>
+              <text v-if="record.status === 3" class="red tip" @click="handleInfo(record)">查看原因</text>
             </view>
-            <view class="record-price">-200</view>
+            <view class="record-price">{{record.money}}</view>
           </view>
           <view class="record-msg">
-            <view class="record-order">订单号：TX2345648979</view>
-            <view class="record-time">05-08 18：00</view>
+            <view class="record-order">订单号：{{record.withdrawal_no}}</view>
+            <view class="record-time">{{record.approval_time}}</view>
           </view>
         </view>
       </view>
