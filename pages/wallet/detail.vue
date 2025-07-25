@@ -3,6 +3,7 @@ import {ref} from 'vue'
 import {onLoad, onShow, onPullDownRefresh, onReachBottom} from '@dcloudio/uni-app'
 import {usePageLoading} from "@/hooks";
 import {sellerOrder} from "@/api/wallet";
+import {omit} from "lodash";
 
 const {dataList, loadNext, reload, pageParams} = usePageLoading(sellerOrder, {
   onFinish: uni.stopPullDownRefresh
@@ -15,7 +16,17 @@ const queryParams = ref({
 })
 
 const getData = () => {
-  reload(queryParams.value)
+  reload(omit({
+    ...queryParams.value,
+    start_date: queryParams.value.settled_date,
+    end_date: queryParams.value.settled_date,
+  }, ['settled_date']))
+}
+
+const handleToOrder = (item) => {
+  uni.navigateTo({
+    url: '/pages/orders/order-info?order_no=' + item.order_no
+  })
 }
 
 onLoad((query) => {
@@ -41,7 +52,10 @@ onPullDownRefresh(() => {
       <view class="header">
         <view class="search">
           <uv-input v-model="queryParams.key_word" prefix-icon="search" placeholder="请输入订单编号、商品名称、所属用户"
-                    clearable @confirm="getData"/>
+                    clearable @confirm="getData" @clear="()=> {
+                      queryParams.key_word = '';
+                      getData()
+                    }"/>
         </view>
         <view class="search-box">
           <text>结算日期：{{ queryParams.settled_date }}</text>
@@ -50,9 +64,9 @@ onPullDownRefresh(() => {
       </view>
 
       <view class="order-list">
-        <view class="card">
+        <view class="card" v-for="item in dataList" :key="item.id">
           <view class="card-content">
-            <view class="msg-item" v-for="item in dataList" :key="item.id">
+            <view class="msg-item">
               <view class="msg-item-left">
                 <view class="msg-item-label">订单编号：</view>
                 <view class="msg-item-value">{{ item.order_no }}</view>
@@ -82,6 +96,7 @@ onPullDownRefresh(() => {
                 <view class="msg-item-label">完成时间：</view>
                 <view class="msg-item-value">{{ item.ovre_time }}</view>
               </view>
+              <view class="msg-item-right toDetail" @click="handleToOrder(item)">查看详情</view>
             </view>
           </view>
         </view>
@@ -102,6 +117,11 @@ onPullDownRefresh(() => {
 
 .content {
   padding: 20rpx;
+}
+
+.toDetail {
+  color: #007aff;
+  font-size: 24rpx;
 }
 
 .header {

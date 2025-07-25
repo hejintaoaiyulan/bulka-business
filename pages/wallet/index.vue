@@ -16,8 +16,14 @@ const getInfo = () => {
   })
 }
 
+const getList = () => {
+  reload()
+}
+
+
 onShow(() => {
   getInfo()
+  getList()
 })
 
 const handleDetail = (record) => {
@@ -34,7 +40,9 @@ const handleWithdrawal = () => {
 
 onPullDownRefresh(() => {
   getInfo()
+  getList()
 })
+
 
 onReachBottom(() => {
   // console.log('reachBottom')

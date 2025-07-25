@@ -15,7 +15,7 @@
         <view class="top-statictis">
           <view class="title-statictis">
             <view class="title-name">數據統計</view>
-            <view class="title-operation">查看更多</view>
+            <view class="title-operation" @click="handleMore">查看更多</view>
           </view>
           <view class="grid">
             <view class="grid-item">
@@ -175,6 +175,14 @@ const handleChangeModal = (e) => {
   if (e.show === false) {
     close()
   }
+}
+
+const handleMore = () => {
+  Toast.info('开发中，敬请期待')
+  return
+  uni.navigateTo({
+    url: '/pages/index/statistics'
+  })
 }
 
 // header掃碼
@@ -369,11 +377,13 @@ page {
   justify-content: space-between;
   align-items: center;
   padding: 20rpx 10rpx;
+
   .title-name {
     font-size: 32rpx;
     color: #333;
     font-weight: bold;
   }
+
   .title-operation {
     font-size: 26rpx;
     color: #007aff;

@@ -75,7 +75,7 @@ export const usePageLoading = (
       if (response.data.count <= dataList.value.length) {
         hasMore.value = false
       }
-      pageParams.value.total = response.data.total || 0
+      pageParams.value.total = response.data.count || 0
       return response
     } catch (err) {
       return Promise.reject(err)
