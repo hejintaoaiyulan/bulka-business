@@ -178,8 +178,8 @@ const handleChangeModal = (e) => {
 }
 
 const handleMore = () => {
-  Toast.info('开发中，敬请期待')
-  return
+  // Toast.info('开发中，敬请期待')
+  // return
   uni.navigateTo({
     url: '/pages/index/statistics'
   })

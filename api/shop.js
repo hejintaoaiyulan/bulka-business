@@ -14,3 +14,8 @@ export const updateShopInfo = (params) => {
 export const shopStatictis = () => {
   return request.get('/store/shop/shopStatistics', {})
 }
+
+// 获取店铺的统计数据
+export const getShopToDayStatistics = (params) => {
+  return request.get('/store/shop/toDayStatistics', params)
+}
