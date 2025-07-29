@@ -102,23 +102,23 @@ onPullDownRefresh(() => {
         </view>
         <view class="card-content">
           <view class="goods-list">
-            <uv-empty />
-            <view>
-<!--              <GoodsItem avatar-size="110rpx">-->
-<!--                <template v-slot:tag>-->
-<!--                  <view class="tag">精选新鲜食材，尽享无限风味</view>-->
-<!--                </template>-->
-<!--                <template v-slot:footer>-->
-<!--                  <view class="footer">-->
-<!--                    <view class="price">HK$ 12.00</view>-->
-<!--                    <view class="numbers">-->
-<!--                      <text>点击量 999</text>-->
-<!--                      <text>|</text>-->
-<!--                      <text>下单量 999</text>-->
-<!--                    </view>-->
-<!--                  </view>-->
-<!--                </template>-->
-<!--              </GoodsItem>-->
+            <uv-empty v-if="!info.goods.length" />
+            <view v-for="goods in info.goods" :key="goods.id">
+              <GoodsItem avatar-size="110rpx" :goods="goods">
+                <template v-slot:tag>
+                  <view class="tag">{{goods.goods_desc}}</view>
+                </template>
+                <template v-slot:footer>
+                  <view class="footer">
+                    <view class="price">HK$ {{goods.sale_price}}</view>
+                    <view class="numbers">
+                      <text>点击量 {{goods.pv}}</text>
+                      <text>|</text>
+                      <text>下单量 {{goods.order_num}}</text>
+                    </view>
+                  </view>
+                </template>
+              </GoodsItem>
             </view>
           </view>
         </view>
