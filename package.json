@@ -1,9 +1,14 @@
 {
   "devDependencies": {
+    "chinese-conv": "^3.2.2",
     "dayjs": "^1.11.13",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "opencc-js": "^1.0.5"
   },
   "dependencies": {
     "pinia": "^3.0.1"
+  },
+  "scripts": {
+    "to:traditional": "node scripts/convertToTraditional.js"
   }
 }

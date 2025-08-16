@@ -66,19 +66,19 @@ const handleAddSpecification = () => {
   formListData.value.push({...defaultData, _id: uniqueId()})
 }
 
-// 保存多属性规格数据
+// 保存多屬性規格數據
 const handleSaveAttr = () => {
   if(!activeForm.value.name) {
-    return Toast.info('请输入规格项名称')
+    return Toast.info('請輸入規格項名稱')
   }
   if(!activeForm.value.original_price) {
-    return Toast.info('请输入规格项的原价')
+    return Toast.info('請輸入規格項的原價')
   }
   if(!activeForm.value.sale_price) {
-    return Toast.info('请输入规格项的售价')
+    return Toast.info('請輸入規格項的售價')
   }
   if(!activeForm.value.stock) {
-    return Toast.info('请输入库存')
+    return Toast.info('請輸入庫存')
   }
   formListData.value = formListData.value.map((item) => {
     if((item._id === activeSpecification.value._id && item._id) || (item.id === activeSpecification.value.id && item.id)) {
@@ -95,7 +95,7 @@ const handleSaveAttr = () => {
 const handleRemoveAttr = (data, item) => {
   uni.showModal({
     title: '提示',
-    content: `确认删除【${item.name}】 规格选项吗?`,
+    content: `確認刪除【${item.name}】 規格選項嗎?`,
     success: (result) => {
       if(result.confirm) {
         formListData.value = formListData.value.map((dataItem) => {
@@ -136,7 +136,7 @@ const handleSubmit = () => {
     </uv-navbar>
     <view class="content">
       <view class="empty" v-if="!formListData.length">
-        <text>暂无规格，点击右上角添加</text>
+        <text>暫無規格，點擊右上角添加</text>
       </view>
       <view v-for="(item, index) in formListData" :key="item.id" class="card">
         <view class="card-title">規格{{keyName[index + 1]}}</view>
@@ -147,7 +147,7 @@ const handleSubmit = () => {
               <text>規格名稱</text>
             </view>
             <view class="form-value">
-              <uv-input customStyle="padding: 0" v-model="item.goods_spec_name" inputAlign="right" class="form-input" :border="false" placeholder="請輸入規格名称"
+              <uv-input customStyle="padding: 0" v-model="item.goods_spec_name" inputAlign="right" class="form-input" :border="false" placeholder="請輸入規格名稱"
                         fontSize="26rpx"/>
             </view>
           </view>
@@ -188,7 +188,7 @@ const handleSubmit = () => {
             </view>
           </view>
           <view class="empty" v-if="!item.goods_spec_attr?.length">
-            暂无规格项，请添加
+            暫無規格項，請添加
           </view>
         </view>
       </view>
@@ -199,7 +199,7 @@ const handleSubmit = () => {
 
     <uv-popup mode="bottom" ref="popUp">
       <view class="pop-content">
-        <view class="title">添加规格項</view>
+        <view class="title">添加規格項</view>
         <view class="form">
           <view class="form-item">
             <uv-input placeholder="輸入規格項名稱" v-model="activeForm.name" />

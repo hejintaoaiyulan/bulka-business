@@ -111,7 +111,7 @@ onShow(() => {
             <uv-input placeholder="輸入分類名稱" v-model="addFormData.goods_type_name"/>
           </view>
           <view class="form-item">
-            <uv-input :placeholder="`輸入排序（數字越大排序越靠前 当前最大 ${maxSort}）`" type="number"
+            <uv-input :placeholder="`輸入排序（數字越大排序越靠前 當前最大 ${maxSort}）`" type="number"
                       v-model="addFormData.weigh"/>
           </view>
           <view class="form-item">

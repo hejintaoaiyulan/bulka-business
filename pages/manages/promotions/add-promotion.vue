@@ -15,7 +15,7 @@ const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 
 const userStore = useUserStore()
 
-// 活动商品限制数据
+// 活動商品限制數據
 const shopConfig = toRef(userStore.shopConfig, 'shopConfig')
 
 const formData = ref({
@@ -66,7 +66,7 @@ onShow(() => {
 const handleToAddGoods = () => {
   if(shopConfig.value.discount_activity_max_count) {
     if(formData.value.goods.length >= shopConfig.value.discount_activity_max_count) {
-      return Toast.info(`最多只能添加${shopConfig.value.discount_activity_max_count}件商品`)
+      return Toast.info(`最多隻能添加${shopConfig.value.discount_activity_max_count}件商品`)
     }
   }
   uni.navigateTo({
@@ -87,7 +87,7 @@ const handleSetEndTime = (evt) => {
 const handleRemoveGoods = (goods) => {
   uni.showModal({
     title: '提示',
-    content: '确定删除此商品吗？',
+    content: '確定刪除此商品嗎？',
     success(res) {
       if (res.confirm) {
         formData.value.goods = formData.value.goods.filter(item => (item._id !== goods._id && item._id) || (item.id !== goods.id && item.id))
@@ -110,7 +110,7 @@ const handleSubmit = () => {
   const goodsFields = ['discount_activity_id', 'id', 'goods_image', 'goods_name', 'goods_desc', 'original_price', 'sale_price', 'goods_stock', 'freebies_image', 'freebies_name', 'freebies_stock', 'freebies_num']
   const saveParams = unref(formData.value)
   if(!saveParams.goods?.length) {
-    return Toast.info('请添加商品')
+    return Toast.info('請添加商品')
   }
   saveParams.goods = saveParams.goods.map(item => {
     return pick(item, goodsFields)
@@ -177,14 +177,14 @@ const handleSubmit = () => {
           <!--          <view class="empty">暫無商品，快去上傳吧</view>-->
           <view class="card" style="padding: 0" v-for="(item, i) in formData.goods" :key="i">
             <view class="title">
-              <view>{{ i + 1 }}号商品</view>
+              <view>{{ i + 1 }}號商品</view>
               <view class="card-option">
                 <view @click="handleRemoveGoods(item)">
-                  <text>删除商品</text>
+                  <text>刪除商品</text>
                   <text class="iconfont icon-yichu1"></text>
                 </view>
                 <view @click="handleEditGoods(item)">
-                  <text>重新编辑</text>
+                  <text>重新編輯</text>
                   <text class="iconfont icon-bianji"></text>
                 </view>
               </view>
@@ -201,12 +201,12 @@ const handleSubmit = () => {
                     {{ item.goods_desc }}
                   </view>
                   <view class="price-msg">
-                    <view class="price">换购价 HK$ {{ item.sale_price }}</view>
+                    <view class="price">換購價 HK$ {{ item.sale_price }}</view>
                   </view>
                 </view>
               </view>
               <view class="price-msg">
-                <view class="count">库存{{ item.goods_stock }}件</view>
+                <view class="count">庫存{{ item.goods_stock }}件</view>
               </view>
             </view>
 

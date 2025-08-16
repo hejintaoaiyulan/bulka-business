@@ -59,7 +59,7 @@ const handleChooseImage = () => {
 
 const handleChooseMaterialImage = () => {
   uni.showLoading({
-    title: '上传中'
+    title: '上傳中'
   })
   uploadFile({
     url: '/store/index/uploadImage',
@@ -94,7 +94,7 @@ const handleChooseDirector = () => {
 
 const handleShowActions = (file, index) => {
   uni.showActionSheet({
-    itemList: ['查看', '删除'],
+    itemList: ['查看', '刪除'],
     success: res => {
       if (res.tapIndex === 0) {
         uni.previewImage({

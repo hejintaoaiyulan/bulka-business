@@ -58,8 +58,8 @@ onShow(() => {
             <!--        <uv-avatar text="資料" :size="40" />-->
           </view>
           <view class="item-content">
-            <view class="item-title">商家钱包</view>
-            <view class="item-sub-title">查看钱包余额以及结算订单</view>
+            <view class="item-title">商家錢包</view>
+            <view class="item-sub-title">查看錢包餘額以及結算訂單</view>
           </view>
         </view>
 

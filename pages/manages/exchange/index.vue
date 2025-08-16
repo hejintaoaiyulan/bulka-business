@@ -44,15 +44,15 @@ const handleAdd = () => {
 const handleRemove = (val) => {
   uni.showModal({
     title: '提示',
-    content: '是否删除该商品？',
+    content: '是否刪除該商品？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         delExchange({id: val.id }).then(() => {
           delItem(val.id)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
@@ -64,12 +64,12 @@ const handleOut = (val) => {
     content: '是否下架此換購活動？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         overExchange({id: val.id, status: 3}).then(() => {
           getData(requestParams.value, true)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
@@ -82,12 +82,12 @@ const handleStop = (val) => {
     content: '是否結束此換購活動？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         overExchange({id: val.id, status: 4}).then(() => {
           getData(requestParams.value, true)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
@@ -120,7 +120,7 @@ const handleEdit = (val) => {
     <scroll-view :scroll-y="true" style="flex: 1;overflow: hidden;"  @scrolltolower="loadNext">
       <view class="content">
         <view class="empty" v-if="!dataList.length">
-          暂无数据
+          暫無數據
         </view>
         <view class="promotion-item" v-for="item in dataList" :key="item.id">
           <view class="promotion-title">
@@ -140,7 +140,7 @@ const handleEdit = (val) => {
               <text>刪除</text>
             </uv-button>
             <uv-button class="operation-item" @click="handleEdit(item)" v-if="[3,4].includes(item.status)">
-              <text>重新编辑</text>
+              <text>重新編輯</text>
             </uv-button>
             <uv-button class="operation-item" @click="handleOut(item)" v-if="item.status === 2">
               <text>下架</text>

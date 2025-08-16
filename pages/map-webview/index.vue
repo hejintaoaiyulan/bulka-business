@@ -12,7 +12,7 @@ import {
 export default {
   data() {
     return {
-      webUrl: '' // ✅ 使用远程链接
+      webUrl: '' // ✅ 使用遠程鏈接
     }
   },
   onLoad(query) {
@@ -37,14 +37,14 @@ export default {
     onMessage(e) {
       console.log(e)
       const data = e.detail.data[0]
-      console.log('收到位置坐标:', data)
+      console.log('收到位置座標:', data)
       // uni.showToast({
-      // 	title: `纬度:${data.lat}, 经度:${data.lng}`,
+      // 	title: `緯度:${data.lat}, 經度:${data.lng}`,
       // 	icon: 'none'
       // })
       uni.$emit('setLocationData', data)
       uni.navigateBack()
-      // TODO: 你可以把数据传回前一个页面、存储、发请求等
+      // TODO: 你可以把數據傳回前一個頁面、存儲、發請求等
     }
   }
 }

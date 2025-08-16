@@ -3,7 +3,7 @@ import request from "./index";
 export const UploadUrl = '/store/index/uploadImage'
 
 /**
- * 获取验证码
+ * 獲取驗證碼
  * @param {{prefix?: string, mobile?: string, type: 'register' | 'forget' | 'oldmobile' | 'newmobile' | 'changepwd'}} params
  * */
 export const getSMSCode = (params) => {
@@ -11,7 +11,7 @@ export const getSMSCode = (params) => {
 }
 
 /**
- * 提交入驻资料
+ * 提交入駐資料
  * @param {{shop_avatar: string, shop_name: string, shop_type: string | number, contact_name: string, contact_tel: string, address: string, material_image: string,director_images:string[],company_tel: string, bank_acccount: string }} params
  * */
 export const SaveShopCheck = (params) => {
@@ -19,28 +19,28 @@ export const SaveShopCheck = (params) => {
 }
 
 /**
- * 获取上次提交的入驻资料
+ * 獲取上次提交的入駐資料
  * */
 export const getShopCheck = () => {
     return request.get('/store/user/getShopCheck',{})
 }
 
 /**
- * 商家入驻分类列表
+ * 商家入駐分類列表
  * */
 export const getShopType = () => {
     return request.get('/store/index/shopType',{})
 }
 
 /**
- * 平台商品分类
+ * 平臺商品分類
  * */
 export const getGoodsCategory = () => {
     return request.get('/store/index/goodsCategoryList',{})
 }
 
 /**
- * 常见问题
+ * 常見問題
  * */
 export const getQuestionAnswer = () => {
     return request.get('/store/index/fqa',{})
@@ -54,17 +54,17 @@ export const verifySms = (params) => {
     return request.post('/store/index/verifySms',params)
 }
 
-/** 获取店铺设置 */
+/** 獲取店鋪設置 */
 export const getShopSetting = () => {
     return request.get('/store/index/config', {})
 }
 
-/** 绑定clientID ws */
+/** 綁定clientID ws */
 export const bindClientId = (params) => {
     return request.post('/store/index/bindws', params)
 }
 
-/** 用户反馈 */
+/** 用戶反饋 */
 export const sendFeedback = (params) => {
     return request.post('/store/index/feedback', params)
 }

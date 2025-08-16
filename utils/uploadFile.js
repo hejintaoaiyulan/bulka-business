@@ -14,9 +14,9 @@ const defaultOptions = {
   name: 'file',
   fileType: ['image', 'video'],
   camera: 'back',
-  maxSize: 15 * 1024 * 1024, // 默认10MB
-  count: 9, // 默认最多选择9个文件
-  sourceType: ['album', 'camera'], // 默认从相册或相机选择
+  maxSize: 15 * 1024 * 1024, // 默認10MB
+  count: 9, // 默認最多選擇9個文件
+  sourceType: ['album', 'camera'], // 默認從相冊或相機選擇
   onSuccess: () => {},
   onFail: () => {}
 }
@@ -30,7 +30,7 @@ export function useFileUpload(c = { showUploadLoading: false }) {
     if (c?.showUploadLoading) {
       if (val) {
         uni.showLoading({
-          title: '上传中'
+          title: '上傳中'
         })
       } else {
         uni.hideLoading()
@@ -52,7 +52,7 @@ export function useFileUpload(c = { showUploadLoading: false }) {
           sourceType: config.sourceType,
         })
 
-        // 统一结构：模拟 chooseMedia 的 res.tempFiles
+        // 統一結構：模擬 chooseMedia 的 res.tempFiles
         res = {
           tempFiles: imageRes.tempFiles?.length
             ? imageRes.tempFiles.map(file => ({
@@ -67,7 +67,7 @@ export function useFileUpload(c = { showUploadLoading: false }) {
             }))
         }
       } else {
-        // 其他平台使用 chooseMedia
+        // 其他平臺使用 chooseMedia
         res = await toPromise(uni.chooseMedia, {
           count: config.count,
           mediaType: config.fileType,
@@ -77,26 +77,26 @@ export function useFileUpload(c = { showUploadLoading: false }) {
         })
       }
 
-      // 校验文件大小
+      // 校驗文件大小
       const validFiles = res.tempFiles.filter((file) => {
         if (file.size > config.maxSize) {
           Toast.info('文件大小超出限制')
-          config.onFail?.(`文件大小不能超过${config.maxSize / 1024 / 1024}MB`)
+          config.onFail?.(`文件大小不能超過${config.maxSize / 1024 / 1024}MB`)
           return false
         }
         return true
       })
 
-      if (validFiles.length === 0) return Promise.reject('没有符合要求的文件')
+      if (validFiles.length === 0) return Promise.reject('沒有符合要求的文件')
 
       if (validFiles.length > config.count) {
         await uni.showToast({
-          title: `最多上传${config.count}个文件`,
+          title: `最多上傳${config.count}個文件`,
           icon: 'none',
         })
       }
 
-      // 上传文件
+      // 上傳文件
       isUploading.value = true
       const uploadTasks = validFiles.map((file) => {
         return new Promise((resolve, reject) => {
@@ -115,12 +115,12 @@ export function useFileUpload(c = { showUploadLoading: false }) {
                 config.onSuccess(data.data)
                 resolve(data.data)
               } else {
-                config.onFail(`上传失败: ${res.statusCode}`)
+                config.onFail(`上傳失敗: ${res.statusCode}`)
                 reject(res)
               }
             },
             fail: (err) => {
-              config.onFail('上传请求失败')
+              config.onFail('上傳請求失敗')
               reject(err)
             },
             complete: () => {

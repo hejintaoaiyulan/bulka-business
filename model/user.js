@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', () => {
   // const token = ref(getToken())
   const userInfo = ref({})
   const shopConfig = ref({
-    // 优惠活动商品最大添加数量
+    // 優惠活動商品最大添加數量
     discount_activity_max_count: 0,
     id: ''
   })

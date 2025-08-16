@@ -8,7 +8,7 @@
       <view>
         <image src="/static/pass.png" style="width: 180rpx;height: 100rpx;" mode="widthFix"/>
       </view>
-      <view>绑定成功</view>
+      <view>綁定成功</view>
       <view class="bind-btn">
         <view class="btn" @click="uni.navigateBack()">我知道了</view>
       </view>

@@ -29,7 +29,7 @@ onLoad((query) => {
     getInfo(query.id)
   }
   if(query.isEdit?.toString() === '1') {
-    // 赋值本地数据
+    // 賦值本地數據
   }
 })
 
@@ -45,11 +45,11 @@ const getInfo = (id) => {
   })
 }
 
-// 移除当前商品
+// 移除當前商品
 const handleRemoveGoods = () => {
   uni.showModal({
     title: '移除商品',
-    content: '确认移除该换购商品吗?',
+    content: '確認移除該換購商品嗎?',
     success: (result) => {
       if(result.confirm) {
         uni.$emit('remove-goods', formData.value.id)
@@ -59,7 +59,7 @@ const handleRemoveGoods = () => {
   })
 }
 
-// 编辑规格
+// 編輯規格
 const handleEditAttr = (val, opt) => {
   popUp.value?.open()
   activeForm.value = unref(opt)
@@ -110,7 +110,7 @@ const handleSubmit = () => {
     })
 
     const minPrice = Math.min(...goods.map(item => +item.price))
-    // 多规格
+    // 多規格
     const goodsItem = {
       ...formData.value,
       _editend: true,

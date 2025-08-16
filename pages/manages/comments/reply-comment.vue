@@ -21,7 +21,7 @@ onLoad((query) => {
 
 const handleSubmit = () => {
   replyComment(formData.value).then(res => {
-    Toast.success('已回复')
+    Toast.success('已回覆')
     setTimeout(() => {
       uni.navigateBack({})
     }, 1000)

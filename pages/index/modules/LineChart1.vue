@@ -16,7 +16,7 @@ import {ref, watch } from 'vue'
 
 const props = defineProps(['data'])
 
-// 时间轴横坐标
+// 時間軸橫座標
 const hours = []
 
 const opts = ref({
@@ -52,17 +52,17 @@ const opts = ref({
 const chartData = ref({
   categories: hours,
   series: [
-    {name: '点击数', data: []},
-    {name: '下单数', data: []}
+    {name: '點擊數', data: []},
+    {name: '下單數', data: []}
   ]
 })
 
-// 点击图表点提示
+// 點擊圖表點提示
 const handleClick = (e, chartTitle) => {
 
 }
 
-// 生成随机数据
+// 生成隨機數據
 function randomData(length = 10, min = 80, max = 240) {
   return Array.from({length}, () => Math.floor(Math.random() * (max - min) + min))
 }

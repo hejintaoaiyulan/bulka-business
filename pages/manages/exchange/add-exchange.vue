@@ -51,7 +51,7 @@ const getInfo = (id) => {
         })
       }
       else {
-        // 单规格的
+        // 單規格的
         const obj = {
           goods_id: goodsItem.id,
           price: goodsItem.price || goodsItem.pirce,
@@ -231,7 +231,7 @@ const handleSubmit = () => {
                   <view class="goods-price">
                     <view class="price">HK$ {{goods.sale_price}}</view>
                     <view class="operation" @click="handleToEdit(goods)">
-                      <text class="red" v-if="!goods._editend">*请完善信息</text>
+                      <text class="red" v-if="!goods._editend">*請完善信息</text>
                       <text>修改信息</text>
                       <text class="iconfont icon-bianji"></text>
                     </view>

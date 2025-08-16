@@ -25,7 +25,7 @@ const requestParams = ref({
 const getTypes = () => {
   getGoodsTypes().then(res => {
     types.value = (res.data || []);
-    types.value.unshift({id: '', goods_type_name: '全部类型' })
+    types.value.unshift({id: '', goods_type_name: '全部類型' })
   })
 }
 

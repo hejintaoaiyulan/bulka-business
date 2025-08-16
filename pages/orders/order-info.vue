@@ -52,7 +52,7 @@ const handleServingFood = () => {
 }
 
 const handleAccept = () => {
-  // 接单
+  // 接單
   showModal('是否確定接單').then(() => {
     AcceptOrder({order_no: info.value.order_no}).then(() => {
       getInfo()
@@ -61,7 +61,7 @@ const handleAccept = () => {
 }
 
 const handleCancel = () => {
-  // 取消订单
+  // 取消訂單
   showModal('是否確定取消訂單').then(() => {
     cancelOrder({order_no: info.value.order_no}).then(() => {
       getInfo()
@@ -71,7 +71,7 @@ const handleCancel = () => {
 
 const handleScanCode = () => {
   scanCodeByOrder().then(() => {
-    Toast.success('扫码成功')
+    Toast.success('掃碼成功')
     getInfo()
   })
 }
@@ -188,8 +188,8 @@ const handleScanCode = () => {
     <view class="submit-button flex-right safe-pb">
       <uv-button size="small" v-if="[1,2,3].includes(info.status)" @click="handleCancel">取消訂單</uv-button>
       <uv-button size="small" v-if="info.status === 2" @click="handleAccept">接單</uv-button>
-      <uv-button size="small" v-if="info.status === 3" @click="handleServingFood">确认出餐</uv-button>
-      <uv-button size="small" v-if="info.status === 4" @click="handleConnect">联系客户领取</uv-button>
+      <uv-button size="small" v-if="info.status === 3" @click="handleServingFood">確認出餐</uv-button>
+      <uv-button size="small" v-if="info.status === 4" @click="handleConnect">聯繫客戶領取</uv-button>
     </view>
   </view>
 </template>

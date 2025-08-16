@@ -18,14 +18,14 @@ const handleCard = (id) => {
 const handleConfirm = () => {
   if (!selectedRef.value) {
     uni.showToast({
-      title: '请选择提现方式',
+      title: '請選擇提現方式',
       icon: 'none'
     })
     return
   }
   if (!amount.value || amount.value <= 0) {
     uni.showToast({
-      title: '请输入提现金额',
+      title: '請輸入提現金額',
       icon: 'none'
     })
     return
@@ -39,7 +39,7 @@ const handleConfirm = () => {
     })
   }).catch(err => {
     uni.showToast({
-      title: err.message || '提现失败',
+      title: err.message || '提現失敗',
       icon: 'none'
     })
   })
@@ -91,40 +91,40 @@ watch(() => amount.value, (newVal) => {
 
 <template>
   <view class="container safe-pb">
-    <uv-navbar title="提现" bg-color="#2133ff" placeholder autoBack title-style="color: white" safe-area-inset-top
+    <uv-navbar title="提現" bg-color="#2133ff" placeholder autoBack title-style="color: white" safe-area-inset-top
                left-icon-color="#fff">
       <template #right>
-        <view class="right-text" @click="handleToRecord">提现记录</view>
+        <view class="right-text" @click="handleToRecord">提現記錄</view>
       </template>
     </uv-navbar>
     <view class="content">
       <view class="header">
-        <view>提现金额</view>
+        <view>提現金額</view>
         <view class="input-box">
-          <uv-input placeholder="请输入提现金额" :max="maxAmount" v-model="amount">
+          <uv-input placeholder="請輸入提現金額" :max="maxAmount" v-model="amount">
             <template #prefix>
               <view class="prefix-unit">HK$</view>
             </template>
             <template #suffix>
               <view class="suffix-text" @click="handleAllAmount">
-                全部提现
+                全部提現
               </view>
             </template>
           </uv-input>
-          <view v-if="showError" class="error red">提现金额大余余额</view>
+          <view v-if="showError" class="error red">提現金額大餘餘額</view>
         </view>
         <view class="amount-box">
-          <view class="amount-number">可提现金额：HK$ {{ maxAmount }}</view>
+          <view class="amount-number">可提現金額：HK$ {{ maxAmount }}</view>
           <view class="amount-tag">
-            <view>0.3%手续费</view>
+            <view>0.3%手續費</view>
           </view>
         </view>
       </view>
       <view class="withdrawal-box">
         <view class="withdrawal-title">
-          <view class="method">提现方式</view>
+          <view class="method">提現方式</view>
           <view class="cards" @click="handleToCardManager">
-            我的银行卡({{ backCardList.length }}张)
+            我的銀行卡({{ backCardList.length }}張)
           </view>
         </view>
         <uv-radio-group style="width: 100%" v-model="selectedRef">
@@ -145,7 +145,7 @@ watch(() => amount.value, (newVal) => {
         </uv-radio-group>
       </view>
       <view class="withdrawal-button">
-        <view class="btn" @click="handleConfirm">确认提现</view>
+        <view class="btn" @click="handleConfirm">確認提現</view>
       </view>
     </view>
   </view>

@@ -1,26 +1,26 @@
 import request from './index';
 
-// 获取商品分类列表
+// 獲取商品分類列表
 export const getGoodsTypes = () => {
   return request.get('/store/goods/getGoodsTypeList',{})
 }
 
-// 新增商品分类
+// 新增商品分類
 export const saveGoodsType = (params) => {
   return request.post('/store/goods/saveGoodsType', params)
 }
 
-// 删除商品分类
+// 刪除商品分類
 export const delGoodsType = (params) => {
   return request.post('/store/goods/delGoodsType',params)
 }
 
-// 获取商品列表
+// 獲取商品列表
 export const goodsList = (params) => {
   return request.get('/store/goods/getGoodsList', params)
 }
 
-// 删除商品
+// 刪除商品
 export const delGoods = (params) => {
   return request.post('/store/goods/delGoods', params)
 }
@@ -35,7 +35,7 @@ export const saveGoods = (params) => {
   return request.post('/store/goods/saveGoods',params)
 }
 
-// 商品详情
+// 商品詳情
 export const getGoodsInfo = (params) => {
   return request.get('/store/goods/getGoodsInfo', params)
 }

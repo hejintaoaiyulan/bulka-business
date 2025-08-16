@@ -108,7 +108,7 @@ const handleLogin = () => {
 
       <view class="submit-button">
         <uv-button custom-style="background: black; color: #fff" :hairline="false" @click="handleLogin">登錄</uv-button>
-        <view class="register" @click="handleRegister">去注冊</view>
+        <view class="register" @click="handleRegister">去註冊</view>
       </view>
     </view>
   </view>

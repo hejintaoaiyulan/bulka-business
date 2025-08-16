@@ -7,7 +7,7 @@ import {usePageLoading} from "@/hooks";
 const walletInfo = ref({})
 const {reload, dataList, loadNext} = usePageLoading(getWalletLog, {})
 
-// 获取钱包信息
+// 獲取錢包信息
 const getInfo = () => {
   getWallet().then(res => {
     walletInfo.value = res.data || {}
@@ -56,48 +56,48 @@ onReachBottom(() => {
     <view class="content">
       <view class="card">
         <view class="card-title">
-          我的余額
+          我的餘額
         </view>
         <view class="card-content">
           <view class="amount">
             <view class="price">HK$ {{ walletInfo.balance }}</view>
             <view class="withdrawal" @click="handleWithdrawal">
-              <view>提现</view>
+              <view>提現</view>
             </view>
           </view>
 
           <view class="price-msg">
             <view class="price-item">
               <view class="value">HK$ {{ walletInfo.unsettled }}</view>
-              <view class="title">待结算金额</view>
+              <view class="title">待結算金額</view>
             </view>
             <view class="price-item">
               <view class="value">HK$ {{ walletInfo.withdrawaling }}</view>
-              <view class="title">提现中金额</view>
+              <view class="title">提現中金額</view>
             </view>
           </view>
 
           <view class="price-tip">
-            结算说明：订单将在完成7天后进行结算，并非实时到账
+            結算說明：訂單將在完成7天后進行結算，並非實時到賬
           </view>
         </view>
       </view>
       <view class="card">
-        <view class="card-title">余額明細</view>
+        <view class="card-title">餘額明細</view>
         <view class="card-content">
           <view class="order-list">
-            <uv-empty text="暂无数据" v-if="!dataList.length"></uv-empty>
+            <uv-empty text="暫無數據" v-if="!dataList.length"></uv-empty>
             <view v-for="item in dataList" :key="item.id" class="order-item">
               <view class="order-msg">
                 <view class="order-msg-left">
                   <view>{{ item.title }}</view>
-                  <view v-if="item.type === 1" class="detail" @click="handleDetail(item)">查看明细</view>
+                  <view v-if="item.type === 1" class="detail" @click="handleDetail(item)">查看明細</view>
                 </view>
                 <view class="order-msg-right">{{ item.money }}</view>
               </view>
               <view class="order-msg">
                 <view class="order-msg-left">
-                  <view>结算编号：{{ item.settled_no }}</view>
+                  <view>結算編號：{{ item.settled_no }}</view>
                 </view>
                 <view class="order-msg-right">{{ item.settled_date }}</view>
               </view>

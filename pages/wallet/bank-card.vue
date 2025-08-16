@@ -23,12 +23,12 @@ onShow(() => {
 })
 
 const handleUnbind = (card) => {
-  showModal('是否确认解绑该银行卡？', '提示').then(() => {
+  showModal('是否確認解綁該銀行卡？', '提示').then(() => {
     unbindBankCard({id: card.id}).then(() => {
-      Toast.success('解绑成功')
-      getList(); // 重新获取银行卡列表
+      Toast.success('解綁成功')
+      getList(); // 重新獲取銀行卡列表
     }).catch(err => {
-      Toast.fail(err.message || '解绑失败')
+      Toast.fail(err.message || '解綁失敗')
     });
   })
 }
@@ -37,7 +37,7 @@ const handleUnbind = (card) => {
 
 <template>
 <view class="container safe-pb">
-  <uv-navbar title="银行卡管理" bg-color="#fff" placeholder autoBack safe-area-inset-top>
+  <uv-navbar title="銀行卡管理" bg-color="#fff" placeholder autoBack safe-area-inset-top>
     <template #right>
       <view class="right-text" @click="handleAdd">添加</view>
     </template>
@@ -53,7 +53,7 @@ const handleUnbind = (card) => {
           <view class="bank-number">{{maskBankCard(card.bank_account)}}</view>
         </view>
         <view class="select-icon">
-          <view @click="handleUnbind(card)">解绑</view>
+          <view @click="handleUnbind(card)">解綁</view>
         </view>
       </view>
     </view>

@@ -17,23 +17,23 @@ const dateStr = computed(() => {
 const handleInfo = (record) => {
   console.log(record)
   uni.showModal({
-    title: '提现失败原因',
-    content: record.reason || '请检查您的银行卡信息是否正确，或联系客服处理。',
+    title: '提現失敗原因',
+    content: record.reason || '請檢查您的銀行卡信息是否正確，或聯繫客服處理。',
     showCancel: false,
     confirmText: '知道了'
   })
 }
 
-// 处理日期选择
+// 處理日期選擇
 const handleChangeDate = (evt) => {
   const value = evt.detail.value;
   const day = dayjs(value);
   if(day.isSame(date.value,'d')) return
-  // 可以在这里触发数据重新加载
-  // console.log('选择的日期:', date.value.format('YYYY-MM'));
+  // 可以在這裡觸發數據重新加載
+  // console.log('選擇的日期:', date.value.format('YYYY-MM'));
   if(day.isAfter(dayjs(), 'd')) {
     uni.showToast({
-      title: '不能选择未来的日期',
+      title: '不能選擇未來的日期',
       icon: 'none'
     });
     return;
@@ -42,7 +42,7 @@ const handleChangeDate = (evt) => {
   getList()
 }
 
-// 获取钱包信息
+// 獲取錢包信息
 const getInfo = () => {
   getWallet().then(res => {
     walletInfo.value = res.data || {}
@@ -66,9 +66,9 @@ onShow(() => {
 <template>
   <view class="container safe-pb">
     <view class="header">
-      <view>累计提现(HK$)</view>
+      <view>累計提現(HK$)</view>
       <view class="price">{{walletInfo.withdrawaled}}</view>
-      <view class="tip-total">提现中：{{walletInfo.withdrawaling}}HK$</view>
+      <view class="tip-total">提現中：{{walletInfo.withdrawaling}}HK$</view>
     </view>
     <view class="record-list">
       <view class="record-filter">
@@ -95,7 +95,7 @@ onShow(() => {
             <view class="record-price">{{record.money}}</view>
           </view>
           <view class="record-msg">
-            <view class="record-order">订单号：{{record.withdrawal_no}}</view>
+            <view class="record-order">訂單號：{{record.withdrawal_no}}</view>
             <view class="record-time">{{record.approval_time}}</view>
           </view>
         </view>

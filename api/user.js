@@ -14,7 +14,7 @@ export const forgetPwd = (params) => {
     return request.post('/store/user/forgetPwd', params)
 }
 
-// 修改手机号
+// 修改手機號
 export const changeMobile = (params) => {
     return request.post('/store/user/changeMobile', params)
 }

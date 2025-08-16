@@ -9,17 +9,17 @@ import {Toast} from "@/utils";
 const info = ref({})
 
 
-// 第一个数据
+// 第一個數據
 const chartData1 = computed(() => {
   return {
     xData: info.value.column2,
     data: [
       {
-        name: '点击量',
+        name: '點擊量',
         data: info.value.goodsPv || []
       },
       {
-        name: '下单量',
+        name: '下單量',
         data: info.value.orderNum || []
       }
     ]
@@ -31,19 +31,19 @@ const chartData2 = computed(() => {
     xData: info.value.column2,
     data: [
       {
-        name: '连招1次点击量',
+        name: '連招1次點擊量',
         data: info.value.activity1 || []
       },
       {
-        name: '连招2次点击量',
+        name: '連招2次點擊量',
         data: info.value.activity2 || []
       },
       {
-        name: '连招3次点击量',
+        name: '連招3次點擊量',
         data: info.value.activity3 || []
       },
       {
-        name: '连招4次点击量',
+        name: '連招4次點擊量',
         data: info.value.activity4 || []
       }
     ]
@@ -55,31 +55,31 @@ const chartData3 = computed(() => {
     xData: info.value.column2,
     data: [
       {
-        name: '连招1次下单量',
+        name: '連招1次下單量',
         data: info.value.activityOrder1 || []
       },
       {
-        name: '连招2次下单量',
+        name: '連招2次下單量',
         data: info.value.activityOrder2 || []
       },
       {
-        name: '连招3次下单量',
+        name: '連招3次下單量',
         data: info.value.activityOrder3 || []
       },
       {
-        name: '连招4次下单量',
+        name: '連招4次下單量',
         data: info.value.activityOrder4 || []
       }
     ]
   }
 })
 
-// 获取数据详情
+// 獲取數據詳情
 const getInfo = () => {
   getShopToDayStatistics().then(res => {
     info.value = res.data || {}
   }).catch(err => {
-    Toast.info(err.message || '获取数据失败')
+    Toast.info(err.message || '獲取數據失敗')
   }).finally(() => {
     uni.stopPullDownRefresh()
   })
@@ -112,9 +112,9 @@ onPullDownRefresh(() => {
                   <view class="footer">
                     <view class="price">HK$ {{goods.sale_price}}</view>
                     <view class="numbers">
-                      <text>点击量 {{goods.pv}}</text>
+                      <text>點擊量 {{goods.pv}}</text>
                       <text>|</text>
-                      <text>下单量 {{goods.order_num}}</text>
+                      <text>下單量 {{goods.order_num}}</text>
                     </view>
                   </view>
                 </template>
@@ -129,7 +129,7 @@ onPullDownRefresh(() => {
           商品數據
         </view>
         <view class="card-sub-title">
-          统计用户每日商品点击数以及下单数
+          統計用戶每日商品點擊數以及下單數
         </view>
         <view class="card-content">
           <LineChart1 :data="chartData1"/>
@@ -138,16 +138,16 @@ onPullDownRefresh(() => {
 
       <view class="card">
         <view class="card-title">
-          连招数据
+          連招數據
         </view>
         <view class="card-sub-title">
-          统计用户每日点击连招次数汇总
+          統計用戶每日點擊連招次數彙總
         </view>
         <view class="card-content">
           <LineChart1 :data="chartData2"/>
         </view>
         <view class="card-sub-title">
-          统计用户每日点击连招下单汇总
+          統計用戶每日點擊連招下單彙總
         </view>
         <view class="card-content">
           <LineChart1 :data="chartData3"/>

@@ -134,7 +134,7 @@ const handleStatus = ({key}) => {
 
         <view class="comment-list">
           <view class="empty" v-if="!dataList.length">
-            暂无评论
+            暫無評論
           </view>
           <view class="comment-item" v-for="item in dataList" :key="item.id">
             <view class="comment-title">
@@ -159,7 +159,7 @@ const handleStatus = ({key}) => {
             </view>
             <view class="comment-goods">{{ Array.isArray(item.goods_name) ? item.goods_name.join('、') : item.goods_name }}</view>
             <view class="response-text" v-if="item.response_status === 1">
-              回复：{{ item.response }}
+              回覆：{{ item.response }}
             </view>
             <view class="comment-operation flex-right" v-if="item.response_status === 2">
               <uv-button size="normal" @click="handleReply(item)">回復評論</uv-button>

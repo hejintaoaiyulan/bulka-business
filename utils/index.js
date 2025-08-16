@@ -51,29 +51,29 @@ export const getToken = () => {
   const expiresTime = uni.getStorageSync('tokenExpiresTime')
   if (!token) return ''
   if (expiresTime && dayjs(expiresTime).isSameOrAfter(dayjs(), 'seconds')) {
-    // 未过期
+    // 未過期
     return token
   }
   return ''
 }
 
-// 获取缓存大小（单位：MB）
+// 獲取緩存大小（單位：MB）
 export async function getCacheSize() {
   let totalSize = 0;
 
-  // 1. 获取本地存储大小
+  // 1. 獲取本地存儲大小
   const storageInfo = uni.getStorageInfoSync();
   totalSize += storageInfo.keys.reduce((sum, key) => {
     return sum + (uni.getStorageSync(key).toString().length || 0);
   }, 0) / 1024 / 1024;
 
-  // 2. 获取文件缓存大小（App端）
+  // 2. 獲取文件緩存大小（App端）
   // #ifdef APP-PLUS
   const cacheDir = plus.io.convertLocalFileSystemURL('_doc/cache/');
   totalSize += await calculateDirSize(cacheDir);
   // #endif
 
-  // H5端获取缓存大小（需要浏览器支持）
+  // H5端獲取緩存大小（需要瀏覽器支持）
   // #ifdef H5
   // if ('caches' in window) {
   //   const cacheSize = await getBrowserCacheSize();
@@ -84,12 +84,12 @@ export async function getCacheSize() {
   return totalSize.toFixed(2);
 }
 
-// 清除所有缓存
+// 清除所有緩存
 export async function clearAllCache() {
-  // 1. 清除本地存储
+  // 1. 清除本地存儲
   // uni.clearStorageSync();
 
-  // 2. 清除文件缓存（App端）
+  // 2. 清除文件緩存（App端）
   // #ifdef APP-PLUS
   const cacheDir = '_doc/cache';
   const fs = uni.getFileSystemManager();
@@ -97,11 +97,11 @@ export async function clearAllCache() {
     const files = await readDir(cacheDir);
     await Promise.all(files.map(file => removeFile(`${cacheDir}/${file}`)));
   } catch (e) {
-    console.error('清除文件缓存失败:', e);
+    console.error('清除文件緩存失敗:', e);
   }
   // #endif
 
-  // 3. 清除H5缓存
+  // 3. 清除H5緩存
   // #ifdef H5
   // if ('caches' in window) {
   //   await caches.keys().then(cacheNames => {
@@ -111,13 +111,13 @@ export async function clearAllCache() {
   // #endif
 
   uni.showToast({
-    title: '缓存清理完成',
+    title: '緩存清理完成',
     icon: 'success'
   });
 }
 
-/****************** 工具函数 ******************/
-// 计算目录大小（App端）
+/****************** 工具函數 ******************/
+// 計算目錄大小（App端）
 export async function calculateDirSize(dirPath) {
   const files = await readDir(dirPath);
   let size = 0;
@@ -135,7 +135,7 @@ export async function calculateDirSize(dirPath) {
   return size;
 }
 
-// 读取目录内容
+// 讀取目錄內容
 export function readDir(path) {
   return new Promise((resolve, reject) => {
     const fs = uni.getFileSystemManager();
@@ -147,7 +147,7 @@ export function readDir(path) {
   });
 }
 
-// 获取文件信息
+// 獲取文件信息
 export function getFileStat(path) {
   return new Promise((resolve, reject) => {
     const fs = uni.getFileSystemManager();
@@ -159,7 +159,7 @@ export function getFileStat(path) {
   });
 }
 
-// 删除文件/目录
+// 刪除文件/目錄
 export function removeFile(path) {
   return new Promise((resolve, reject) => {
     const fs = uni.getFileSystemManager();
@@ -171,7 +171,7 @@ export function removeFile(path) {
   });
 }
 
-// 获取浏览器缓存大小（H5）
+// 獲取瀏覽器緩存大小（H5）
 export async function getBrowserCacheSize() {
   let total = 0;
   const cacheNames = await caches.keys();
@@ -213,7 +213,7 @@ export const showModal = (content, title = '提示') => {
   })
 }
 
-// 扫取餐码
+// 掃取餐碼
 export const scanCodeByOrder = () => {
   return toPromise(uni.scanCode, {onlyFromCamera: true, hideAlbum: true}).then(res => {
     const text = res.result; // order_no=xxxxx&code=xxxxx
@@ -225,7 +225,7 @@ export const scanCodeByOrder = () => {
   });
 }
 
-// 银行卡号脱敏
+// 銀行卡號脫敏
 export const maskBankCard = (cardNumber) => {
   return cardNumber.replace(/(\d{4})\d+(\d{4})/, '$1 **** **** $2')
 }

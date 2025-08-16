@@ -134,7 +134,7 @@
                   <view class="activity-item" v-for="(goods, index) in activity.children" :key="index">
                     <view class="goods-item">
                       <view class="goods_name">{{ goods.goods_name }}</view>
-                      <view class="tip">库存不足</view>
+                      <view class="tip">庫存不足</view>
                     </view>
                   </view>
                 </view>
@@ -178,7 +178,7 @@ const handleChangeModal = (e) => {
 }
 
 const handleMore = () => {
-  // Toast.info('开发中，敬请期待')
+  // Toast.info('開發中，敬請期待')
   // return
   uni.navigateTo({
     url: '/pages/index/statistics'
@@ -188,7 +188,7 @@ const handleMore = () => {
 // header掃碼
 const handleRight = () => {
   scanCodeByOrder().then(({order_no}) => {
-    Toast.success('扫码成功')
+    Toast.success('掃碼成功')
     setTimeout(() => {
       uni.navigateTo({
         url: `/pages/orders/order-info?order_no=${order_no}`

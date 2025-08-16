@@ -184,7 +184,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>平台商品分類</text>
+              <text>平臺商品分類</text>
             </view>
             <PickerSelect :options="categories" key-name="category_name" @change="handleChangeCategory">
               <view class="form-value">
@@ -287,7 +287,7 @@ const handleSave = () => {
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
               <text>商品折扣</text>
-              <text class="form-label-tip">(超过50%折扣自动参加首页试食活动)</text>
+              <text class="form-label-tip">(超過50%折扣自動參加首頁試食活動)</text>
             </view>
             <view class="form-value">
               <text v-if="single">{{ discount }}</text>

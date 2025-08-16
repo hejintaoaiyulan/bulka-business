@@ -1,21 +1,21 @@
 import request from "./index";
 
-// 获取店铺装修信息
+// 獲取店鋪裝修信息
 export const getShopInfo = () => {
   return request.get('/store/shop/getShopInfo', {})
 }
 
-// 修改店铺装修信息
+// 修改店鋪裝修信息
 export const updateShopInfo = (params) => {
   return request.post('/store/shop/editShop', params)
 }
 
-// 获取店铺信息统计
+// 獲取店鋪信息統計
 export const shopStatictis = () => {
   return request.get('/store/shop/shopStatistics', {})
 }
 
-// 获取店铺的统计数据
+// 獲取店鋪的統計數據
 export const getShopToDayStatistics = (params) => {
   return request.get('/store/shop/toDayStatistics', params)
 }

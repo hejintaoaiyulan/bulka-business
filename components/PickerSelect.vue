@@ -4,7 +4,7 @@ import {computed} from "vue";
 const props = defineProps(['options', 'keyName', 'disabled'])
 const emits = defineEmits(['change'])
 
-// 选择数据
+// 選擇數據
 const handleChange = (e) => {
   const index = e.detail.value
   const value = props.options[index]

@@ -9,7 +9,7 @@
         <image src="/static/pass.png" style="width: 200rpx" mode="widthFix"></image>
       </view>
       <view class="result-title">提交成功</view>
-      <view class="result-text">您的提现申请已提交，工作人员将在1-3个工作日内审核，请耐心等待</view>
+      <view class="result-text">您的提現申請已提交，工作人員將在1-3個工作日內審核，請耐心等待</view>
       <view class="result-btn" @click="uni.navigateBack()">我知道了</view>
     </view>
   </view>

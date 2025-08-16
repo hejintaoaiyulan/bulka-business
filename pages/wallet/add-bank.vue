@@ -12,30 +12,30 @@ const formData = ref({
 
 const handleBind = () => {
   if (!formData.value.bank_name) {
-    return Toast.info('请选择银行')
+    return Toast.info('請選擇銀行')
   }
   if (!formData.value.user_name) {
-    return Toast.info('请输入账户持有者')
+    return Toast.info('請輸入賬戶持有者')
   }
   if (!formData.value.bank_account) {
-    return Toast.info('请输入账号号码')
+    return Toast.info('請輸入賬號號碼')
   }
   addBankCard(formData.value).then(() => {
-    Toast.success('绑定成功')
+    Toast.success('綁定成功')
     uni.redirectTo({
       url: '/pages/wallet/bind-result'
     })
   }).catch(err => {
-    Toast.fail(err.message || '绑定失败')
+    Toast.fail(err.message || '綁定失敗')
   })
 }
 
-// 银行名称列表
+// 銀行名稱列表
 const banks = computed(() => {
   return Array.from(BankMap.keys())
 })
 
-// 选择了银行
+// 選擇了銀行
 const handleSetBank = (evt) => {
   const index = evt.detail.value
   formData.value.bank_name = banks.value[index]
@@ -49,11 +49,11 @@ const handleSetBank = (evt) => {
         <view class="form-item">
           <view class="form-label">
             <text class="red">*</text>
-            <text>所属银行</text>
+            <text>所屬銀行</text>
           </view>
           <picker mode="selector" :range="banks" @change="handleSetBank">
             <view class="form-value">
-              <text v-if="!formData.bank_name" class="value empty">请选择银行</text>
+              <text v-if="!formData.bank_name" class="value empty">請選擇銀行</text>
               <text v-else class="value">{{ formData.bank_name }}</text>
             </view>
           </picker>
@@ -61,28 +61,28 @@ const handleSetBank = (evt) => {
         <view class="form-item">
           <view class="form-label">
             <text class="red">*</text>
-            <text>账户持有者</text>
+            <text>賬戶持有者</text>
           </view>
           <view class="form-value">
             <uv-input v-model="formData.user_name" border="none" font-size="24rpx" input-align="right"
-                      placeholder="请输入账户持有者"/>
+                      placeholder="請輸入賬戶持有者"/>
           </view>
         </view>
         <view class="form-item">
           <view class="form-label">
             <text class="red">*</text>
-            <text>账号号码</text>
+            <text>賬號號碼</text>
           </view>
           <view class="form-value">
             <uv-input v-model="formData.bank_account" border="none" font-size="24rpx" input-align="right"
-                      placeholder="请输入账号号码"/>
+                      placeholder="請輸入賬號號碼"/>
           </view>
         </view>
       </view>
     </view>
     <view class="footer">
       <view class="confirm-button">
-        <view class="btn" @click="handleBind">确认绑定</view>
+        <view class="btn" @click="handleBind">確認綁定</view>
       </view>
     </view>
   </view>

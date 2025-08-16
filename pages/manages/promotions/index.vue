@@ -60,15 +60,15 @@ const handleSelectStatus = (val) => {
 const handleRemove = (val) => {
   uni.showModal({
     title: '提示',
-    content: '是否删除该商品？',
+    content: '是否刪除該商品？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         deleteDiscountActivity({id: val.id}).then(() =>{
           delItem(val.id)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
@@ -87,30 +87,30 @@ const handleSoldOut = (val) => {
     content: '是否下架該活動？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         downDiscountActivity({id: val.id, status: 3}).then(res => {
           getData(requestParams.value, true)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
 }
 
-// 结束
+// 結束
 const handleOver = (val) => {
   uni.showModal({
     title: '提示',
     content: '是否結束該活動？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         downDiscountActivity({id: val.id, status: 4}).then(res => {
           getData(requestParams.value, true)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
@@ -130,7 +130,7 @@ const handleOver = (val) => {
     <scroll-view style="flex: 1;overflow: hidden;" :scroll-y="true" @scrolltolower="loadNext">
       <view class="content">
         <view class="empty" v-if="!dataList.length">
-          暂无数据
+          暫無數據
         </view>
         <view class="promotion-item" v-for="item in dataList" :key="item.id">
           <view class="promotion-title">
@@ -166,7 +166,7 @@ const handleOver = (val) => {
               <text>下架</text>
             </uv-button>
             <uv-button class="operation-item" v-if="item.status !== 4" @click="handleOver(item)">
-              <text>结束</text>
+              <text>結束</text>
             </uv-button>
           </view>
         </view>

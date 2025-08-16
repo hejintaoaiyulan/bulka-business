@@ -18,7 +18,7 @@ const goodsData = ref()
 watch(() => props.goods, (val) => {
   goodsData.value = val || {
     goods_image: '/static/pass-fail.png',
-    goods_name: '测试商品名称',
+    goods_name: '測試商品名稱',
     sale_price: 99.8,
     original_price: 199
   }
@@ -38,17 +38,17 @@ const isFreebies = computed(() => {
   return goodsData.value.type === 4 || goodsData.value.goods_active_type === 4
 })
 
-// 商品数量
+// 商品數量
 const goodsCount = computed(() => {
   return goodsData.value.count || goodsData.value.num || goodsData.value.goods_num || 1
 })
 
-// 是否没有了库存
+// 是否沒有了庫存
 const isOutOfStock = computed(() => {
   if (isFreebies.value) return false
   return goodsData.value.stock === 0 || goodsData.value.goods_stock === 0
 })
-// 是否购买数量大于了库存
+// 是否購買數量大於了庫存
 const isOverStock = computed(() => {
   if (isFreebies.value) return false
   return goodsData.value.goods_stock && goodsData.value.goods_stock < goodsCount.value
@@ -57,22 +57,22 @@ const isOverStock = computed(() => {
 const isOffShelf = computed(() => {
   return goodsData.value.status === 2
 })
-// 是否无效商品
+// 是否無效商品
 const isInvalid = computed(() => {
   return goodsData.value.status === 0
 })
-// 根据商品状态判断显示文案
+// 根據商品狀態判斷顯示文案
 const goodsStatusText = computed(() => {
   if (!props.showDisabled) return ''
   if (isFreebies.value) return ''
   if (isOutOfStock.value) return '已售罄'
-  if (isOverStock.value) return '超出库存'
+  if (isOverStock.value) return '超出庫存'
   if (isOffShelf.value) return '已下架'
-  if (isInvalid.value) return '无效商品'
+  if (isInvalid.value) return '無效商品'
   return ''
 })
 
-// 根据状态判断此商品是不是需要禁用
+// 根據狀態判斷此商品是不是需要禁用
 const isDisabled = computed(() => {
   if(!props.showDisabled) return false
   return isOutOfStock.value || isOverStock.value || isOffShelf.value || isInvalid.value
@@ -180,7 +180,7 @@ const handleRemove = () => {
     font-size: 24rpx;
     text-overflow: ellipsis;
     overflow: hidden;
-    // 隐藏两行
+    // 隱藏兩行
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

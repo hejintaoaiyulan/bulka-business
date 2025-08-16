@@ -21,7 +21,7 @@ const {
 watch(() => isUploading.value, (val) => {
   if (val) {
     uni.showLoading({
-      title: '上传中'
+      title: '上傳中'
     })
   } else {
     uni.hideLoading()
@@ -47,9 +47,9 @@ const handleUpload = async () => {
   })
 }
 
-// 删除图片
+// 刪除圖片
 const handleRemove = (file, index) => {
-  showModal('确定删除该图片吗?').then(() => {
+  showModal('確定刪除該圖片嗎?').then(() => {
     formData.value.images.splice(index, 1)
     formData.value.showImages.splice(index, 1)
   }).catch(() => {
@@ -60,13 +60,13 @@ const handleRemove = (file, index) => {
 const handleSubmit = () => {
   if(!formData.value.content) {
     return uni.showToast({
-      title: '请填写问题和意见',
+      title: '請填寫問題和意見',
       icon: 'none'
     })
   }
   if(!formData.value.mobile) {
     return uni.showToast({
-      title: '请填写联系方式',
+      title: '請填寫聯繫方式',
       icon: 'none'
     })
   }
@@ -82,7 +82,7 @@ const handleSubmit = () => {
     }, 1000)
   }).catch((err) => {
     uni.showToast({
-      title: err.msg || '提交失败，请稍后再试',
+      title: err.msg || '提交失敗，請稍後再試',
       icon: 'none'
     })
   })
@@ -93,17 +93,17 @@ const handleSubmit = () => {
   <view class="feedback-content form">
     <view class="form-item">
       <view class="form-label">
-        <view>问题和意见</view>
+        <view>問題和意見</view>
         <view class="extra">{{formData.content.length}}/200</view>
       </view>
       <view class="form-value">
-        <textarea maxlength="200" v-model="formData.content" placeholder="请填写10个字以上的问题描述以便我们提供更好的帮助"></textarea>
+        <textarea maxlength="200" v-model="formData.content" placeholder="請填寫10個字以上的問題描述以便我們提供更好的幫助"></textarea>
       </view>
     </view>
 
     <view class="form-item">
       <view class="form-label">
-        <view>图片（选填，提供问题截图）</view>
+        <view>圖片（選填，提供問題截圖）</view>
         <view class="extra">{{formData.images.length}}/4</view>
       </view>
       <view class="form-value">
@@ -119,10 +119,10 @@ const handleSubmit = () => {
     </view>
     <view class="form-item">
       <view class="form-label">
-        <view>联系方式（选填）</view>
+        <view>聯繫方式（選填）</view>
       </view>
       <view class="form-value">
-        <input v-model="formData.mobile" placeholder="手机号码，用于与你联系"/>
+        <input v-model="formData.mobile" placeholder="手機號碼，用於與你聯繫"/>
       </view>
     </view>
 

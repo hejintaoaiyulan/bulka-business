@@ -2,14 +2,14 @@ import {ref, computed, onUnmounted} from 'vue'
 import {isFunction, omit} from "lodash";
 
 let isOpened = false
-// 401鉴权失败，重新登录
+// 401鑑權失敗，重新登錄
 export const useNotAuthModal = () => {
   const open = () => {
     if (isOpened) return
     isOpened = true
     uni.showModal({
       title: '提示',
-      content: '登录已过期，请重新登录',
+      content: '登錄已過期，請重新登錄',
       showCancel: false,
       success: () => {
         uni.reLaunch({
@@ -26,7 +26,7 @@ export const useNotAuthModal = () => {
 }
 
 
-/** 分页加载
+/** 分頁加載
  * @param {Function} fn
  * @param {{loadInInit?: boolean,
  *     dataKeyName?: string,
@@ -123,16 +123,16 @@ export const usePageLoading = (
 }
 
 
-// 控制十分钟内只显示一次的弹窗
+// 控制十分鐘內只顯示一次的彈窗
 export const useShowModalTime = () => {
   const visible = ref(false)
   const open = (shop_id, debug) => {
     let time = 1000 * 60 * 5
     if(!shop_id) return false
     if(debug) {
-      time = 1000 * 10 // 调试模式下每10秒允许弹窗
+      time = 1000 * 10 // 調試模式下每10秒允許彈窗
     }
-    // 最后一次弹窗时间
+    // 最後一次彈窗時間
     const lastTime = uni.getStorageSync('shopActiveModal_' + shop_id)
     if(!lastTime) {
       visible.value = true
@@ -143,7 +143,7 @@ export const useShowModalTime = () => {
         visible.value = true
         uni.setStorageSync('shopActiveModal_' + shop_id, Date.now())
       } else {
-        console.log('5分钟内已弹窗')
+        console.log('5分鐘內已彈窗')
       }
     }
     return visible.value
@@ -217,7 +217,7 @@ export function useWebSocket(url, options = {}) {
         data: typeof data === 'string' ? data : JSON.stringify(data),
       })
     } else {
-      console.warn('WebSocket 未连接，消息未发送')
+      console.warn('WebSocket 未連接，消息未發送')
     }
   }
 

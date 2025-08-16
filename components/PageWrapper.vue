@@ -48,7 +48,7 @@ onShow(() => {
   height: 100%;
 }
 
-/* 悬浮按钮样式 */
+/* 懸浮按鈕樣式 */
 .feedback-btn {
   position: fixed;
   transition: all 0.25s ease-in-out;

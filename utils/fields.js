@@ -22,7 +22,7 @@ export const PublishStatus =  {
   )
 }
 
-// 库存是否紧张
+// 庫存是否緊張
 export const StockStatus = {
   list: [
     {name: '是',value: 1 },
@@ -34,15 +34,15 @@ export const StockStatus = {
   ])
 }
 
-// 优惠活动状态
+// 優惠活動狀態
 export const ActivityStatus = {
   list: [
     {
-      name: '未开始',
+      name: '未開始',
       value: 1
     },
     {
-      name: '进行中',
+      name: '進行中',
       value: 2
     },
     {
@@ -50,15 +50,15 @@ export const ActivityStatus = {
       value: 3
     },
     {
-      name: '已结束',
+      name: '已結束',
       value: 4
     },
   ],
   map: new Map([
-    [1, '未开始'],
-    [2, '进行中'],
+    [1, '未開始'],
+    [2, '進行中'],
     [3, '已下架'],
-    [4, '已结束']
+    [4, '已結束']
   ])
 }
 
@@ -73,26 +73,26 @@ export const OrderStatusText = {
   ])
 }
 
-// 银行列表
+// 銀行列表
 export const BankMap = new Map([
-  ['工商银行', {name: '工商银行', icon: '/static/bank-icon/gsyh.png' }],
-  ['农业银行', {name: '农业银行', icon: '/static/bank-icon/nyyh.png' }],
-  ['中国银行', {name: '中国银行', icon: '/static/bank-icon/zgyh.png' }],
-  ['建设银行', {name: '建设银行', icon: '/static/bank-icon/jiansheyh.png' }],
-  ['交通银行', {name: '交通银行', icon: '/static/bank-icon/jtyh.png' }],
-  ['招商银行', {name: '招商银行', icon: '/static/bank-icon/zsyh.png' }],
-  ['民生银行', {name: '民生银行', icon: '/static/bank-icon/msyh.png' }],
-  ['广发银行' , {name: '广发银行', icon: '/static/bank-icon/gfyh.png' }],
-  ['兴业银行', {name: '兴业银行', icon: '/static/bank-icon/xyyh.png' }],
-  ['中信银行', {name: '中信银行', icon: '/static/bank-icon/zxyh.png' }],
-  ['华夏银行', {name: '华夏银行', icon: '/static/bank-icon/hxyh.png' }],
-  ['浦发银行', {name: '浦发银行', icon: '/static/bank-icon/pfyh.png' }],
-  ['平安银行', {name: '平安银行', icon: '/static/bank-icon/payh.png' }],
-  ['光大银行', {name: '光大银行', icon: '/static/bank-icon/gdyh.png' }],
-  ['邮政储蓄', {name: '邮政储蓄', icon: '/static/bank-icon/yzcx.png' }],
-  ['邮储银行', {name: '邮储银行', icon: '/static/bank-icon/yzcx.png' }],
-  ['北京银行', {name: '北京银行', icon: '/static/bank-icon/bjyh.png' }],
-  ['上海银行', {name: '上海银行', icon: '/static/bank-icon/shyh.png' }],
-  ['南京银行', {name: '南京银行', icon: '/static/bank-icon/njyh.png' }],
-  ['宁波银行', {name: '宁波银行', icon: '/static/bank-icon/nbyh.png' }],
+  ['工商銀行', {name: '工商銀行', icon: '/static/bank-icon/gsyh.png' }],
+  ['農業銀行', {name: '農業銀行', icon: '/static/bank-icon/nyyh.png' }],
+  ['中國銀行', {name: '中國銀行', icon: '/static/bank-icon/zgyh.png' }],
+  ['建設銀行', {name: '建設銀行', icon: '/static/bank-icon/jiansheyh.png' }],
+  ['交通銀行', {name: '交通銀行', icon: '/static/bank-icon/jtyh.png' }],
+  ['招商銀行', {name: '招商銀行', icon: '/static/bank-icon/zsyh.png' }],
+  ['民生銀行', {name: '民生銀行', icon: '/static/bank-icon/msyh.png' }],
+  ['廣發銀行' , {name: '廣發銀行', icon: '/static/bank-icon/gfyh.png' }],
+  ['興業銀行', {name: '興業銀行', icon: '/static/bank-icon/xyyh.png' }],
+  ['中信銀行', {name: '中信銀行', icon: '/static/bank-icon/zxyh.png' }],
+  ['華夏銀行', {name: '華夏銀行', icon: '/static/bank-icon/hxyh.png' }],
+  ['浦發銀行', {name: '浦發銀行', icon: '/static/bank-icon/pfyh.png' }],
+  ['平安銀行', {name: '平安銀行', icon: '/static/bank-icon/payh.png' }],
+  ['光大銀行', {name: '光大銀行', icon: '/static/bank-icon/gdyh.png' }],
+  ['郵政儲蓄', {name: '郵政儲蓄', icon: '/static/bank-icon/yzcx.png' }],
+  ['郵儲銀行', {name: '郵儲銀行', icon: '/static/bank-icon/yzcx.png' }],
+  ['北京銀行', {name: '北京銀行', icon: '/static/bank-icon/bjyh.png' }],
+  ['上海銀行', {name: '上海銀行', icon: '/static/bank-icon/shyh.png' }],
+  ['南京銀行', {name: '南京銀行', icon: '/static/bank-icon/njyh.png' }],
+  ['寧波銀行', {name: '寧波銀行', icon: '/static/bank-icon/nbyh.png' }],
 ])

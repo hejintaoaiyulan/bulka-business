@@ -93,7 +93,7 @@ const handleConnect = (order, evt) => {
   if(evt) {
     evt?.stopPropagation()
   }
-  // 联系客户
+  // 聯繫客戶
   if(order.user?.mobile)
   uni.makePhoneCall({
     phoneNumber: order.user?.mobile,
@@ -117,7 +117,7 @@ const handleAccept = (order, evt) => {
   if(evt) {
     evt?.stopPropagation()
   }
-  // 接单
+  // 接單
   showModal('是否確定接單').then(() => {
     AcceptOrder({order_no: order.order_no}).then(() => {
       search()
@@ -129,7 +129,7 @@ const handleCancel = (order, evt) => {
   if(evt) {
     evt?.stopPropagation()
   }
-  // 取消订单
+  // 取消訂單
   showModal('是否確定取消訂單').then(() => {
     cancelOrder({order_no: order.order_no}).then(() => {
       search()
@@ -153,7 +153,7 @@ const handleOperation = () => {}
     </view>
     <scroll-view :scroll-y="true" class="content" @scrolltolower="loadNext">
       <view style="padding: 20rpx">
-        <view class="empty" v-if="!dataList.length">暂无订单数据</view>
+        <view class="empty" v-if="!dataList.length">暫無訂單數據</view>
         <view class="order-item" v-for="order in dataList" :key="order.order_no">
           <view  @click="handleToInfo(order)">
             <view class="order-title">
@@ -195,10 +195,10 @@ const handleOperation = () => {}
           <view class="order-operation">
             <view class="order-time">{{ order.createtime }}</view>
             <view class="order-btns" v-if="![5,6].includes(order.status)" @click="handleOperation">
-              <uv-button size="small" v-if="[1,2,3].includes(order.status)" @click="handleCancel(order, $event)">取消订单</uv-button>
+              <uv-button size="small" v-if="[1,2,3].includes(order.status)" @click="handleCancel(order, $event)">取消訂單</uv-button>
               <uv-button size="small" v-if="order.status === 2" @click="handleAccept(order, $event)">接單</uv-button>
-              <uv-button size="small" v-if="order.status === 3" @click="handleServingFood(order, $event)">确认出餐</uv-button>
-              <uv-button size="small" v-if="order.status === 4" @click="handleConnect(order, $event)">联系客户领取</uv-button>
+              <uv-button size="small" v-if="order.status === 3" @click="handleServingFood(order, $event)">確認出餐</uv-button>
+              <uv-button size="small" v-if="order.status === 4" @click="handleConnect(order, $event)">聯繫客戶領取</uv-button>
             </view>
           </view>
         </view>

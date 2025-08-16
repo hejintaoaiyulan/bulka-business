@@ -55,10 +55,10 @@ onPullDownRefresh(() => {
 const handleRemove = (val) => {
   uni.showModal({
     title: '提示',
-    content: '是否删除该商品？',
+    content: '是否刪除該商品？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         delGoods({id: val.id}).then(res => {
           delItem(val.id)
         })
@@ -71,15 +71,15 @@ const handleRemove = (val) => {
 const handleSoldOut = (val) => {
   uni.showModal({
     title: '提示',
-    content: '是否下架该商品？',
+    content: '是否下架該商品？',
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         goodsPublish({id: val.id, publish_status: 2}).then(res => {
           getData(requestParams.value, true)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
@@ -89,15 +89,15 @@ const handleSoldOut = (val) => {
 const handleSoldIn = (val, flag) => {
   uni.showModal({
     title: '提示',
-    content: `是否${flag ? '重新' : ''}上架该商品？`,
+    content: `是否${flag ? '重新' : ''}上架該商品？`,
     success: function (res) {
       if (res.confirm) {
-        console.log('用户点击确定');
+        console.log('用戶點擊確定');
         goodsPublish({id: val.id, publish_status: 1}).then(res => {
           getData(requestParams.value, true)
         })
       } else if (res.cancel) {
-        console.log('用户点击取消');
+        console.log('用戶點擊取消');
       }
     }
   })
@@ -169,8 +169,8 @@ onShow(() => {
                 {{ item.goods_type_name }}
               </view>
               <view class="goods-status" :class="{is_stock_status_error: item.stock_status === 2}">
-                <text>{{ PublishStatus.map.get(item.publish_status) || '未知分类' }}</text>
-                <text v-if="item.stock_status === 2"> | 库存不足</text>
+                <text>{{ PublishStatus.map.get(item.publish_status) || '未知分類' }}</text>
+                <text v-if="item.stock_status === 2"> | 庫存不足</text>
               </view>
             </view>
             <view class="goods-content">
