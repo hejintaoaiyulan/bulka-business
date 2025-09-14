@@ -68,3 +68,8 @@ export const bindClientId = (params) => {
 export const sendFeedback = (params) => {
     return request.post('/store/index/feedback', params)
 }
+
+/** 获取系统信息 */
+export const getSystemPublicConfig = () => {
+    return request.get('/store/index/init', {})
+}

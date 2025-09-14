@@ -8,6 +8,7 @@ import {useWebSocket} from "@/hooks";
 import {baseUrl} from "@/api";
 import {onMounted, onUnmounted, nextTick} from 'vue'
 import {bindClientId} from "@/api/public";
+import {useSystemConfig} from "@/model/system";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -73,9 +74,11 @@ onUnmounted(() => {
 })
 
 const userStore = useUserStore()
+const systemStore = useSystemConfig()
 
 onLaunch(() => {
   userStore.getInfo()
+  systemStore.getSystemConfig()
 })
 </script>
 

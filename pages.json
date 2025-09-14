@@ -12,7 +12,8 @@
 			"style": {
 				"navigationBarTitleText": "登錄",
 				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
 			}
 		},
 		{

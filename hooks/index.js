@@ -1,25 +1,44 @@
 import {ref, computed, onUnmounted} from 'vue'
 import {isFunction, omit} from "lodash";
 
+
 let isOpened = false
 // 401鑑權失敗，重新登錄
 export const useNotAuthModal = () => {
+  const isVisitor = uni.getStorageSync('is_visitor') === '1'
+  const tip = isVisitor ? '當前為遊客模式，請登錄後操作' : '登錄已過期，請重新登錄'
   const open = () => {
     if (isOpened) return
     isOpened = true
-    uni.showModal({
-      title: '提示',
-      content: '登錄已過期，請重新登錄',
-      showCancel: false,
-      success: () => {
-        uni.reLaunch({
-          url: '/pages/login/index'
+    if (isVisitor) {
+      const pages = getCurrentPages();
+      const page = pages[pages.length - 1];
+      const isLogin = page.route.includes('pages/login/index')
+      if (!isLogin)
+        uni.navigateTo({
+          url: '/pages/login/index?from=page',
+          complete: () => {
+            isOpened = false
+          }
         })
-      },
-      complete: () => {
+      else {
         isOpened = false
       }
-    })
+    } else
+      uni.showModal({
+        title: '提示',
+        content: tip,
+        showCancel: false,
+        success: (result) => {
+          if (result.confirm)
+            uni.reLaunch({
+              url: '/pages/login/index'
+            })
+        },
+        complete: () => {
+          isOpened = false
+        }
+      })
   }
 
   return {open}

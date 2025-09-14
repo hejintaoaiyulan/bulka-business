@@ -44,7 +44,13 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
-                "targetSdkVersion" : 30
+                "targetSdkVersion" : 30,
+                "excludePermissions" : [
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_MEDIA_IMAGES\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_MEDIA_VIDEO\"/>"
+                ]
             },
             /* ios打包配置 */
             "ios" : {

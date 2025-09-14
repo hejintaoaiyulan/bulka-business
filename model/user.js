@@ -15,10 +15,32 @@ export const useUserStore = defineStore('user', () => {
   })
   const isLogin = () => !!getToken()
   const getInfo = () => {
+    if(isVisitor.value) {
+      return userInfo.value
+    }
     getUserInfo().then(res => {
       showSettings()
       userInfo.value = res.data || {}
     })
+  }
+
+  const isVisitor = computed(() => {
+    return userInfo.value?.is_visitor === 1
+  })
+
+  // 设置游客模式
+  const setVisitorModal = (bool) => {
+    if (bool) {
+      userInfo.value = {is_visitor: 1, nickname: '游客'}
+      uni.setStorageSync('is_visitor', '1')
+      // uni.setStorageSync('token', 'visitor_token')
+      uni.reLaunch({
+        url: '/pages/index/index'
+      })
+    } else {
+      userInfo.value = {}
+      uni.removeStorageSync('is_visitor')
+    }
   }
 
   const logOut = () => {
@@ -27,7 +49,9 @@ export const useUserStore = defineStore('user', () => {
     uni.reLaunch({
       url: '/pages/login/index'
     })
+    uni.removeStorageSync('is_visitor')
   }
+
 
   const showSettings = () => {
     getShopSetting().then(res => {
@@ -36,6 +60,6 @@ export const useUserStore = defineStore('user', () => {
   }
 
   return {
-    userInfo, getInfo, isLogin, logOut, shopConfig
+    userInfo, getInfo, isLogin, logOut, shopConfig,setVisitorModal, isVisitor,
   }
 })

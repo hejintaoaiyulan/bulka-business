@@ -5,12 +5,20 @@ import {Regs} from "../../globalConfig";
 import {Login} from "../../api/login";
 import {setToken} from "../../utils";
 import {useUserStore} from "../../model/user";
+import {onLoad} from "@dcloudio/uni-app";
 
 const userStore = useUserStore()
 const formData = ref({
   mobile: "",
   password: '',
   prefix: '852'
+})
+
+const pageQuery = ref({
+  from: ''
+})
+onLoad((query = {}) => {
+  pageQuery.value = query
 })
 
 const handleToPassword = () => {
@@ -61,14 +69,21 @@ const handleLogin = () => {
   // uni.redirectTo({
   //   url: '/pages/index/index'
   // })
+
+}
+
+const handleVisitorLogin = () => {
+  userStore.setVisitorModal(true)
 }
 </script>
 
 <template>
   <view class="container">
-    <view class="header">
-      <text>登錄</text>
-    </view>
+    <!--    <view class="header">-->
+    <!--      <text>登錄</text>-->
+    <!--    </view>-->
+    <uv-navbar title="登錄" title-style="color: #fff" bg-color="black" :fixed="false" placeholder left-icon-color="#fff"
+               :left-icon="!!pageQuery.from ? 'arrow-left': '' " @left-click="uni.navigateBack({})" />
     <view class="content">
       <view class="form">
         <view class="form-item">
@@ -109,6 +124,7 @@ const handleLogin = () => {
       <view class="submit-button">
         <uv-button custom-style="background: black; color: #fff" :hairline="false" @click="handleLogin">登錄</uv-button>
         <view class="register" @click="handleRegister">去註冊</view>
+        <view class="register" @click="handleVisitorLogin">游客登录</view>
       </view>
     </view>
   </view>
