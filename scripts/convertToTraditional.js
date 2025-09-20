@@ -3,26 +3,31 @@ const fs = require("fs");
 const path = require("path");
 const OpenCC = require("opencc-js");
 
-// 创建简体转繁体转换器
+// 創建簡體轉繁體轉換器
 const converter = OpenCC.Converter({ from: "cn", to: "tw" });
 const tify = (text) => converter(text);
 
-// 根目录，和 scripts 同级
+// 根目錄，和 scripts 同級
 const rootDir = path.resolve(__dirname, "..");
 
-// 需要处理的文件夹
-const folders = ["api", "components", "hooks", "model", "pages", "utils"];
+// 需要排除的文件夾
+const excludeDirs = ["node_modules", "uni_modules", "unpackage"];
 
-// 支持处理的文件后缀
+// 支持處理的文件後綴
 const exts = [".vue", ".js", ".ts", ".json", ".html", ".css", ".scss", ".less"];
 
-// 遍历目录并转换中文
+// 遍歷目錄並轉換中文
 function walkDir(dir) {
   fs.readdirSync(dir).forEach(file => {
     const filepath = path.join(dir, file);
     const stat = fs.statSync(filepath);
 
     if (stat.isDirectory()) {
+      // 跳過排除的目錄
+      if (excludeDirs.includes(file)) {
+        console.log(`⏭ 跳過目錄: ${filepath}`);
+        return;
+      }
       walkDir(filepath);
     } else {
       const ext = path.extname(file);
@@ -33,20 +38,14 @@ function walkDir(dir) {
 
       if (content !== converted) {
         fs.writeFileSync(filepath, converted, "utf8");
-        console.log(`✔ 已转换: ${filepath}`);
+        console.log(`✔ 已轉換: ${filepath}`);
       }
     }
   });
 }
 
-// 遍历指定文件夹
-folders.forEach(folder => {
-  const folderPath = path.join(rootDir, folder);
-  if (fs.existsSync(folderPath)) {
-    walkDir(folderPath);
-  } else {
-    console.warn(`⚠ 文件夹不存在: ${folderPath}`);
-  }
-});
+// 從根目錄開始遍歷
+console.log("🚀 開始轉換簡體中文為繁體中文...");
+walkDir(rootDir);
 
-console.log("🎉 所有文件转换完成！");
+console.log("🎉 所有文件轉換完成！");

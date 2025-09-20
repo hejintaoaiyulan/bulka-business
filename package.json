@@ -9,5 +9,8 @@
   },
   "scripts": {
     "to:traditional": "node scripts/convertToTraditional.js"
+  },
+  "volta": {
+    "node": "16.20.2"
   }
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>选择位置</title>
+  <title>選擇位置</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <style>
     html, body {
@@ -60,10 +60,10 @@
   <img class="center-marker" src="https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2_hdpi.png" />
   <div class="footer">
     <div class="address">
-      <div id="coord-display">纬度: ---, 经度: ---</div>
-      <div id="address-display" style="font-size: 14px;">地址: 加载中...</div>
+      <div id="coord-display">緯度: ---, 經度: ---</div>
+      <div id="address-display" style="font-size: 14px;">地址: 加載中...</div>
     </div>
-    <button class="btn" onclick="confirmLocation()">确定</button>
+    <button class="btn" onclick="confirmLocation()">確定</button>
   </div>
 
   <script type="text/javascript" src="https://doc.dcloud.net.cn/uni.webview.1.5.6.js"></script>
@@ -80,10 +80,10 @@
     }
 
     function initMap() {
-      const lat = getQueryParam('lat') || 39.9042; // 默认北京
+      const lat = getQueryParam('lat') || 39.9042; // 默認北京
       const lng = getQueryParam('lng') || 116.4074;
       currentCenter = { lat, lng };
-      // 创建地图
+      // 創建地圖
       const create = () => {
         geocoder = new google.maps.Geocoder();
         map = new google.maps.Map(document.getElementById("map"), {
@@ -113,14 +113,14 @@
           create()
 
         }, () => {
-          alert("无法获取定位");
+          alert("無法獲取定位");
         });
       }
     }
 
     function updateCoordDisplay({ lat, lng }) {
       document.getElementById("coord-display").textContent =
-        `纬度: ${lat.toFixed(6)}, 经度: ${lng.toFixed(6)}`;
+        `緯度: ${lat.toFixed(6)}, 經度: ${lng.toFixed(6)}`;
     }
 
     function reverseGeocode(latlng) {
@@ -134,7 +134,7 @@
           currentAddress = "";
           addressName = '';
           document.getElementById("address-display").textContent =
-            "地址: 无法识别";
+            "地址: 無法識別";
         }
       });
     }
@@ -156,7 +156,7 @@
     }
   </script>
 
-  <!-- ✅ 替换你的 Google API Key -->
+  <!-- ✅ 替換你的 Google API Key -->
   <script
     async
     defer

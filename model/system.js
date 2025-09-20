@@ -13,7 +13,7 @@ export const useSystemConfig = defineStore('system', () => {
   }
 
   const getAppUpdateInfo = () => {
-    // 要检查更新状态，安卓要下载，ios另外处理 systemConfig 中包含版本信息 app_version - 当前app最新版本 is_update - 是否强制更新 ios_update_url - 更新地址 android_update_url - 安卓更新地址
+    // 要檢查更新狀態，安卓要下載，ios另外處理 systemConfig 中包含版本信息 app_version - 當前app最新版本 is_update - 是否強制更新 ios_update_url - 更新地址 android_update_url - 安卓更新地址
     if (systemConfig.value.is_update) {
       uni.getSystemInfo({
         success: (info) => {
@@ -22,7 +22,7 @@ export const useSystemConfig = defineStore('system', () => {
               title: '更新提示',
               content: '有新版本了，是否前往更新？',
               confirmText: '去更新',
-              cancelText: '暂不更新',
+              cancelText: '暫不更新',
               success: (res) => {
                 if (res.confirm) {
                   // #ifdef APP-PLUS
@@ -36,7 +36,7 @@ export const useSystemConfig = defineStore('system', () => {
               title: '更新提示',
               content: '有新版本了，是否前往更新？',
               confirmText: '去更新',
-              cancelText: '暂不更新',
+              cancelText: '暫不更新',
               success: (res) => {
                 if (res.confirm) {
                   uni.downloadFile({
@@ -48,24 +48,24 @@ export const useSystemConfig = defineStore('system', () => {
                           downloadRes.tempFilePath,
                           { force: true },
                           () => {
-                            console.log('安装成功');
+                            console.log('安裝成功');
                           },
                           (err) => {
-                            console.error('安装失败：' + JSON.stringify(err));
+                            console.error('安裝失敗：' + JSON.stringify(err));
                           }
                         );
                         //#endif
                       } else {
                         uni.showToast({
-                          title: '下载失败，请稍后重试',
+                          title: '下載失敗，請稍後重試',
                           icon: 'none'
                         })
                       }
                     },
                     fail: (err) => {
-                      console.error('下载失败', err)
+                      console.error('下載失敗', err)
                       uni.showToast({
-                        title: '下载失败，请稍后重试',
+                        title: '下載失敗，請稍後重試',
                         icon: 'none'
                       })
                     }

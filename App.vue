@@ -12,7 +12,7 @@ import {useSystemConfig} from "@/model/system";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
-// 初始化音频播放器
+// 初始化音頻播放器
 const audio = uni.createInnerAudioContext()
 // #ifdef MP-WEIXIN
 audio.obeyMuteSwitch = false
@@ -44,28 +44,28 @@ const {send, connect} = useWebSocket(`${baseUrl.replace(/^https?:\/\//, 'ws://')
         client_id: data.client_id,
       }).then(res => {
         if (res.data.result === 1) {
-          console.log('绑定客户端ID成功:', data.client_id)
+          console.log('綁定客戶端ID成功:', data.client_id)
         } else {
-          console.error('绑定客户端ID失败:', res.data.message)
+          console.error('綁定客戶端ID失敗:', res.data.message)
         }
       })
     }
-    // 播放条件：type !== 'ping'
+    // 播放條件：type !== 'ping'
     if (data.type !== 'ping' && data.type !== 'init') {
-      console.log('📩 播放音频，因为收到消息:', data)
+      console.log('📩 播放音頻，因為收到消息:', data)
       nextTick(() => {
         playAudio()
       })
     }
   },
   onOpen: () => {
-    console.log('WebSocket 已连接')
+    console.log('WebSocket 已連接')
   },
   onClose: () => {
-    console.log('WebSocket 已断开')
+    console.log('WebSocket 已斷開')
   },
   onError: (err) => {
-    console.error('WebSocket 出错:', err)
+    console.error('WebSocket 出錯:', err)
   }
 })
 
@@ -84,7 +84,7 @@ onLaunch(() => {
 
 <style lang="scss">
 @import "static/font/iconfont.css";
-/*每个页面公共css */
+/*每個頁面公共css */
 
 view, scrollview, text {
   box-sizing: border-box;

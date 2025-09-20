@@ -28,10 +28,10 @@ export const useUserStore = defineStore('user', () => {
     return userInfo.value?.is_visitor === 1
   })
 
-  // 设置游客模式
+  // 設置遊客模式
   const setVisitorModal = (bool) => {
     if (bool) {
-      userInfo.value = {is_visitor: 1, nickname: '游客'}
+      userInfo.value = {is_visitor: 1, nickname: '遊客'}
       uni.setStorageSync('is_visitor', '1')
       // uni.setStorageSync('token', 'visitor_token')
       uni.reLaunch({
