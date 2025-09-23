@@ -23,6 +23,30 @@
             "Camera" : {},
             "Barcode" : {}
         },
+		"locales" : {
+			"zh" : {
+				"name" : "Bulka-business",
+				"ios" : {
+					"privacyDescription" : {
+						 "NSLocationWhenInUseUsageDescription": "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
+						  "NSCameraUsageDescription": "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
+						  "NSPhotoLibraryUsageDescription": "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
+						  "NSPhotoLibraryAddUsageDescription": "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。"
+					}
+				}
+			},
+			"en" : {
+				"name" : "Bulka-business",
+				"ios" : {
+					"privacyDescription" : {
+						"NSLocationWhenInUseUsageDescription": "To help merchants set store locations and recommend nearby food delivery options to users, this app requires access to your location. Location permission is only used when you actively set the store location or request nearby recommendations, and the app will not continuously access your location in the background.",
+						  "NSCameraUsageDescription": "To allow you to scan customer pickup codes for order verification, this app requires access to the camera. The permission is only used when you actively use the scanning feature, and the app will not use the camera in the background.",
+						  "NSPhotoLibraryUsageDescription": "To allow you to upload photos when submitting feedback or posting order reviews, this app requires access to your photo library. The permission is only used when you actively choose to upload a photo, and the app will not access or collect any other photos in the background.",
+						  "NSPhotoLibraryAddUsageDescription": "To allow you to save order QR codes or receipt screenshots to your photo library, this app requires permission to add photos. The permission is only used when you actively choose to save an image, and the app will not modify or save other photos in your library in the background."
+					}
+				}
+			}
+		},
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
@@ -56,8 +80,10 @@
             "ios" : {
                 "dSYMs" : false,
                 "privacyDescription" : {
-                    "NSLocationWhenInUseUsageDescription" : "需要使用定位权限获取当前位置",
-                    "NSCameraUsageDescription" : "需要使用相机进行扫码"
+                     "NSLocationWhenInUseUsageDescription": "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
+                      "NSCameraUsageDescription": "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
+                      "NSPhotoLibraryUsageDescription": "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
+                      "NSPhotoLibraryAddUsageDescription": "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。"
                 },
                 "idfa" : false
             },
