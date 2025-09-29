@@ -343,6 +343,14 @@
 				"navigationBarBackgroundColor": "#fff",
 				"navigationBarTextStyle": "black"
 			}
+		},
+		{
+			"path": "pages/protocol/index",
+			"style": {
+				"navigationBarTitleText": "协议信息",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {

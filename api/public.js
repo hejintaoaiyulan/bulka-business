@@ -73,3 +73,8 @@ export const sendFeedback = (params) => {
 export const getSystemPublicConfig = () => {
     return request.get('/store/index/init', {})
 }
+
+/** 获取协议信息 */
+export const getProtocol = (params) => {
+    return request.get('/store/index/protocol', params)
+}
