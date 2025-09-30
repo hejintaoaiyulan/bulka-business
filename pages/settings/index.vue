@@ -22,7 +22,7 @@ const handleLogout = () => {
     <uv-cell title="賬戶安全中心" arrow-direction="right" :isLink="true" title-style="line-height: 90rpx" url="/pages/settings/account-safe"></uv-cell>
     <uv-cell title="關於我們" arrow-direction="right" :isLink="true" title-style="line-height: 90rpx" url="/pages/protocol/index?name=aboutUs"></uv-cell>
     <uv-cell title="常見問題" arrow-direction="right" :isLink="true" url="/pages/account/helper" title-style="line-height: 90rpx"></uv-cell>
-    <uv-cell title="清除緩存" value="200M" title-style="line-height: 90rpx"></uv-cell>
+<!--    <uv-cell title="清除緩存" value="200M" title-style="line-height: 90rpx"></uv-cell>-->
     <uv-cell title="版本信息" arrow-direction="right" :isLink="true" title-style="line-height: 90rpx" url="/pages/protocol/index?name=version"></uv-cell>
     <uv-cell title="反饋建議" url="/pages/feedback/index" arrow-direction="right" :isLink="true" title-style="line-height: 90rpx"></uv-cell>
   </uv-cell-group>
