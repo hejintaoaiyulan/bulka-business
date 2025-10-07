@@ -347,7 +347,7 @@
 		{
 			"path": "pages/protocol/index",
 			"style": {
-				"navigationBarTitleText": "协议信息",
+				"navigationBarTitleText": "協議信息",
 				"navigationBarBackgroundColor": "#fff",
 				"navigationBarTextStyle": "black"
 			}
