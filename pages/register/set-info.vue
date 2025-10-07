@@ -139,7 +139,7 @@ const handleToHome = () => {
       </view>
 
       <view v-if="currentStep === 1" class="card">
-        <view class="card-title">商家基本信息</view>
+        <view class="card-title">商家基本資訊</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">

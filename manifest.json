@@ -5,7 +5,7 @@
     "versionName" : "2.1.0",
     "versionCode" : 20100,
     "transformPx" : false,
-    /* 5+App特有相关 */
+    /* 5+App特有相關 */
     "app-plus" : {
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
@@ -16,7 +16,7 @@
             "autoclose" : true,
             "delay" : 0
         },
-        /* 模块配置 */
+        /* 模塊配置 */
         "modules" : {
             "Maps" : {},
             "Geolocation" : {},
@@ -28,10 +28,10 @@
 				"name" : "Bulka-business",
 				"ios" : {
 					"privacyDescription" : {
-						 "NSLocationWhenInUseUsageDescription": "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
-						  "NSCameraUsageDescription": "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
-						  "NSPhotoLibraryUsageDescription": "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
-						  "NSPhotoLibraryAddUsageDescription": "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。"
+						 "NSLocationWhenInUseUsageDescription": "為了幫您在商家端設置店鋪位置，並在用戶端推薦周邊的美食外賣，本應用需要使用定位權限。定位權限僅在您主動進行位置設置或獲取周邊推薦時調用，本應用不會在後臺持續獲取位置信息。",
+						  "NSCameraUsageDescription": "為了幫您在取餐時掃描客戶的取餐碼以完成訂單核銷，本應用需要使用相機功能。相機權限僅在您主動使用掃碼功能時調用，本應用不會在後臺開啟或使用相機。",
+						  "NSPhotoLibraryUsageDescription": "為了幫您在提交反饋意見、發佈訂單評價等功能時上傳照片，本應用需要訪問您的相冊。相冊權限僅在您主動選擇上傳圖片時調用，本應用不會在後臺讀取或收集其他照片。",
+						  "NSPhotoLibraryAddUsageDescription": "為了幫您在需要時將訂單二維碼或憑證截圖保存到相冊，本應用需要寫入相冊的權限。保存權限僅在您主動選擇保存圖片時調用，本應用不會在後臺保存或修改相冊中的其他照片。"
 					}
 				}
 			},
@@ -47,7 +47,7 @@
 				}
 			}
 		},
-        /* 应用发布信息 */
+        /* 應用發佈信息 */
         "distribute" : {
             /* android打包配置 */
             "android" : {
@@ -80,10 +80,10 @@
             "ios" : {
                 "dSYMs" : false,
                 "privacyDescription" : {
-                     "NSLocationWhenInUseUsageDescription": "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
-                      "NSCameraUsageDescription": "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
-                      "NSPhotoLibraryUsageDescription": "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
-                      "NSPhotoLibraryAddUsageDescription": "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。"
+                     "NSLocationWhenInUseUsageDescription": "為了幫您在商家端設置店鋪位置，並在用戶端推薦周邊的美食外賣，本應用需要使用定位權限。定位權限僅在您主動進行位置設置或獲取周邊推薦時調用，本應用不會在後臺持續獲取位置信息。",
+                      "NSCameraUsageDescription": "為了幫您在取餐時掃描客戶的取餐碼以完成訂單核銷，本應用需要使用相機功能。相機權限僅在您主動使用掃碼功能時調用，本應用不會在後臺開啟或使用相機。",
+                      "NSPhotoLibraryUsageDescription": "為了幫您在提交反饋意見、發佈訂單評價等功能時上傳照片，本應用需要訪問您的相冊。相冊權限僅在您主動選擇上傳圖片時調用，本應用不會在後臺讀取或收集其他照片。",
+                      "NSPhotoLibraryAddUsageDescription": "為了幫您在需要時將訂單二維碼或憑證截圖保存到相冊，本應用需要寫入相冊的權限。保存權限僅在您主動選擇保存圖片時調用，本應用不會在後臺保存或修改相冊中的其他照片。"
                 },
                 "idfa" : false
             },
@@ -135,9 +135,9 @@
             }
         }
     },
-    /* 快应用特有相关 */
+    /* 快應用特有相關 */
     "quickapp" : {},
-    /* 小程序特有相关 */
+    /* 小程序特有相關 */
     "mp-weixin" : {
         "appid" : "",
         "setting" : {
