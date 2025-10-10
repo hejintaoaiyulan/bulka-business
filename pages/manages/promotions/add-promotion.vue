@@ -64,7 +64,7 @@ onShow(() => {
 })
 
 const handleToAddGoods = () => {
-  if(shopConfig.value.discount_activity_max_count) {
+  if(shopConfig.value?.discount_activity_max_count) {
     if(formData.value.goods.length >= shopConfig.value.discount_activity_max_count) {
       return Toast.info(`最多隻能添加${shopConfig.value.discount_activity_max_count}件商品`)
     }

@@ -41,6 +41,9 @@ const activeForm = ref({
   stock: ''
 })
 
+const isEditMode = ref(false)
+const editingAttrId = ref(null)
+
 const clearActiveForm = () => {
   activeForm.value = {
     name: '',
@@ -48,6 +51,8 @@ const clearActiveForm = () => {
     sale_price: '',
     stock: ''
   }
+  isEditMode.value = false
+  editingAttrId.value = null
 }
 
 const activeSpecification = ref({})
@@ -58,8 +63,22 @@ const handleBack = () => {
 }
 
 const handleAddItem = (val) => {
+  clearActiveForm()
   popUp.value?.open()
   activeSpecification.value = val
+}
+
+const handleEditItem = (spec, attr) => {
+  isEditMode.value = true
+  editingAttrId.value = attr._id || attr.id
+  activeForm.value = {
+    name: attr.name,
+    original_price: attr.original_price,
+    sale_price: attr.sale_price,
+    stock: attr.stock
+  }
+  activeSpecification.value = spec
+  popUp.value?.open()
 }
 
 const handleAddSpecification = () => {
@@ -80,9 +99,21 @@ const handleSaveAttr = () => {
   if(!activeForm.value.stock) {
     return Toast.info('請輸入庫存')
   }
+  
   formListData.value = formListData.value.map((item) => {
     if((item._id === activeSpecification.value._id && item._id) || (item.id === activeSpecification.value.id && item.id)) {
-      item.goods_spec_attr = (item.goods_spec_attr || []).concat({...activeForm.value, _id: uniqueId()})
+      if (isEditMode.value) {
+        // 編輯模式：更新現有規格項
+        item.goods_spec_attr = item.goods_spec_attr.map(attr => {
+          if ((attr._id === editingAttrId.value && attr._id) || (attr.id === editingAttrId.value && attr.id)) {
+            return {...activeForm.value, _id: attr._id || attr.id, id: attr.id}
+          }
+          return attr
+        })
+      } else {
+        // 新增模式：添加新規格項
+        item.goods_spec_attr = (item.goods_spec_attr || []).concat({...activeForm.value, _id: uniqueId()})
+      }
       return item
     }
     return item
@@ -95,7 +126,7 @@ const handleSaveAttr = () => {
 const handleRemoveAttr = (data, item) => {
   uni.showModal({
     title: '提示',
-    content: `確認刪除【${item.name}】 規格選項嗎?`,
+    content: `確認刪除【${item.name}】 規格選項嗎？`,
     success: (result) => {
       if(result.confirm) {
         formListData.value = formListData.value.map((dataItem) => {
@@ -154,7 +185,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否支持多選</text>
+              <text>是否支援多選</text>
             </view>
             <view class="form-value">
               <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx" v-model="item.multiple_status">
@@ -166,10 +197,10 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>規則選項</text>
+              <text>規格選項</text>
             </view>
             <view class="form-value" @click="handleAddItem(item)">
-              <text class="setting-mode">添加規格項</text>
+              <text class="setting-mode">新增規格項</text>
             </view>
           </view>
         </view>
@@ -178,8 +209,13 @@ const handleSubmit = () => {
           <view class="option" v-for="opt in item.goods_spec_attr" :key="opt.id">
             <view class="option-title">
               <view class="name">{{opt.name}}</view>
-              <view class="remove-icon" @click.stop="handleRemoveAttr(item, opt)">
-                <text class="iconfont icon-shanchu"></text>
+              <view class="option-actions">
+                <view class="edit-icon" @click.stop="handleEditItem(item, opt)">
+                  <text class="iconfont icon-bianji"></text>
+                </view>
+                <view class="remove-icon" @click.stop="handleRemoveAttr(item, opt)">
+                  <text class="iconfont icon-shanchu"></text>
+                </view>
               </view>
             </view>
             <view class="option-price">
@@ -188,18 +224,18 @@ const handleSubmit = () => {
             </view>
           </view>
           <view class="empty" v-if="!item.goods_spec_attr?.length">
-            暫無規格項，請添加
+            暫無規格項，請新增
           </view>
         </view>
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" @click="handleSubmit">保存</uv-button>
+      <uv-button class="operation-item" @click="handleSubmit">儲存</uv-button>
     </view>
 
     <uv-popup mode="bottom" ref="popUp">
       <view class="pop-content">
-        <view class="title">添加規格項</view>
+        <view class="title">{{ isEditMode ? '編輯規格項' : '新增規格項' }}</view>
         <view class="form">
           <view class="form-item">
             <uv-input placeholder="輸入規格項名稱" v-model="activeForm.name" />
@@ -308,6 +344,26 @@ const handleSubmit = () => {
       font-size: 30rpx;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+    }
+    
+    .option-actions {
+      display: flex;
+      gap: 10rpx;
+    }
+    
+    .edit-icon, .remove-icon {
+      padding: 5rpx;
+      color: #666;
+      font-size: 24rpx;
+    }
+    
+    .edit-icon {
+      color: #3c9cff;
+    }
+    
+    .remove-icon {
+      color: #ff4757;
     }
     .option-price {
       display: flex;
