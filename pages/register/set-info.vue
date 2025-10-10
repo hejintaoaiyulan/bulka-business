@@ -13,6 +13,8 @@ const {uploadFile} = useFileUpload()
 const info = ref({})
 const types = ref([])
 const isCheckError = ref(false)
+// 身份證要幾張照片
+const idCardImgNumber = 1
 
 const getInfo = () => {
   getShopCheck().then(res => {
@@ -84,7 +86,7 @@ const handleChooseDirector = () => {
   uploadFile({
     url: '/store/index/uploadImage',
     name: 'image',
-    count: 2 - (info.value.director_images?.length || 0),
+    count: idCardImgNumber - (info.value.director_images?.length || 0),
     fileType: ['image']
   }).then(res => {
     info.value.view_images = (info.value.view_images || []).concat(res)
@@ -239,7 +241,7 @@ const handleToHome = () => {
                     @click="handleShowActions(img, index)">
                 <uv-image :src="img.url" mode="aspectFit" width="100%" height="100%" radius="5"/>
               </view>
-              <view class="add-file-box" v-if="(info.director_images?.length || 0) < 2" @click="handleChooseDirector">
+              <view class="add-file-box" v-if="(info.director_images?.length || 0) < idCardImgNumber" @click="handleChooseDirector">
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
             </view>
