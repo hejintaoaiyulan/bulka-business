@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import UvPopup from "../../../uni_modules/uv-popup/components/uv-popup/uv-popup.vue";
 import UvInput from "../../../uni_modules/uv-input/components/uv-input/uv-input.vue";
@@ -18,9 +18,9 @@ const keyName = {
   9: '九',
   10: '十'
 }
-let options = {}
+const options = ref({})
 onLoad((query) => {
-  options = query
+  options.value = query || {}
   if(query?.type?.toString() === '1') {
     const d = uni.getStorageSync('goods_spec')
     uni.removeStorageSync('goods_spec')
@@ -99,7 +99,7 @@ const handleSaveAttr = () => {
   if(!activeForm.value.stock) {
     return Toast.info('請輸入庫存')
   }
-  
+
   formListData.value = formListData.value.map((item) => {
     if((item._id === activeSpecification.value._id && item._id) || (item.id === activeSpecification.value.id && item.id)) {
       if (isEditMode.value) {
@@ -166,6 +166,9 @@ const handleSubmit = () => {
       </template>
     </uv-navbar>
     <view class="content">
+      <view class="card">
+        <view class="card-title">當前商品名稱：{{ options.goods_name || '' }}</view>
+      </view>
       <view class="empty" v-if="!formListData.length">
         <text>暫無規格，點擊右上角添加</text>
       </view>
@@ -346,22 +349,22 @@ const handleSubmit = () => {
       justify-content: space-between;
       align-items: center;
     }
-    
+
     .option-actions {
       display: flex;
       gap: 10rpx;
     }
-    
+
     .edit-icon, .remove-icon {
       padding: 5rpx;
       color: #666;
       font-size: 24rpx;
     }
-    
+
     .edit-icon {
       color: #3c9cff;
     }
-    
+
     .remove-icon {
       color: #ff4757;
     }

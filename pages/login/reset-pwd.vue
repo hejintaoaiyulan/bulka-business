@@ -102,7 +102,7 @@ const handleSubmit = () => {
         <view class="form-value">
           <uv-input placeholder="請輸入驗證碼" v-model="formData.code">
             <template v-slot:suffix>
-              <uv-code seconds="60" @change="codeChange" change-text="x秒後重新獲取"></uv-code>
+              <uv-code seconds="60" start-text="獲取驗證碼" end-text="重新獲取" @change="codeChange" change-text="x秒後重新獲取"></uv-code>
               <uv-button size="mini" :text="tips" type="success" @click="getCode"></uv-button>
             </template>
           </uv-input>

@@ -74,7 +74,7 @@ const handleToSetSpecification = () => {
     n = '1'
   }
   uni.navigateTo({
-    url: '/pages/manages/goods/specification?type=' + n,
+    url: '/pages/manages/goods/specification?type=' + n + '&goods_name=' + formData.value.goods_name,
     success: () => {
       uni.$once('updateSpecification', (data) => {
         formData.value.goods_spec = unref(data)

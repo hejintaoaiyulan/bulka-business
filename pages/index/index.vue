@@ -80,7 +80,7 @@
               </view>
               <view class="msg">
                 <view>優惠活動管理</view>
-                <view class="tip">設置多充商品組合優惠活動</view>
+                <view class="tip">設置連續性折扣組合</view>
               </view>
               <view class="right-icon">
                 <text class="iconfont icon-arrow-right-copy"></text>
