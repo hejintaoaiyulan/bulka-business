@@ -67,6 +67,31 @@ const getCategories = () => {
   })
 }
 
+function getLowestDiscount(specList) {
+  const discounts = [];
+
+  (specList || []).forEach(spec => {
+    (spec.goods_spec_attr || []).forEach(attr => {
+      const original = parseFloat(attr?.original_price) || 0;
+      const sale = parseFloat(attr?.sale_price) || 0;
+
+      // 过滤掉无效或为 0 的价格
+      if (original > 0 && sale > 0) {
+        const discount = (sale / original) * 10;
+        if (!isNaN(discount) && discount > 0) {
+          discounts.push(discount);
+        }
+      }
+    });
+  });
+
+  // 没有有效折扣，默认返回 10（无折扣）
+  if (discounts.length === 0) return 10;
+
+  return Math.min(...discounts).toFixed(2);
+}
+
+
 const handleToSetSpecification = () => {
   let n = ''
   if (formData.value.goods_spec?.length) {
@@ -79,6 +104,7 @@ const handleToSetSpecification = () => {
       uni.$once('updateSpecification', (data) => {
         formData.value.goods_spec = unref(data)
         formData.value.goods_spec_name = unref(data).map(item => item.goods_spec_name).join('、')
+        formData.value.discount = getLowestDiscount(unref(data))
       })
     }
   })
@@ -116,14 +142,22 @@ onShow(() => {
   getCategories()
 })
 
+// 折扣
 const discount = computed(() => {
-  if (!formData.value.original_price || !formData.value.sale_price) {
+  const original = Number(formData.value.original_price) || 0
+  const sale = Number(formData.value.sale_price) || 0
+
+  // 无效或为 0 的情况，直接返回 0
+  if (original <= 0 || sale <= 0) {
+    formData.value.discount = 0
     return 0
   }
-  const value = +((formData.value.sale_price || 0) / (formData.value.original_price || 0) * 10).toFixed(2)
+
+  const value = +((sale / original) * 10).toFixed(2)
   formData.value.discount = value
   return value
 })
+
 
 const handleSave = () => {
   const baseFields = ['goods_image', 'id', 'goods_name', 'goods_desc', 'goods_type_id', 'goods_category_id', 'goods_spec_type', 'goods_stock', 'original_price', 'sale_price', 'discount', 'top_status', 'publish_status', 'weigh', 'goods_spec']
@@ -291,7 +325,7 @@ const handleSave = () => {
             </view>
             <view class="form-value">
               <text v-if="single">{{ discount }}</text>
-              <uv-input v-else v-model="formData.discount" placeholder="請輸入商品折扣" type="digit" :border="false"
+              <uv-input v-else v-model="formData.discount" readonly placeholder="請輸入商品折扣" type="digit" :border="false"
                         input-align="right" fontSize="26rpx"/>
             </view>
           </view>
