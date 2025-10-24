@@ -137,7 +137,15 @@ const handleCancel = (order, evt) => {
   })
 }
 
-const handleOperation = () => {}
+const handleStopPush = (order, evt) => {
+  if(evt) {
+    evt?.stopPropagation()
+  }
+  // 停止推送
+  showModal('是否確定停止消息推送').then(() => {
+    stopOrderPush({order_no: order.order_no}).then(() => {
+    search()
+  })
 
 </script>
 
@@ -195,6 +203,7 @@ const handleOperation = () => {}
           <view class="order-operation">
             <view class="order-time">{{ order.createtime }}</view>
             <view class="order-btns" v-if="![5,6].includes(order.status)" @click="handleOperation">
+              <uv-button size="small" v-if="order.push_status === 0" @click="handleStopPush(order, $event)">停止推送</uv-button>
               <uv-button size="small" v-if="[1,2,3].includes(order.status)" @click="handleCancel(order, $event)">取消訂單</uv-button>
               <uv-button size="small" v-if="order.status === 2" @click="handleAccept(order, $event)">接單</uv-button>
               <uv-button size="small" v-if="order.status === 3" @click="handleServingFood(order, $event)">確認出餐</uv-button>
