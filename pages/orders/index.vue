@@ -144,8 +144,11 @@ const handleStopPush = (order, evt) => {
   // 停止推送
   showModal('是否確定停止消息推送').then(() => {
     stopOrderPush({order_no: order.order_no}).then(() => {
-    search()
+      Toast.success('操作成功')
+      search()
+    })
   })
+}
 
 </script>
 
