@@ -30,3 +30,8 @@ export const scanOrder = (params) => {
   console.log(params)
   return request.post('/store/order/scanOrder', params)
 }
+
+// 停止播報
+export const stopOrderPush = (params) => {
+  return request.post('/store/order/stopOrderPush', params)
+}
