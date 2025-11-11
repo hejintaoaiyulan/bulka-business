@@ -114,7 +114,7 @@ export const usePageLoading = (
     if (loading.value || !hasMore.value) return console.log('load-next page padding')
     pageParams.value.page++
     return getData(loadDataParams).catch(err => {
-      pageParams.value.page --
+      pageParams.value.page--
     })
   }
 
@@ -126,7 +126,7 @@ export const usePageLoading = (
     return dataList.value.reduce((acc, item) => {
       acc[item.id] = item
       return acc
-    } , {})
+    }, {})
   })
 
   return {
@@ -147,18 +147,18 @@ export const useShowModalTime = () => {
   const visible = ref(false)
   const open = (shop_id, debug) => {
     let time = 1000 * 60 * 5
-    if(!shop_id) return false
-    if(debug) {
+    if (!shop_id) return false
+    if (debug) {
       time = 1000 * 10 // 調試模式下每10秒允許彈窗
     }
     // 最後一次彈窗時間
     const lastTime = uni.getStorageSync('shopActiveModal_' + shop_id)
-    if(!lastTime) {
+    if (!lastTime) {
       visible.value = true
       uni.setStorageSync('shopActiveModal_' + shop_id, Date.now())
-    }else {
+    } else {
       const now = Date.now()
-      if(now - lastTime > time) {
+      if (now - lastTime > time) {
         visible.value = true
         uni.setStorageSync('shopActiveModal_' + shop_id, Date.now())
       } else {
@@ -181,7 +181,7 @@ export const useShowModalTime = () => {
 
 export function useWebSocket(url, options = {}) {
   const {
-    autoConnect = true,
+    autoConnect,
     reconnectInterval = 5000,
     onMessage,
     onOpen,
@@ -190,13 +190,17 @@ export function useWebSocket(url, options = {}) {
   } = options
 
   const socket = ref(null)
+  const isUserStop = ref(false)
   const isConnected = ref(false)
   const reconnectTimer = ref(null)
 
   const connect = () => {
-    if (!url) return
+    if (!url || isConnected.value) return
 
-    socket.value = uni.connectSocket({ url, method: options.method || 'GET', complete: () => {} })
+    socket.value = uni.connectSocket({
+      url, method: options.method || 'GET', complete: () => {
+      }
+    })
 
     socket.value.onOpen?.((res) => {
       isConnected.value = true
@@ -211,14 +215,16 @@ export function useWebSocket(url, options = {}) {
     socket.value.onClose?.((res) => {
       isConnected.value = false
       onClose && onClose(res)
-      reconnect()
+      if (!isUserStop.value)
+        reconnect()
     })
 
     socket.value.onError?.((err) => {
       console.log(url)
       isConnected.value = false
       onError && onError(err)
-      reconnect()
+      if (!isUserStop.value)
+        reconnect()
     })
   }
 
@@ -240,7 +246,8 @@ export function useWebSocket(url, options = {}) {
     }
   }
 
-  const close = () => {
+  const close = (flag) => {
+	  isUserStop.value = !!flag
     if (socket.value) {
       socket.value.close()
     }
@@ -248,7 +255,7 @@ export function useWebSocket(url, options = {}) {
 
   onUnmounted(() => {
     close()
-    if (reconnectTimer.value) clearTimeout(reconnectTimer.value)
+    clearTimeout(reconnectTimer.value)
   })
 
   if (autoConnect) connect()

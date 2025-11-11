@@ -2,8 +2,8 @@
     "name" : "Bulka-business",
     "appid" : "__UNI__12D0337",
     "description" : "",
-    "versionName" : "2.1.10",
-    "versionCode" : 201010,
+    "versionName" : "2.1.19",
+    "versionCode" : 201019,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -21,7 +21,8 @@
             "Maps" : {},
             "Geolocation" : {},
             "Camera" : {},
-            "Barcode" : {}
+            "Barcode" : {},
+            "Push" : {}
         },
         // "locales" : {
         //     "zh" : {
@@ -101,6 +102,21 @@
                 "geolocation" : {
                     "system" : {
                         "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "push" : {
+                    "unipush" : {
+                        "version" : "2",
+                        "offline" : false,
+                        "icons" : {
+                            "small" : {
+                                "ldpi" : "unpackage/res/icons/20x20.png",
+                                "mdpi" : "unpackage/res/icons/29x29.png",
+                                "hdpi" : "unpackage/res/icons/58x58.png",
+                                "xhdpi" : "unpackage/res/icons/72x72.png",
+                                "xxhdpi" : "unpackage/res/icons/80x80.png"
+                            }
+                        }
                     }
                 }
             },

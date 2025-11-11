@@ -50,6 +50,7 @@ export const useUserStore = defineStore('user', () => {
       url: '/pages/login/index'
     })
     uni.removeStorageSync('is_visitor')
+    uni.$emit('closeWebSocket')
   }
 
 
