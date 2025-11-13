@@ -1,70 +1,87 @@
 <script setup>
-import {ref} from 'vue'
-import {getSMSCode} from "../../api/public";
-import {Register} from "../../api/login";
-import {Regs} from "../../globalConfig";
-import {Toast, setToken} from "../../utils";
+import { ref } from "vue";
+import { getSMSCode } from "../../api/public";
+import { Register } from "../../api/login";
+import { Regs } from "../../globalConfig";
+import { Toast, setToken } from "../../utils";
 
-const tips = ref('')
-const oldCode = ref()
+const tips = ref("");
+const oldCode = ref();
 // const isCheckOldMobile = ref(false)
 const formData = ref({
-  prefix: '86',
-  mobile: '',
-  code: '',
-  password: ''
-})
+  prefix: "86",
+  mobile: "",
+  code: "",
+  password: "",
+});
 
 const codeChange = (text) => {
-  tips.value = text
-}
+  tips.value = text;
+};
 
 const getCode = () => {
-  console.log('get code')
-  if(oldCode.value.canGetCode)
-  getSMSCode({mobile: formData.value.mobile, prefix: formData.value.prefix, type: 'register'}).then(res => {
-    console.log(res, 'res')
-    oldCode.value?.start()
-    Toast.success('驗證碼已發送')
-  })
-}
+  console.log("get code");
+  if (oldCode.value.canGetCode)
+    getSMSCode({
+      mobile: formData.value.mobile,
+      prefix: formData.value.prefix,
+      type: "register",
+    }).then((res) => {
+      console.log(res, "res");
+      oldCode.value?.start();
+      Toast.success("驗證碼已發送");
+    });
+};
 
 const checkFormData = () => {
   if (!Regs.mobile.test(formData.value.mobile)) {
-    Toast.info('請輸入正確的手機號')
-    return false
+    Toast.info("請輸入正確的手機號");
+    return false;
   }
   if (!formData.value.code) {
-    Toast.info('請輸入驗證碼')
-    return false
+    Toast.info("請輸入驗證碼");
+    return false;
   }
   if (!formData.value.password) {
-    Toast.info('請輸入密碼')
-    return false
+    Toast.info("請輸入密碼");
+    return false;
   }
-  return true
-}
-
-
+  return true;
+};
 
 const handleToSetInfo = () => {
-  const check = checkFormData()
-  if (!check) return
-  Register({...formData.value, prefix: formData.value.prefix}).then(res => {
-    const {access_token, check_status, token_type , expires_in} = res.data || {}
-    setToken(access_token, expires_in)
-    uni.setStorageSync('token_type', token_type)
-    if(check_status !== 4) {
+  const check = checkFormData();
+  if (!check) return;
+  // #ifdef APP
+  uni.getPushClientId({
+    success: (res) => {
+      // Toast.info(res.cid);
+      console.log(res, 99999); //看下这处有没有执行 执行的cid是多少 真机跑下
+      handleToSetInfo2(res.cid);
+    },
+    fail(err) {
+      // Toast.info(err);
+      handleToSetInfo2("");
+    },
+  });
+  // #endif
+};
+const handleToSetInfo2 = (cid) => {
+  Register({ ...formData.value, prefix: formData.value.prefix, push_clientid: cid }).then((res) => {
+    const { access_token, check_status, token_type, expires_in } = res.data || {};
+    setToken(access_token, expires_in);
+    uni.setStorageSync("token_type", token_type);
+    if (check_status !== 4) {
       uni.navigateTo({
-        url: '/pages/register/set-info'
-      })
-    }else if(check_status) {
+        url: "/pages/register/set-info",
+      });
+    } else if (check_status) {
       uni.navigateTo({
-        url: '/pages/login/index'
-      })
+        url: "/pages/login/index",
+      });
     }
-  })
-}
+  });
+};
 </script>
 
 <template>
@@ -79,14 +96,14 @@ const handleToSetInfo = () => {
             <view class="iconfont icon-zhanghaozhongxinzhanghaoguanli"></view>
             <view class="label-text">手機號</view>
           </view>
-          <view class="form-value" style="display: flex; column-gap: 10rpx; align-items: center;">
-            <uv-input placeholder="請輸入區號" v-model="formData.prefix" custom-style="width: 150rpx; flex: none">
+          <view class="form-value" style="display: flex; column-gap: 10rpx; align-items: center">
+            <uv-input
+              placeholder="請輸入區號"
+              v-model="formData.prefix"
+              custom-style="width: 150rpx; flex: none"
+            >
               <template v-slot:prefix>
-                <uv-text
-                    text="+"
-                    margin="0 3px 0 0"
-                    type="tips"
-                ></uv-text>
+                <uv-text text="+" margin="0 3px 0 0" type="tips"></uv-text>
               </template>
             </uv-input>
             <uv-input placeholder="請輸入手機號" v-model="formData.mobile"></uv-input>
@@ -100,7 +117,14 @@ const handleToSetInfo = () => {
           <view class="form-value">
             <uv-input placeholder="請輸入驗證碼" v-model="formData.code">
               <template v-slot:suffix>
-                <uv-code seconds="60" start-text="獲取驗證碼" end-text="重新獲取" @change="codeChange" change-text="x秒後重新獲取" ref="oldCode"></uv-code>
+                <uv-code
+                  seconds="60"
+                  start-text="獲取驗證碼"
+                  end-text="重新獲取"
+                  @change="codeChange"
+                  change-text="x秒後重新獲取"
+                  ref="oldCode"
+                ></uv-code>
                 <uv-button size="mini" :text="tips" type="success" @click="getCode"></uv-button>
               </template>
             </uv-input>
@@ -112,13 +136,21 @@ const handleToSetInfo = () => {
             <view class="label-text">設置密碼</view>
           </view>
           <view class="form-value">
-            <uv-input placeholder="請輸入密碼" type="password" v-model="formData.password"></uv-input>
+            <uv-input
+              placeholder="請輸入密碼"
+              type="password"
+              v-model="formData.password"
+            ></uv-input>
           </view>
         </view>
       </view>
 
       <view class="submit-button">
-        <uv-button custom-style="background: black; color: #fff" :hairline="false" @click="handleToSetInfo">下一步
+        <uv-button
+          custom-style="background: black; color: #fff"
+          :hairline="false"
+          @click="handleToSetInfo"
+          >下一步
         </uv-button>
       </view>
     </view>
@@ -170,7 +202,6 @@ const handleToSetInfo = () => {
       color: #999;
     }
   }
-
 }
 
 .flex-right {

@@ -1,9 +1,9 @@
 <script setup>
 import {ref} from 'vue'
 import {usePageLoading} from "../../hooks";
-import {AcceptOrder, cancelOrder, getOrderList, ServingFood} from "../../api/order";
+import {AcceptOrder, cancelOrder, getOrderList, ServingFood, stopOrderPush} from "../../api/order";
 import {onShow} from '@dcloudio/uni-app'
-import {showModal} from "../../utils";
+import {showModal, Toast} from "../../utils";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 
 const storeTab = [
@@ -143,10 +143,13 @@ const handleStopPush = (order, evt) => {
   }
   // 停止推送
   showModal('是否確定停止消息推送').then(() => {
+	  console.log(order)
     stopOrderPush({order_no: order.order_no}).then(() => {
       Toast.success('操作成功')
       search()
-    })
+    }).catch(err => {
+		console.log(err)
+	})
   })
 }
 
