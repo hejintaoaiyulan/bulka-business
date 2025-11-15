@@ -1,183 +1,184 @@
 {
-    "name" : "Bulka-business",
-    "appid" : "__UNI__12D0337",
-    "description" : "",
-    "versionName" : "2.1.19",
-    "versionCode" : 201019,
-    "transformPx" : false,
-    /* 5+App特有相关 */
-    "app-plus" : {
-        "usingComponents" : true,
-        "nvueStyleCompiler" : "uni-app",
-        "compilerVersion" : 3,
-        "splashscreen" : {
-            "alwaysShowBeforeRender" : true,
-            "waiting" : true,
-            "autoclose" : true,
-            "delay" : 0
-        },
-        /* 模块配置 */
-        "modules" : {
-            "Maps" : {},
-            "Geolocation" : {},
-            "Camera" : {},
-            "Barcode" : {},
-            "Push" : {}
-        },
-        // "locales" : {
-        //     "zh" : {
-        //         "name" : "Bulka-business",
-        //         "ios" : {
-        //             "privacyDescription" : {
-        //                 "NSLocationWhenInUseUsageDescription" : "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
-        //                 "NSCameraUsageDescription" : "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
-        //                 "NSPhotoLibraryUsageDescription" : "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
-        //                 "NSPhotoLibraryAddUsageDescription" : "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。",
-        //                 "NSLocationAlwaysAndWhenInUseUsageDescription" : "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。"
-        //             }
-        //         }
-        //     },
-        //     "en" : {
-        //         "name" : "Bulka-business",
-        //         "ios" : {
-        //             "privacyDescription" : {
-        //                 "NSLocationWhenInUseUsageDescription" : "To help merchants set store locations and recommend nearby food delivery options to users, this app requires access to your location. Location permission is only used when you actively set the store location or request nearby recommendations, and the app will not continuously access your location in the background.",
-        //                 "NSCameraUsageDescription" : "To allow you to scan customer pickup codes for order verification, this app requires access to the camera. The permission is only used when you actively use the scanning feature, and the app will not use the camera in the background.",
-        //                 "NSPhotoLibraryUsageDescription" : "To allow you to upload photos when submitting feedback or posting order reviews, this app requires access to your photo library. The permission is only used when you actively choose to upload a photo, and the app will not access or collect any other photos in the background.",
-        //                 "NSPhotoLibraryAddUsageDescription" : "To allow you to save order QR codes or receipt screenshots to your photo library, this app requires permission to add photos. The permission is only used when you actively choose to save an image, and the app will not modify or save other photos in your library in the background.",
-        //                 "NSLocationAlwaysAndWhenInUseUsageDescription" : "To help merchants set store locations and recommend nearby food delivery options to users, this app requires access to your location. Location permission is only used when you actively set the store location or request nearby recommendations, and the app will not continuously access your location in the background."
-        //             }
-        //         }
-        //     }
-        // },
-        /* 应用发布信息 */
-        "distribute" : {
-            /* android打包配置 */
-            "android" : {
-                "permissions" : [
-                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
-                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ],
-                "targetSdkVersion" : 35,
-                "excludePermissions" : [
-                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_MEDIA_IMAGES\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_MEDIA_VIDEO\"/>"
-                ]
-            },
-            /* ios打包配置 */
-            "ios" : {
-                "dSYMs" : false,
-                "privacyDescription" : {
-                    "NSLocationWhenInUseUsageDescription" : "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
-                    "NSCameraUsageDescription" : "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
-                    "NSPhotoLibraryUsageDescription" : "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
-                    "NSPhotoLibraryAddUsageDescription" : "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。"
-                },
-                "idfa" : false
-            },
-            /* SDK配置 */
-            "sdkConfigs" : {
-                "maps" : {
-                    "google" : {
-                        "APIKey_ios" : "AIzaSyC2dpdvm87rWSY3pocUfpxpkTawMHebSjw",
-                        "APIKey_android" : "AIzaSyC2dpdvm87rWSY3pocUfpxpkTawMHebSjw"
-                    }
-                },
-                "geolocation" : {
-                    "system" : {
-                        "__platform__" : [ "ios", "android" ]
-                    }
-                },
-                "push" : {
-                    "unipush" : {
-                        "version" : "2",
-                        "offline" : false,
-                        "icons" : {
-                            "small" : {
-                                "ldpi" : "unpackage/res/icons/20x20.png",
-                                "mdpi" : "unpackage/res/icons/29x29.png",
-                                "hdpi" : "unpackage/res/icons/58x58.png",
-                                "xhdpi" : "unpackage/res/icons/72x72.png",
-                                "xxhdpi" : "unpackage/res/icons/80x80.png"
-                            }
-                        }
-                    }
-                }
-            },
-            "icons" : {
-                "android" : {
-                    "hdpi" : "unpackage/res/icons/72x72.png",
-                    "xhdpi" : "unpackage/res/icons/96x96.png",
-                    "xxhdpi" : "unpackage/res/icons/144x144.png",
-                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
-                },
-                "ios" : {
-                    "appstore" : "unpackage/res/icons/1024x1024.png",
-                    "ipad" : {
-                        "app" : "unpackage/res/icons/76x76.png",
-                        "app@2x" : "unpackage/res/icons/152x152.png",
-                        "notification" : "unpackage/res/icons/20x20.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "proapp@2x" : "unpackage/res/icons/167x167.png",
-                        "settings" : "unpackage/res/icons/29x29.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "spotlight" : "unpackage/res/icons/40x40.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
-                    },
-                    "iphone" : {
-                        "app@2x" : "unpackage/res/icons/120x120.png",
-                        "app@3x" : "unpackage/res/icons/180x180.png",
-                        "notification@2x" : "unpackage/res/icons/40x40.png",
-                        "notification@3x" : "unpackage/res/icons/60x60.png",
-                        "settings@2x" : "unpackage/res/icons/58x58.png",
-                        "settings@3x" : "unpackage/res/icons/87x87.png",
-                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
-                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
-                    }
-                }
-            }
-        }
-    },
-    /* 快应用特有相关 */
-    "quickapp" : {},
-    /* 小程序特有相关 */
-    "mp-weixin" : {
-        "appid" : "",
-        "setting" : {
-            "urlCheck" : false,
-            "ignoreDevUnusedFiles" : false,
-            "ignoreUploadUnusedFiles" : false
-        },
-        "usingComponents" : true,
-        "requiredPrivateInfos" : [ "getLocation", "chooseAddress" ]
-    },
-    "mp-alipay" : {
-        "usingComponents" : true
-    },
-    "mp-baidu" : {
-        "usingComponents" : true
-    },
-    "mp-toutiao" : {
-        "usingComponents" : true
-    },
-    "uniStatistics" : {
-        "enable" : false
-    },
-    "vueVersion" : "3"
+	"name": "Bulka-business",
+	"appid": "__UNI__12D0337",
+	"description": "",
+	"versionName": "2.1.21",
+	"versionCode": 201021,
+	"transformPx": false,
+	/* 5+App特有相关 */
+	"app-plus": {
+		"usingComponents": true,
+		"nvueStyleCompiler": "uni-app",
+		"compilerVersion": 3,
+		"splashscreen": {
+			"alwaysShowBeforeRender": true,
+			"waiting": true,
+			"autoclose": true,
+			"delay": 0
+		},
+		/* 模块配置 */
+		"modules": {
+			"Maps": {},
+			"Geolocation": {},
+			"Camera": {},
+			"Barcode": {},
+			"Push": {}
+		},
+		// "locales" : {
+		//     "zh" : {
+		//         "name" : "Bulka-business",
+		//         "ios" : {
+		//             "privacyDescription" : {
+		//                 "NSLocationWhenInUseUsageDescription" : "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
+		//                 "NSCameraUsageDescription" : "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
+		//                 "NSPhotoLibraryUsageDescription" : "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
+		//                 "NSPhotoLibraryAddUsageDescription" : "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。",
+		//                 "NSLocationAlwaysAndWhenInUseUsageDescription" : "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。"
+		//             }
+		//         }
+		//     },
+		//     "en" : {
+		//         "name" : "Bulka-business",
+		//         "ios" : {
+		//             "privacyDescription" : {
+		//                 "NSLocationWhenInUseUsageDescription" : "To help merchants set store locations and recommend nearby food delivery options to users, this app requires access to your location. Location permission is only used when you actively set the store location or request nearby recommendations, and the app will not continuously access your location in the background.",
+		//                 "NSCameraUsageDescription" : "To allow you to scan customer pickup codes for order verification, this app requires access to the camera. The permission is only used when you actively use the scanning feature, and the app will not use the camera in the background.",
+		//                 "NSPhotoLibraryUsageDescription" : "To allow you to upload photos when submitting feedback or posting order reviews, this app requires access to your photo library. The permission is only used when you actively choose to upload a photo, and the app will not access or collect any other photos in the background.",
+		//                 "NSPhotoLibraryAddUsageDescription" : "To allow you to save order QR codes or receipt screenshots to your photo library, this app requires permission to add photos. The permission is only used when you actively choose to save an image, and the app will not modify or save other photos in your library in the background.",
+		//                 "NSLocationAlwaysAndWhenInUseUsageDescription" : "To help merchants set store locations and recommend nearby food delivery options to users, this app requires access to your location. Location permission is only used when you actively set the store location or request nearby recommendations, and the app will not continuously access your location in the background."
+		//             }
+		//         }
+		//     }
+		// },
+		/* 应用发布信息 */
+		"distribute": {
+			/* android打包配置 */
+			"android": {
+				"permissions": [
+					"<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+					"<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+					"<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+					"<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+					"<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+					"<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.CAMERA\"/>",
+					"<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+					"<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+					"<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+					"<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+					"<uses-feature android:name=\"android.hardware.camera\"/>",
+					"<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+				],
+				"targetSdkVersion": 35,
+				"excludePermissions": [
+					"<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
+					"<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+					"<uses-permission android:name=\"android.permission.READ_MEDIA_IMAGES\"/>",
+					"<uses-permission android:name=\"android.permission.READ_MEDIA_VIDEO\"/>"
+				]
+			},
+			/* ios打包配置 */
+			"ios": {
+				"dSYMs": false,
+				"privacyDescription": {
+					"NSLocationWhenInUseUsageDescription": "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。",
+					"NSCameraUsageDescription": "为了帮您在取餐时扫描客户的取餐码以完成订单核销，本应用需要使用相机功能。相机权限仅在您主动使用扫码功能时调用，本应用不会在后台开启或使用相机。",
+					"NSPhotoLibraryUsageDescription": "为了帮您在提交反馈意见、发布订单评价等功能时上传照片，本应用需要访问您的相册。相册权限仅在您主动选择上传图片时调用，本应用不会在后台读取或收集其他照片。",
+					"NSPhotoLibraryAddUsageDescription": "为了帮您在需要时将订单二维码或凭证截图保存到相册，本应用需要写入相册的权限。保存权限仅在您主动选择保存图片时调用，本应用不会在后台保存或修改相册中的其他照片。",
+					"NSLocationAlwaysAndWhenInUseUsageDescription": "为了帮您在商家端设置店铺位置，并在用户端推荐周边的美食外卖，本应用需要使用定位权限。定位权限仅在您主动进行位置设置或获取周边推荐时调用，本应用不会在后台持续获取位置信息。"
+				},
+				"idfa": false
+			},
+			/* SDK配置 */
+			"sdkConfigs": {
+				"maps": {
+					"google": {
+						"APIKey_ios": "AIzaSyC2dpdvm87rWSY3pocUfpxpkTawMHebSjw",
+						"APIKey_android": "AIzaSyC2dpdvm87rWSY3pocUfpxpkTawMHebSjw"
+					}
+				},
+				"geolocation": {
+					"system": {
+						"__platform__": ["ios", "android"]
+					}
+				},
+				"push": {
+					"unipush": {
+						"version": "2",
+						"offline": true,
+						"icons": {
+							"small": {
+								"ldpi": "unpackage/res/icons/20x20.png",
+								"mdpi": "unpackage/res/icons/29x29.png",
+								"hdpi": "unpackage/res/icons/58x58.png",
+								"xhdpi": "unpackage/res/icons/72x72.png",
+								"xxhdpi": "unpackage/res/icons/80x80.png"
+							}
+						},
+						"hms": {}
+					}
+				}
+			},
+			"icons": {
+				"android": {
+					"hdpi": "unpackage/res/icons/72x72.png",
+					"xhdpi": "unpackage/res/icons/96x96.png",
+					"xxhdpi": "unpackage/res/icons/144x144.png",
+					"xxxhdpi": "unpackage/res/icons/192x192.png"
+				},
+				"ios": {
+					"appstore": "unpackage/res/icons/1024x1024.png",
+					"ipad": {
+						"app": "unpackage/res/icons/76x76.png",
+						"app@2x": "unpackage/res/icons/152x152.png",
+						"notification": "unpackage/res/icons/20x20.png",
+						"notification@2x": "unpackage/res/icons/40x40.png",
+						"proapp@2x": "unpackage/res/icons/167x167.png",
+						"settings": "unpackage/res/icons/29x29.png",
+						"settings@2x": "unpackage/res/icons/58x58.png",
+						"spotlight": "unpackage/res/icons/40x40.png",
+						"spotlight@2x": "unpackage/res/icons/80x80.png"
+					},
+					"iphone": {
+						"app@2x": "unpackage/res/icons/120x120.png",
+						"app@3x": "unpackage/res/icons/180x180.png",
+						"notification@2x": "unpackage/res/icons/40x40.png",
+						"notification@3x": "unpackage/res/icons/60x60.png",
+						"settings@2x": "unpackage/res/icons/58x58.png",
+						"settings@3x": "unpackage/res/icons/87x87.png",
+						"spotlight@2x": "unpackage/res/icons/80x80.png",
+						"spotlight@3x": "unpackage/res/icons/120x120.png"
+					}
+				}
+			}
+		}
+	},
+	/* 快应用特有相关 */
+	"quickapp": {},
+	/* 小程序特有相关 */
+	"mp-weixin": {
+		"appid": "",
+		"setting": {
+			"urlCheck": false,
+			"ignoreDevUnusedFiles": false,
+			"ignoreUploadUnusedFiles": false
+		},
+		"usingComponents": true,
+		"requiredPrivateInfos": ["getLocation", "chooseAddress"]
+	},
+	"mp-alipay": {
+		"usingComponents": true
+	},
+	"mp-baidu": {
+		"usingComponents": true
+	},
+	"mp-toutiao": {
+		"usingComponents": true
+	},
+	"uniStatistics": {
+		"enable": false
+	},
+	"vueVersion": "3"
 }

@@ -3,7 +3,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import dayjs from "dayjs";
 import { useUserStore } from "./model/user";
-import { onLaunch } from "@dcloudio/uni-app";
+import { onLaunch, onShow } from "@dcloudio/uni-app";
 import { useWebSocket } from "@/hooks";
 import { baseUrl } from "@/api";
 import { onUnmounted, nextTick, onMounted } from "vue";
@@ -99,6 +99,7 @@ onLaunch(() => {
   // #endif
   userStore.getInfo();
   systemStore.getSystemConfig();
+  connect()
 });
 </script>
 
