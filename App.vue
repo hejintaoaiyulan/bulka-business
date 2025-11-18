@@ -6,7 +6,7 @@ import { useUserStore } from "./model/user";
 import { onLaunch, onShow } from "@dcloudio/uni-app";
 import { useWebSocket } from "@/hooks";
 import { baseUrl } from "@/api";
-import { onUnmounted, nextTick, onMounted } from "vue";
+import {onUnmounted, nextTick, onMounted, ref} from "vue";
 import { bindClientId } from "@/api/public";
 import { useSystemConfig } from "@/model/system";
 
@@ -30,6 +30,20 @@ const playAudio = () => {
   audio.play();
 };
 
+const dataClientId = ref('')
+// 綁定客戶端ID
+const bindClient = () => {
+  bindClientId({
+    client_id: dataClientId.value,
+  }).then((res) => {
+    if (res.data.result === 1) {
+      console.log("綁定客戶端ID成功:", dataClientId.value);
+    } else {
+      console.error("綁定客戶端ID失敗:", res.data.message);
+    }
+  });
+}
+
 const { send, connect, close } = useWebSocket(
   `${baseUrl.replace(/^https?:\/\//, "ws://")}:7272/store/index/bindws`,
   {
@@ -43,15 +57,8 @@ const { send, connect, close } = useWebSocket(
         // console.warn('非JSON消息:', res)
       }
       if (data.client_id) {
-        bindClientId({
-          client_id: data.client_id,
-        }).then((res) => {
-          if (res.data.result === 1) {
-            console.log("綁定客戶端ID成功:", data.client_id);
-          } else {
-            console.error("綁定客戶端ID失敗:", res.data.message);
-          }
-        });
+        dataClientId.value = data.client_id
+        bindClient()
       }
       // 播放條件：type !== 'ping'
       if (data.type !== "ping" && data.type !== "init") {
@@ -81,6 +88,7 @@ onMounted(() => {
   uni.$on('connectWebSocket', () => {
     console.log('收到連接WebSocket事件');
     connect();
+    bindClient()
   });
 })
 

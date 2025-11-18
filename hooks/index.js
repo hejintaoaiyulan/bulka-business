@@ -1,5 +1,6 @@
 import {ref, computed, onUnmounted} from 'vue'
 import {isFunction, omit} from "lodash";
+import {getToken} from "../utils";
 
 
 let isOpened = false
@@ -193,10 +194,12 @@ export function useWebSocket(url, options = {}) {
   const isUserStop = ref(false)
   const isConnected = ref(false)
   const reconnectTimer = ref(null)
+	const loading = ref(false)
 
   const connect = () => {
-    if (!url || isConnected.value) return
+    if (!url || isConnected.value || !getToken() || loading.value) return
 
+	  loading.value = true
     socket.value = uni.connectSocket({
       url, method: options.method || 'GET', complete: () => {
       }
@@ -204,6 +207,7 @@ export function useWebSocket(url, options = {}) {
 
     socket.value.onOpen?.((res) => {
       isConnected.value = true
+	    loading.value = false
       onOpen && onOpen(res)
     })
 
@@ -214,6 +218,7 @@ export function useWebSocket(url, options = {}) {
 
     socket.value.onClose?.((res) => {
       isConnected.value = false
+	    loading.value = false
       onClose && onClose(res)
       if (!isUserStop.value)
         reconnect()
@@ -221,6 +226,7 @@ export function useWebSocket(url, options = {}) {
 
     socket.value.onError?.((err) => {
       console.log(url)
+	    loading.value = false
       isConnected.value = false
       onError && onError(err)
       if (!isUserStop.value)
