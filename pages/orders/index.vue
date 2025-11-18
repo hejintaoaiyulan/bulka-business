@@ -1,8 +1,8 @@
 <script setup>
-import {ref} from 'vue'
+import {onUnmounted, ref} from 'vue'
 import {usePageLoading} from "../../hooks";
 import {AcceptOrder, cancelOrder, getOrderList, ServingFood, stopOrderPush} from "../../api/order";
-import {onShow} from '@dcloudio/uni-app'
+import {onShow,onHide} from '@dcloudio/uni-app'
 import {showModal, Toast} from "../../utils";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 
@@ -60,6 +60,21 @@ const {loadNext, reload, getData, dataList} = usePageLoading(getOrderList, {
     })
   }
 })
+
+onShow(() => {
+  uni.$on('newOrder', () => {
+    search()
+  })
+})
+
+onUnmounted(() => {
+  uni.$off('newOrder')
+})
+
+onHide(() => {
+  uni.$off('newOrder')
+})
+
 
 const requestParams = ref({
   order_type: 1,

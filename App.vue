@@ -61,11 +61,14 @@ const { send, connect, close } = useWebSocket(
         bindClient()
       }
       // 播放條件：type !== 'ping'
-      if (data.type !== "ping" && data.type !== "init") {
+      if (data.type !== "ping" && data.type !== "init" && data.type !== 'create_order') {
         console.log("📩 播放音頻，因為收到消息:", data);
         nextTick(() => {
           playAudio();
         });
+      }
+      if(data.type === 'create_order'){
+        uni.$emit('newOrder', data)
       }
 	  console.log(data)
     },
