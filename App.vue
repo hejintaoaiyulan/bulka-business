@@ -104,13 +104,17 @@ onUnmounted(() => {
 const userStore = useUserStore();
 const systemStore = useSystemConfig();
 
+onShow(() => {
+  connect()
+})
+
 onLaunch(() => {
   // #ifdef APP-PLUS
   plus.runtime.setBadgeNumber(0); //清除app角标
   // #endif
   userStore.getInfo();
   systemStore.getSystemConfig();
-  connect()
+  // connect()
 });
 </script>
 
