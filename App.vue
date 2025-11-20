@@ -2,13 +2,13 @@
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import dayjs from "dayjs";
-import { useUserStore } from "./model/user";
-import { onLaunch, onShow } from "@dcloudio/uni-app";
-import { useWebSocket } from "@/hooks";
-import { baseUrl } from "@/api";
+import {useUserStore} from "./model/user";
+import {onLaunch, onShow} from "@dcloudio/uni-app";
+import {useWebSocket} from "@/hooks";
+import {baseUrl} from "@/api";
 import {onUnmounted, nextTick, onMounted, ref} from "vue";
-import { bindClientId } from "@/api/public";
-import { useSystemConfig } from "@/model/system";
+import {bindClientId} from "@/api/public";
+import {useSystemConfig} from "@/model/system";
 
 
 dayjs.extend(isSameOrAfter);
@@ -44,44 +44,44 @@ const bindClient = () => {
   });
 }
 
-const { send, connect, close } = useWebSocket(
-  `${baseUrl.replace(/^https?:\/\//, "ws://")}:7272/store/index/bindws`,
-  {
-    autoConnect: true,
-    method: "POST",
-    onMessage: (res) => {
-      let data = res;
-      try {
-        data = JSON.parse(res);
-      } catch (err) {
-        // console.warn('非JSON消息:', res)
-      }
-      if (data.client_id) {
-        dataClientId.value = data.client_id
-        bindClient()
-      }
-      // 播放條件：type !== 'ping'
-      if (data.type !== "ping" && data.type !== "init" && data.type !== 'create_order') {
-        console.log("📩 播放音頻，因為收到消息:", data);
-        nextTick(() => {
-          playAudio();
-        });
-      }
-      if(data.type === 'create_order'){
-        uni.$emit('newOrder', data)
-      }
-	  console.log(data)
-    },
-    onOpen: () => {
-      console.log("WebSocket 已連接");
-    },
-    onClose: () => {
-      console.log("WebSocket 已斷開");
-    },
-    onError: (err) => {
-      console.error("WebSocket 出錯:", err);
-    },
-  }
+const {send, connect, close} = useWebSocket(
+    `${baseUrl.replace(/^https?:\/\//, "ws://")}:7272/store/index/bindws`,
+    {
+      autoConnect: true,
+      method: "POST",
+      onMessage: (res) => {
+        let data = res;
+        try {
+          data = JSON.parse(res);
+        } catch (err) {
+          // console.warn('非JSON消息:', res)
+        }
+        if (data.client_id) {
+          dataClientId.value = data.client_id
+          bindClient()
+        }
+        // 播放條件：type !== 'ping'
+        if (data.type !== "ping" && data.type !== "init" && data.type !== 'create_order') {
+          console.log("📩 播放音頻，因為收到消息:", data);
+          nextTick(() => {
+            playAudio();
+          });
+        }
+        if (data.type === 'create_order') {
+          uni.$emit('newOrder', data)
+        }
+        console.log(data)
+      },
+      onOpen: () => {
+        console.log("WebSocket 已連接");
+      },
+      onClose: () => {
+        console.log("WebSocket 已斷開");
+      },
+      onError: (err) => {
+        console.error("WebSocket 出錯:", err);
+      },
+    }
 );
 
 onMounted(() => {
@@ -94,6 +94,23 @@ onMounted(() => {
     bindClient()
   });
 })
+
+function initPushChannel() {
+  const channelManager = uni.getChannelManager()
+
+  channelManager.setPushChannel({
+    channelId: "order_notice",
+    channelName: "newOrderNotice",
+    soundName: "orderbg",
+    importance: 4,
+    success(res) {
+      console.log("自定义渠道创建成功", res)
+    },
+    fail(err) {
+      console.error("创建渠道失败", err)
+    }
+  })
+}
 
 onUnmounted(() => {
   if (audio) audio.destroy();
@@ -115,6 +132,7 @@ onLaunch(() => {
   userStore.getInfo();
   systemStore.getSystemConfig();
   // connect()
+  initPushChannel()
 });
 </script>
 

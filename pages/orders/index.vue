@@ -63,6 +63,7 @@ const {loadNext, reload, getData, dataList} = usePageLoading(getOrderList, {
 
 onShow(() => {
   uni.$on('newOrder', () => {
+    console.log('收到新訂單通知')
     search()
   })
 })
