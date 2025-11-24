@@ -2,14 +2,13 @@
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import dayjs from "dayjs";
-import {useUserStore} from "./model/user";
-import {onLaunch, onShow} from "@dcloudio/uni-app";
-import {useWebSocket} from "@/hooks";
-import {baseUrl} from "@/api";
-import {onUnmounted, nextTick, onMounted, ref} from "vue";
-import {bindClientId} from "@/api/public";
-import {useSystemConfig} from "@/model/system";
-
+import { useUserStore } from "./model/user";
+import { onLaunch, onShow } from "@dcloudio/uni-app";
+import { useWebSocket } from "@/hooks";
+import { baseUrl } from "@/api";
+import { onUnmounted, nextTick, onMounted, ref } from "vue";
+import { bindClientId } from "@/api/public";
+import { useSystemConfig } from "@/model/system";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -30,7 +29,7 @@ const playAudio = () => {
   audio.play();
 };
 
-const dataClientId = ref('')
+const dataClientId = ref("");
 // 綁定客戶端ID
 const bindClient = () => {
   bindClientId({
@@ -42,61 +41,84 @@ const bindClient = () => {
       console.error("綁定客戶端ID失敗:", res.data.message);
     }
   });
-}
+};
 
-const {send, connect, close} = useWebSocket(
-    `${baseUrl.replace(/^https?:\/\//, "ws://")}:7272/store/index/bindws`,
-    {
-      autoConnect: true,
-      method: "POST",
-      onMessage: (res) => {
-        let data = res;
-        try {
-          data = JSON.parse(res);
-        } catch (err) {
-          // console.warn('非JSON消息:', res)
-        }
-        if (data.client_id) {
-          dataClientId.value = data.client_id
-          bindClient()
-        }
-        // 播放條件：type !== 'ping'
-        if (data.type !== "ping" && data.type !== "init" && data.type !== 'create_order') {
-          console.log("📩 播放音頻，因為收到消息:", data);
-          nextTick(() => {
-            playAudio();
-          });
-        }
-        if (data.type === 'create_order') {
-          uni.$emit('newOrder', data)
-        }
-        console.log(data)
-      },
-      onOpen: () => {
-        console.log("WebSocket 已連接");
-      },
-      onClose: () => {
-        console.log("WebSocket 已斷開");
-      },
-      onError: (err) => {
-        console.error("WebSocket 出錯:", err);
-      },
-    }
+const { send, connect, close } = useWebSocket(
+  `${baseUrl.replace(/^https?:\/\//, "ws://")}:7272/store/index/bindws`,
+  {
+    autoConnect: true,
+    method: "POST",
+    onMessage: (res) => {
+      let data = res;
+      try {
+        data = JSON.parse(res);
+      } catch (err) {
+        // console.warn('非JSON消息:', res)
+      }
+      if (data.client_id) {
+        dataClientId.value = data.client_id;
+        bindClient();
+      }
+      // 播放條件：type !== 'ping'
+      if (data.type !== "ping" && data.type !== "init" && data.type !== "create_order") {
+        console.log("📩 播放音頻，因為收到消息:", data);
+        nextTick(() => {
+          playAudio();
+        });
+      }
+      if (data.type === "create_order") {
+        uni.$emit("newOrder", data);
+      }
+      console.log(data);
+    },
+    onOpen: () => {
+      console.log("WebSocket 已連接");
+    },
+    onClose: () => {
+      console.log("WebSocket 已斷開");
+    },
+    onError: (err) => {
+      console.error("WebSocket 出錯:", err);
+    },
+  }
 );
 
+function startPushListener() {
+  // uni.getPushClientId({
+  //   success: (res) => {
+  //     console.log("✅ 获取 clientId 成功：" + res.cid);
+  //   },
+  //   fail: (err) => {
+  //     console.log("❌ 获取 clientId 失败：" + JSON.stringify(err));
+  //   },
+  // });
+  // 推送事件监听
+  uni.onPushMessage((res) => {
+    console.log(res, 8888);
+    const { type, data } = res;
+    if (type === "receive") {
+      if (data.payload && data.payload.voiceUrl) {
+        playAudio();
+      }
+    } else if (type === "click") {
+      console.log("✅ 后台点击推送：", JSON.stringify(res));
+    }
+  });
+}
+
 onMounted(() => {
-  uni.$on('closeWebSocket', () => {
+  uni.$on("closeWebSocket", () => {
     close(1);
   });
-  uni.$on('connectWebSocket', () => {
-    console.log('收到連接WebSocket事件');
+  uni.$on("connectWebSocket", () => {
+    console.log("收到連接WebSocket事件");
     connect();
-    bindClient()
+    bindClient();
   });
-})
+});
 
 function initPushChannel() {
-  const channelManager = uni.getChannelManager()
+  const channelManager = uni.getChannelManager();
 
   channelManager.setPushChannel({
     channelId: "order_notice",
@@ -104,35 +126,36 @@ function initPushChannel() {
     soundName: "orderbg",
     importance: 4,
     success(res) {
-      console.log("自定义渠道创建成功", res)
+      console.log("自定义渠道创建成功", res);
     },
     fail(err) {
-      console.error("创建渠道失败", err)
-    }
-  })
+      console.error("创建渠道失败", err);
+    },
+  });
 }
 
 onUnmounted(() => {
   if (audio) audio.destroy();
-  uni.$off('closeWebSocket');
-  uni.$off('connectWebSocket');
+  uni.$off("closeWebSocket");
+  uni.$off("connectWebSocket");
 });
 
 const userStore = useUserStore();
 const systemStore = useSystemConfig();
 
 onShow(() => {
-  connect()
-})
+  connect();
+});
 
 onLaunch(() => {
+  startPushListener();
   // #ifdef APP-PLUS
   plus.runtime.setBadgeNumber(0); //清除app角标
   // #endif
   userStore.getInfo();
   systemStore.getSystemConfig();
   // connect()
-  initPushChannel()
+  initPushChannel();
 });
 </script>
 
