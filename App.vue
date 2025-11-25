@@ -94,11 +94,13 @@ function startPushListener() {
   // });
   // 推送事件监听
   uni.onPushMessage((res) => {
-    console.log(res, 8888);
     const { type, data } = res;
     if (type === "receive") {
       if (data.payload && data.payload.voiceUrl) {
         playAudio();
+        let m = { ...data };
+        m.force_notification = 1;
+        uni.createPushMessage(m);
       }
     } else if (type === "click") {
       console.log("✅ 后台点击推送：", JSON.stringify(res));
