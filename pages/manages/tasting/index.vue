@@ -26,7 +26,7 @@ const requestParams = ref({
   goods_type_id: "",
   publish_status: "",
   goods_type_name: "",
-  goods_type_flag: 1, // 普通商品
+  goods_type_flag: 4, // 试吃商品
 });
 
 const list = [
@@ -34,10 +34,6 @@ const list = [
     name: "全部",
     id: -1,
   },
-  // {
-  //   name: '未上架',
-  //   id: 0
-  // },
   {
     name: "上架",
     id: 1,
@@ -50,7 +46,7 @@ const list = [
 
 const handleAddGoods = () => {
   uni.navigateTo({
-    url: "/pages/manages/goods/add-goods",
+    url: "/pages/manages/tasting/add-tasting",
   });
 };
 
@@ -61,7 +57,7 @@ onPullDownRefresh(() => {
 const handleRemove = (val) => {
   uni.showModal({
     title: "提示",
-    content: "是否刪除該商品？",
+    content: "是否刪除該試吃商品？",
     success: function (res) {
       if (res.confirm) {
         console.log("用戶點擊確定");
@@ -77,7 +73,7 @@ const handleRemove = (val) => {
 const handleSoldOut = (val) => {
   uni.showModal({
     title: "提示",
-    content: "是否下架該商品？",
+    content: "是否下架該試吃商品？",
     success: function (res) {
       if (res.confirm) {
         console.log("用戶點擊確定");
@@ -95,7 +91,7 @@ const handleSoldOut = (val) => {
 const handleSoldIn = (val, flag) => {
   uni.showModal({
     title: "提示",
-    content: `是否${flag ? "重新" : ""}上架該商品？`,
+    content: `是否${flag ? "重新" : ""}上架該試吃商品？`,
     success: function (res) {
       if (res.confirm) {
         console.log("用戶點擊確定");
@@ -123,7 +119,7 @@ const handleChangeSearchType = (val) => {
 
 const handleToEdit = (val) => {
   uni.navigateTo({
-    url: "/pages/manages/goods/add-goods?id=" + val.id,
+    url: "/pages/manages/tasting/add-tasting?id=" + val.id,
   });
 };
 
@@ -190,6 +186,7 @@ onShow(() => {
         :show-scrollbar="false"
       >
         <view class="goods-list">
+          <view class="empty" v-if="!dataList.length"> 暫無數據 </view>
           <view class="goods-item" v-for="item in dataList" :key="item.id">
             <view class="goods-title">
               <view class="goods-tag">
@@ -256,7 +253,7 @@ onShow(() => {
       </scroll-view>
     </view>
     <view class="footer">
-      <uv-button @click="handleAddGoods">新增商品</uv-button>
+      <uv-button @click="handleAddGoods">新增試吃商品</uv-button>
     </view>
   </view>
 </template>
@@ -358,7 +355,6 @@ onShow(() => {
 }
 
 .container {
-  //padding: 30rpx;
   height: 100%;
   background-color: #f8f8f8;
   display: flex;
@@ -419,5 +415,14 @@ onShow(() => {
     background-color: #000 !important;
     color: #fff !important;
   }
+}
+
+.empty {
+  height: 200rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-size: 28rpx;
 }
 </style>

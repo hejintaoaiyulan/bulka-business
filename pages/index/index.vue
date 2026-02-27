@@ -99,6 +99,18 @@
                 <text class="iconfont icon-arrow-right-copy"></text>
               </view>
             </view>
+            <view class="manage-item" @click="handleToRouter('/pages/manages/tasting/index')">
+              <view class="icon">
+                <text class="iconfont icon-shouye1"></text>
+              </view>
+              <view class="msg">
+                <view>試吃活動管理</view>
+                <view class="tip">設置商品試吃活動</view>
+              </view>
+              <view class="right-icon">
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </view>
+            </view>
             <view class="manage-item" @click="handleToRouter('/pages/manages/comments/index')">
               <view class="icon">
                 <text class="iconfont icon-dingdanguanli"></text>

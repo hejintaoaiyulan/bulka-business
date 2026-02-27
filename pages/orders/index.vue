@@ -2,7 +2,7 @@
 import {onUnmounted, ref} from 'vue'
 import {usePageLoading} from "../../hooks";
 import {AcceptOrder, cancelOrder, getOrderList, ServingFood, stopOrderPush} from "../../api/order";
-import {onShow,onHide} from '@dcloudio/uni-app'
+import {onShow,onHide, onPullDownRefresh} from '@dcloudio/uni-app'
 import {showModal, Toast} from "../../utils";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 
@@ -51,8 +51,13 @@ const tabs = ref(storeTab)
 const statusTab = ref(0)
 const typeTab = ref(0)
 
+const refreshing = ref(false)
+
 const {loadNext, reload, getData, dataList} = usePageLoading(getOrderList, {
-  onFinish: uni.stopPullDownRefresh,
+  onFinish: () => {
+    uni.stopPullDownRefresh()
+    refreshing.value = false
+  },
   transform: (d) => {
     return d.map(item => {
       item.goods = item.goods.slice(0,4)
@@ -62,11 +67,28 @@ const {loadNext, reload, getData, dataList} = usePageLoading(getOrderList, {
 })
 
 onShow(() => {
+  // console.log('onShow')
   uni.$on('newOrder', () => {
-    console.log('收到新訂單通知')
+    // console.log('收到新訂單通知')
+    uni.showToast({
+      title: '收到新訂單',
+      icon: 'none',
+      duration: 2000
+    })
     search()
   })
 })
+
+onPullDownRefresh(() => {
+  // console.log('下拉刷新訂單列表')
+  reload(requestParams.value)
+})
+
+const onRefresh = () => {
+  // console.log('scroll-view 下拉刷新訂單列表')
+  refreshing.value = true
+  reload(requestParams.value)
+}
 
 onUnmounted(() => {
   uni.$off('newOrder')
@@ -181,7 +203,8 @@ const handleStopPush = (order, evt) => {
       </view>
       <uv-tabs :list="tabs" line-color="#c74336" v-model="statusTab" @change="handleChangeTab"></uv-tabs>
     </view>
-    <scroll-view :scroll-y="true" class="content" @scrolltolower="loadNext">
+    <scroll-view :scroll-y="true" class="content" @scrolltolower="loadNext"
+                 refresher-enabled :refresher-triggered="refreshing" @refresherrefresh="onRefresh">
       <view style="padding: 20rpx">
         <view class="empty" v-if="!dataList.length">暫無訂單數據</view>
         <view class="order-item" v-for="order in dataList" :key="order.order_no">

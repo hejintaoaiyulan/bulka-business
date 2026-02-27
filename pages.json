@@ -1,388 +1,409 @@
 {
-	"pages": [ //pages數組中第一項表示應用啟動頁，參考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "首頁",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/login/index",
-			"style": {
-				"navigationBarTitleText": "登錄",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/index/statistics",
-			"style": {
-				"navigationBarTitleText": "統計數據",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/orders/index",
-			"style": {
-				"navigationBarTitleText": "訂單",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/account/index",
-			"style": {
-				"navigationBarTitleText": "個人中心",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/account/account-info",
-			"style": {
-				"navigationBarTitleText": "商家資料",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/account/album",
-			"style": {
-				"navigationBarTitleText": "商家相冊",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/account/helper",
-			"style": {
-				"navigationBarTitleText": "幫助中心",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/manages/goods-category/index",
-			"style": {
-				"navigationBarTitleText": "商品分類",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/manages/goods/index",
-			"style": {
-				"navigationBarTitleText": "商品管理",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/manages/goods/add-goods",
-			"style": {
-				"navigationBarTitleText": "添加商品",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/goods/specification",
-			"style": {
-				"navigationBarTitleText": "設置規格",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/manages/promotions/index",
-			"style": {
-				"navigationBarTitleText": "優惠活動管理",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/manages/promotions/add-promotion",
-			"style": {
-				"navigationBarTitleText": "新增優惠活動",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/promotions/add-goods",
-			"style": {
-				"navigationBarTitleText": "添加商品",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/promotions/save-success",
-			"style": {
-				"navigationBarTitleText": "添加成功",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/exchange/index",
-			"style": {
-				"navigationBarTitleText": "換購活動管理",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/manages/exchange/add-exchange",
-			"style": {
-				"navigationBarTitleText": "新增換購活動",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/exchange/choose-exchange",
-			"style": {
-				"navigationBarTitleText": "選擇換購商品",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/exchange/edit-exchange-goods",
-			"style": {
-				"navigationBarTitleText": "編輯換購商品",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/comments/index",
-			"style": {
-				"navigationBarTitleText": "評論管理",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/manages/comments/reply-comment",
-			"style": {
-				"navigationBarTitleText": "評論管理",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/orders/order-info",
-			"style": {
-				"navigationBarTitleText": "訂單詳情",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#f8f8f8"
-			}
-		},
-		{
-			"path": "pages/settings/index",
-			"style": {
-				"navigationBarTitleText": "設置",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/settings/account-safe",
-			"style": {
-				"navigationBarTitleText": "賬戶安全中心",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/settings/change-mobile",
-			"style": {
-				"navigationBarTitleText": "修改手機綁定",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/settings/change-pwd",
-			"style": {
-				"navigationBarTitleText": "登錄密碼修改",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/login/reset-pwd",
-			"style": {
-				"navigationBarTitleText": "忘記密碼",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/register/index",
-			"style": {
-				"navigationBarTitleText": "註冊",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/register/set-info",
-			"style": {
-				"navigationBarTitleText": "商家入駐",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/map-webview/index",
-			"style": {
-				"navigationBarTitleText": "選擇位置",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/feedback/index",
-			"style": {
-				"navigationBarTitleText": "意見反饋",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/wallet/index",
-			"style": {
-				"navigationBarTitleText": "商家錢包",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"enablePullDownRefresh": true
-			}
-		},
-		{
-			"path": "pages/wallet/detail",
-			"style": {
-				"navigationBarTitleText": "訂單明細",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/wallet/withdrawal",
-			"style": {
-				"navigationBarTitleText": "提現",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/wallet/result",
-			"style": {
-				"navigationBarTitleText": "提現結果",
-				"navigationBarBackgroundColor": "#000",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/wallet/withdrawal-record",
-			"style": {
-				"navigationBarTitleText": "提現記錄",
-				"navigationBarBackgroundColor": "#2133ff",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/wallet/bank-card",
-			"style": {
-				"navigationBarTitleText": "銀行卡管理",
-				"navigationBarBackgroundColor": "#2133ff",
-				"navigationBarTextStyle": "white",
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/wallet/add-bank",
-			"style": {
-				"navigationBarTitleText": "添加銀行卡",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black"
-			}
-		},
-		{
-			"path": "pages/wallet/bind-result",
-			"style": {
-				"navigationBarTitleText": "添加銀行卡",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black"
-			}
-		},
-		{
-			"path": "pages/protocol/index",
-			"style": {
-				"navigationBarTitleText": "協議信息",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar": {
-		"color": "#7A7E83",
-		"selectedColor": "#c74336",
-		"backgroundColor": "#ffffff",
-		"borderStyle": "black",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"text": "首頁",
-				"iconPath": "static/tabbar/home.png",
-				"selectedIconPath": "static/tabbar/home-active.png"
-			},
-			{
-				"pagePath": "pages/orders/index",
-				"text": "訂單",
-				"iconPath": "static/tabbar/order.png",
-				"selectedIconPath": "static/tabbar/order-active.png"
-			},
-			{
-				"pagePath": "pages/account/index",
-				"text": "我的",
-				"iconPath": "static/tabbar/my.png",
-				"selectedIconPath": "static/tabbar/my-active.png"
-			}
-		]
-	},
-	"uniIdRouter": {}
+  "pages": [
+    //pages數組中第一項表示應用啟動頁，參考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首頁",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登錄",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/statistics",
+      "style": {
+        "navigationBarTitleText": "統計數據",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/orders/index",
+      "style": {
+        "navigationBarTitleText": "訂單",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/account/index",
+      "style": {
+        "navigationBarTitleText": "個人中心",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/account/account-info",
+      "style": {
+        "navigationBarTitleText": "商家資料",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/account/album",
+      "style": {
+        "navigationBarTitleText": "商家相冊",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/account/helper",
+      "style": {
+        "navigationBarTitleText": "幫助中心",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/manages/goods-category/index",
+      "style": {
+        "navigationBarTitleText": "商品分類",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/manages/goods/index",
+      "style": {
+        "navigationBarTitleText": "商品管理",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/manages/goods/add-goods",
+      "style": {
+        "navigationBarTitleText": "添加商品",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/goods/specification",
+      "style": {
+        "navigationBarTitleText": "設置規格",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/manages/promotions/index",
+      "style": {
+        "navigationBarTitleText": "優惠活動管理",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/manages/promotions/add-promotion",
+      "style": {
+        "navigationBarTitleText": "新增優惠活動",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/promotions/add-goods",
+      "style": {
+        "navigationBarTitleText": "添加商品",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/promotions/save-success",
+      "style": {
+        "navigationBarTitleText": "添加成功",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/exchange/index",
+      "style": {
+        "navigationBarTitleText": "換購活動管理",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/manages/exchange/add-exchange",
+      "style": {
+        "navigationBarTitleText": "新增換購活動",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/exchange/choose-exchange",
+      "style": {
+        "navigationBarTitleText": "選擇換購商品",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/exchange/edit-exchange-goods",
+      "style": {
+        "navigationBarTitleText": "編輯換購商品",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/tasting/index",
+      "style": {
+        "navigationBarTitleText": "試吃商品管理",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/manages/tasting/add-tasting",
+      "style": {
+        "navigationBarTitleText": "新增試吃商品",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/comments/index",
+      "style": {
+        "navigationBarTitleText": "評論管理",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/manages/comments/reply-comment",
+      "style": {
+        "navigationBarTitleText": "評論管理",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/orders/order-info",
+      "style": {
+        "navigationBarTitleText": "訂單詳情",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#f8f8f8"
+      }
+    },
+    {
+      "path": "pages/settings/index",
+      "style": {
+        "navigationBarTitleText": "設置",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/settings/account-safe",
+      "style": {
+        "navigationBarTitleText": "賬戶安全中心",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/settings/change-mobile",
+      "style": {
+        "navigationBarTitleText": "修改手機綁定",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/settings/change-pwd",
+      "style": {
+        "navigationBarTitleText": "登錄密碼修改",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/login/reset-pwd",
+      "style": {
+        "navigationBarTitleText": "忘記密碼",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/register/index",
+      "style": {
+        "navigationBarTitleText": "註冊",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/register/set-info",
+      "style": {
+        "navigationBarTitleText": "商家入駐",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/map-webview/index",
+      "style": {
+        "navigationBarTitleText": "選擇位置",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/feedback/index",
+      "style": {
+        "navigationBarTitleText": "意見反饋",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/wallet/index",
+      "style": {
+        "navigationBarTitleText": "商家錢包",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/wallet/detail",
+      "style": {
+        "navigationBarTitleText": "訂單明細",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/wallet/withdrawal",
+      "style": {
+        "navigationBarTitleText": "提現",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/wallet/result",
+      "style": {
+        "navigationBarTitleText": "提現結果",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/wallet/withdrawal-record",
+      "style": {
+        "navigationBarTitleText": "提現記錄",
+        "navigationBarBackgroundColor": "#2133ff",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/wallet/bank-card",
+      "style": {
+        "navigationBarTitleText": "銀行卡管理",
+        "navigationBarBackgroundColor": "#2133ff",
+        "navigationBarTextStyle": "white",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/wallet/add-bank",
+      "style": {
+        "navigationBarTitleText": "添加銀行卡",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/wallet/bind-result",
+      "style": {
+        "navigationBarTitleText": "添加銀行卡",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/protocol/index",
+      "style": {
+        "navigationBarTitleText": "協議信息",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTextStyle": "black"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#c74336",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首頁",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/orders/index",
+        "text": "訂單",
+        "iconPath": "static/tabbar/order.png",
+        "selectedIconPath": "static/tabbar/order-active.png"
+      },
+      {
+        "pagePath": "pages/account/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/my.png",
+        "selectedIconPath": "static/tabbar/my-active.png"
+      }
+    ]
+  },
+  "uniIdRouter": {}
 }

@@ -6,12 +6,23 @@ import { useFileUpload } from "../../../utils/uploadFile";
 import { getGoodsCategory, UploadUrl } from "../../../api/public";
 import PickerSelect from "../../../components/PickerSelect.vue";
 import { pick } from "lodash";
-import { getGoodsInfo, getGoodsTypes, saveGoods } from "../../../api/goods";
+import {
+  getGoodsInfo,
+  getGoodsTypes,
+  saveGoods,
+  getFoodConditionConfig,
+} from "../../../api/goods";
 import { Toast } from "../../../utils";
 
 const { uploadFile, isUploading } = useFileUpload({ showUploadLoading: true });
 const types = ref([]);
 const categories = ref([]);
+// 試吃商品條件配置
+const conditionConfig = ref({
+  food_condition_price: 0,
+  food_condition_stock: 0,
+  food_condition_discount: 0,
+});
 const formData = ref({
   id: "",
   goods_image: "",
@@ -39,14 +50,15 @@ onLoad((query) => {
   if (query?.id) {
     getInfo(query.id);
     uni.setNavigationBarTitle({
-      title: "編輯商品",
+      title: "編輯試吃商品",
     });
   }
 });
 
 const getInfo = (id) => {
   getGoodsInfo({ id }).then((res) => {
-    formData.value = res.data || {};
+    formData.value = { ...formData.value, ...(res.data || {}) };
+    console.log(formData.value);
     if (formData.value.goods_spec_type === 2) {
       formData.value.goods_spec_name = formData.value.goods_spec
         .map((item) => item.goods_spec_name)
@@ -150,7 +162,51 @@ const handleChangeCategory = (val) => {
 onShow(() => {
   getTypes();
   getCategories();
+  getConditionConfig();
 });
+
+// 獲取試吃商品條件配置
+const getConditionConfig = () => {
+  getFoodConditionConfig().then((res) => {
+    if (res.data) {
+      conditionConfig.value = res.data;
+    }
+  });
+};
+
+// 輸入框失焦驗證
+const validateStock = () => {
+  const config = conditionConfig.value;
+  const stock = Number(formData.value.goods_stock) || 0;
+  if (config.food_condition_stock > 0 && stock > config.food_condition_stock) {
+    Toast.info(`商品庫存不能超過 ${config.food_condition_stock}`);
+    formData.value.goods_stock = config.food_condition_stock;
+  }
+};
+
+const validatePrice = () => {
+  const config = conditionConfig.value;
+  const salePrice = Number(formData.value.sale_price) || 0;
+  if (
+    config.food_condition_price > 0 &&
+    salePrice > config.food_condition_price
+  ) {
+    Toast.info(`商品售價不能超過 ${config.food_condition_price}`);
+    formData.value.sale_price = config.food_condition_price;
+  }
+};
+
+const validateDiscount = () => {
+  const config = conditionConfig.value;
+  const discountVal = Number(formData.value.discount) || 0;
+  if (
+    config.food_condition_discount > 0 &&
+    discountVal > config.food_condition_discount
+  ) {
+    Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
+    formData.value.discount = config.food_condition_discount;
+  }
+};
 
 // 折扣
 const discount = computed(() => {
@@ -169,6 +225,68 @@ const discount = computed(() => {
 });
 
 const handleSave = () => {
+  // 驗證條件配置限制
+  const config = conditionConfig.value;
+
+  if (formData.value.goods_spec_type === 1) {
+    // 單規格驗證
+    const stock = Number(formData.value.goods_stock) || 0;
+    const salePrice = Number(formData.value.sale_price) || 0;
+    const discountVal = Number(formData.value.discount) || 0;
+
+    if (
+      config.food_condition_stock > 0 &&
+      stock > config.food_condition_stock
+    ) {
+      return Toast.info(`商品庫存不能超過 ${config.food_condition_stock}`);
+    }
+    if (
+      config.food_condition_price > 0 &&
+      salePrice > config.food_condition_price
+    ) {
+      return Toast.info(`商品售價不能超過 ${config.food_condition_price}`);
+    }
+    if (
+      config.food_condition_discount > 0 &&
+      discountVal > config.food_condition_discount
+    ) {
+      return Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
+    }
+  } else {
+    // 多規格驗證
+    const discountVal = Number(formData.value.discount) || 0;
+    if (
+      config.food_condition_discount > 0 &&
+      discountVal > config.food_condition_discount
+    ) {
+      return Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
+    }
+    // 驗證每個規格項的庫存和價格
+    const specs = formData.value.goods_spec || [];
+    for (const spec of specs) {
+      for (const attr of spec.goods_spec_attr || []) {
+        const attrStock = Number(attr.goods_stock) || 0;
+        const attrPrice = Number(attr.sale_price) || 0;
+        if (
+          config.food_condition_stock > 0 &&
+          attrStock > config.food_condition_stock
+        ) {
+          return Toast.info(
+            `規格「${attr.goods_spec_name || ""}」庫存不能超過 ${config.food_condition_stock}`,
+          );
+        }
+        if (
+          config.food_condition_price > 0 &&
+          attrPrice > config.food_condition_price
+        ) {
+          return Toast.info(
+            `規格「${attr.goods_spec_name || ""}」售價不能超過 ${config.food_condition_price}`,
+          );
+        }
+      }
+    }
+  }
+
   const baseFields = [
     "goods_image",
     "id",
@@ -195,7 +313,14 @@ const handleSave = () => {
         );
   formData.value.discount = Number(formData.value.discount || 0).toFixed(2);
   const saveParams = pick(formData.value, singleFields);
-  saveParams.goods_type_flag = 1; // 普通商品
+
+  // 试吃商品类型标识
+  saveParams.goods_type_flag = 4;
+
+  console.log("=== 试吃商品保存参数 ===");
+  console.log("formData原始数据:", JSON.stringify(formData.value, null, 2));
+  console.log("saveParams提交参数:", JSON.stringify(saveParams, null, 2));
+
   saveGoods(saveParams).then((res) => {
     Toast.success("保存成功");
     setTimeout(() => {
@@ -319,102 +444,55 @@ const handleSave = () => {
       <view class="card">
         <view class="card-title">商品規格及庫存</view>
         <view class="card-form">
-          <template v-if="single">
-            <view class="form-item">
-              <view class="form-label">
-                <text class="red-text">*</text>
-                <text>商品規格</text>
-              </view>
-              <view class="form-value flex-right">
-                <uv-radio-group
-                  custom-style="display: flex; justify-content: flex-end; gap: 20rpx"
-                  v-model="formData.goods_spec_type"
-                  @change="formData.discount = ''"
-                >
-                  <uv-radio :name="1" label="單規格"></uv-radio>
-                  <uv-radio :name="2" label="多規格"></uv-radio>
-                </uv-radio-group>
-              </view>
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品庫存</text>
             </view>
-            <view class="form-item">
-              <view class="form-label">
-                <text class="red-text">*</text>
-                <text>商品庫存</text>
-              </view>
-              <view class="form-value">
-                <uv-input
-                  v-model="formData.goods_stock"
-                  placeholder="請輸入商品庫存"
-                  :border="false"
-                  input-align="right"
-                  fontSize="26rpx"
-                />
-              </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.goods_stock"
+                placeholder="請輸入商品庫存"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+                @blur="validateStock"
+              />
             </view>
-            <view class="form-item">
-              <view class="form-label">
-                <text class="red-text">*</text>
-                <text>商品原價</text>
-              </view>
-              <view class="form-value">
-                <uv-input
-                  v-model="formData.original_price"
-                  placeholder="請輸入商品原價"
-                  type="digit"
-                  :border="false"
-                  input-align="right"
-                  fontSize="26rpx"
-                />
-              </view>
+          </view>
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品原價</text>
             </view>
-            <view class="form-item">
-              <view class="form-label">
-                <text class="red-text">*</text>
-                <text>商品售價</text>
-              </view>
-              <view class="form-value">
-                <uv-input
-                  v-model="formData.sale_price"
-                  placeholder="請輸入商品售價"
-                  type="digit"
-                  :border="false"
-                  input-align="right"
-                  fontSize="26rpx"
-                />
-              </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.original_price"
+                placeholder="請輸入商品原價"
+                type="digit"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+              />
             </view>
-          </template>
-          <template v-else>
-            <view class="form-item">
-              <view class="form-label">
-                <text class="red-text">*</text>
-                <text>規格類型</text>
-              </view>
-              <view class="form-value flex-right">
-                <uv-radio-group
-                  custom-style="display: flex; justify-content: flex-end; gap: 20rpx"
-                  v-model="formData.goods_spec_type"
-                >
-                  <uv-radio :name="1" label="單規格"></uv-radio>
-                  <uv-radio :name="2" label="多規格"></uv-radio>
-                </uv-radio-group>
-              </view>
+          </view>
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品售價</text>
             </view>
-            <view class="form-item">
-              <view class="form-label">
-                <text class="red-text">*</text>
-                <text>商品規格</text>
-              </view>
-              <view
-                class="form-value flex-right"
-                @click="handleToSetSpecification"
-              >
-                <text class="setting-mode">{{
-                  formData.goods_spec_name || "設置商品規格"
-                }}</text>
-              </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.sale_price"
+                placeholder="請輸入商品售價"
+                type="digit"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+                @blur="validatePrice"
+              />
             </view>
-          </template>
+          </view>
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
@@ -424,17 +502,7 @@ const handleSave = () => {
               >
             </view>
             <view class="form-value">
-              <text v-if="single">{{ discount }}</text>
-              <uv-input
-                v-else
-                v-model="formData.discount"
-                readonly
-                placeholder="請輸入商品折扣"
-                type="digit"
-                :border="false"
-                input-align="right"
-                fontSize="26rpx"
-              />
+              <text>{{ discount }}</text>
             </view>
           </view>
         </view>
@@ -443,19 +511,6 @@ const handleSave = () => {
       <view class="card">
         <view class="card-title">更多設置</view>
         <view class="card-form">
-          <view class="form-item">
-            <view class="form-label">
-              <text class="red-text">*</text>
-              <text>是否推薦</text>
-            </view>
-            <view class="form-value flex-right">
-              <uv-switch
-                v-model="formData.top_status"
-                :active-value="1"
-                :inactive-value="2"
-              ></uv-switch>
-            </view>
-          </view>
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>

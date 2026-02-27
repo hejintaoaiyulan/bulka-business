@@ -107,6 +107,7 @@ async function request(options) {
     let response = res
     // 處理業務邏輯錯誤
     if (response.statusCode !== 200) {
+		console.log(response)
       throw new Error(response.data.message || '請求失敗')
     }
 
@@ -153,12 +154,16 @@ function retryRequest(task, options, count = 0) {
  * 錯誤處理
  */
 function handleError(error, options) {
-  console.log('請求錯誤:', error)
-  console.log(options)
+  console.log('請求錯誤:', options.url, error, options)
+  console.log('錯誤詳情:', JSON.stringify(error, null, 2))
+  if (error.data) {
+    console.log('響應數據:', JSON.stringify(error.data, null, 2))
+  }
 
   // 顯示錯誤提示
   if (options.showErrorToast !== false) {
-    Toast.info(error.message || '網絡異常，請稍後重試')
+    const errMsg = error.data?.message || error.message || '網絡異常，請稍後重試'
+    Toast.info(errMsg)
   }
 
   // 未登錄處理
