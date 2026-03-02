@@ -2,8 +2,8 @@
     "name" : "Bulka-business",
     "appid" : "__UNI__12D0337",
     "description" : "",
-    "versionName" : "2.1.41",
-    "versionCode" : 201041,
+    "versionName" : "2.1.42",
+    "versionCode" : 201042,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -71,7 +71,11 @@
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
+                "pageSizeSupport" : "16KB",
+                "abiFilters" : [ "arm64-v8a" ],
+                "schemes" : "hbuilder,bulkaschemes",
                 "targetSdkVersion" : 35,
+                "minSdkVersion" : 24,
                 "excludePermissions" : [
                     "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",

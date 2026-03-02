@@ -1,12 +1,12 @@
 'use strict';
 const uniPush = uniCloud.getPushManager({ appId: "__UNI__12D0337" })
 exports.main = async (event) => {
-	let queryStringParameters = JSON.parse(event.body) || event.queryStringParameters || {}
+	let queryStringParameters = JSON.parse(event.body) || {}
 	let params = {
 		"push_clientid": queryStringParameters.push_clientid,
 		"title": queryStringParameters.title,
 		"content": queryStringParameters.content,
-		"payload": JSON.parse(queryStringParameters.payload),
+		"payload": queryStringParameters.payload,
 		"badge": "+1",
 	}
 	if (queryStringParameters.force_notification == 1) {
