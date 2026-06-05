@@ -1,134 +1,147 @@
 <script setup>
-import { ref } from 'vue'
-import {onShow, onLoad} from '@dcloudio/uni-app'
-import {getShopInfo, updateShopInfo} from "../../api/shop";
+import { ref } from "vue";
+import { onShow, onLoad } from "@dcloudio/uni-app";
+import { getShopInfo, updateShopInfo } from "../../api/shop";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
-import {getShopType, UploadUrl} from "../../api/public";
+import { getShopType, UploadUrl } from "../../api/public";
 import PickerSelect from "../../components/PickerSelect.vue";
-import {useFileUpload} from "../../utils/uploadFile";
-import {pick} from "lodash";
-import {Toast} from "../../utils";
+import { useFileUpload } from "../../utils/uploadFile";
+import { pick } from "lodash";
+import { Toast } from "../../utils";
 
 const formData = ref({
   order_on: 2,
   takeout_on: 2,
-  dine_on: 2
-})
-const types = ref([])
+  dine_on: 2,
+});
+const types = ref([]);
 
-const ImageBaseUrl = ref('')
-const viewAlbum = ref([])
+const ImageBaseUrl = ref("");
+const viewAlbum = ref([]);
 
 onLoad(async () => {
-  getInfo()
-  getTypes()
-})
+  getInfo();
+  getTypes();
+});
 
-const { uploadFile } = useFileUpload({showUploadLoading: true})
+const { uploadFile } = useFileUpload({ showUploadLoading: true });
 
 const handlePreviewImage = (url) => {
   uni.previewImage({
     urls: [url],
-    current: 0
-  })
-}
-
+    current: 0,
+  });
+};
 
 const getTypes = () => {
-  getShopType().then(res => {
-    types.value = res.data || []
-  })
-}
+  getShopType().then((res) => {
+    types.value = res.data || [];
+  });
+};
 
 const handleToAlbum = () => {
-  const images = viewAlbum.value || []
-  uni.setStorageSync('storeImages', {
+  const images = viewAlbum.value || [];
+  uni.setStorageSync("storeImages", {
     paths: formData.value.images,
     viewUrls: images,
-  })
+  });
   uni.navigateTo({
-    url: '/pages/account/album'
-  })
-}
+    url: "/pages/account/album",
+  });
+};
 
 const getInfo = () => {
   getShopInfo().then((res) => {
-    const d = res.data || {}
-    ImageBaseUrl.value = d.base_url
-    console.log(d)
+    const d = res.data || {};
+    ImageBaseUrl.value = d.base_url;
+    console.log(d);
     formData.value = {
       ...formData.value,
       ...d,
       show_bg_image: d.base_url + d.bg_image,
       show_shop_avatar: d.base_url + d.shop_avatar,
-    }
-    viewAlbum.value = (d.images || []).map(i => d.base_url + i)
-  })
-}
+    };
+    viewAlbum.value = (d.images || []).map((i) => d.base_url + i);
+  });
+};
 
 onShow(() => {
   // getInfo()
-  uni.$off('store-images')
-  uni.$on('store-images', (d) => {
+  uni.$off("store-images");
+  uni.$on("store-images", (d) => {
     // console.log(d)
-    formData.value.images = d.paths
-    viewAlbum.value = d.viewUrls
-  })
-  uni.$off('setLocationData')
-  uni.$on('setLocationData', (location) => {
+    formData.value.images = d.paths;
+    viewAlbum.value = d.viewUrls;
+  });
+  uni.$off("setLocationData");
+  uni.$on("setLocationData", (location) => {
     formData.value.latitude = location.lat?.toString();
     formData.value.longitude = location.lng?.toString();
     formData.value.address = location.address;
-    formData.value.address_name = location.name
-  })
-})
+    formData.value.address_name = location.name;
+  });
+});
 
 const handleChooseAvatar = () => {
   uploadFile({
     count: 1,
-    name: 'image',
+    name: "image",
     url: UploadUrl,
-    fileType: ['image']
-  }).then(res => {
-    const [result] = res || []
-    formData.value.shop_avatar = result?.path
-    formData.value.show_shop_avatar = result?.url
-  })
-}
+    fileType: ["image"],
+  }).then((res) => {
+    const [result] = res || [];
+    formData.value.shop_avatar = result?.path;
+    formData.value.show_shop_avatar = result?.url;
+  });
+};
 
 const handleChooseBg = () => {
   uploadFile({
     count: 1,
-    name: 'image',
+    name: "image",
     url: UploadUrl,
-    fileType: ['image']
-  }).then(res => {
-    const [result] = res || []
-    formData.value.bg_image = result?.path
-    formData.value.show_bg_image = result?.url
-  })
-}
+    fileType: ["image"],
+  }).then((res) => {
+    const [result] = res || [];
+    formData.value.bg_image = result?.path;
+    formData.value.show_bg_image = result?.url;
+  });
+};
 
 const handleSelectType = (val) => {
-  formData.value.shop_type = val.id
-  formData.value.shop_type_name = val.name
-}
+  formData.value.shop_type = val.id;
+  formData.value.shop_type_name = val.name;
+};
 
 const handleSubmit = () => {
-  const params = pick(formData.value, ['shop_name', 'shop_type', 'shop_avatar', 'bg_image','images', 'address', 'order_on', 'takeout_on', 'dine_on', 'longitude', 'latitude'])
-  console.log(params)
+  const params = pick(formData.value, [
+    "shop_name",
+    "shop_type",
+    "shop_avatar",
+    "bg_image",
+    "images",
+    "address",
+    "order_on",
+    "takeout_on",
+    "dine_on",
+    "longitude",
+    "latitude",
+  ]);
+  console.log(params);
   updateShopInfo(params).then(() => {
-    Toast.success('保存成功')
-    getInfo()
-  })
-}
-
+    Toast.success("保存成功");
+    getInfo();
+  });
+};
 
 const handleLocation = () => {
-	
-	 uni.navigateTo({
-	 	url: '/pages/map-webview/index?longitude='+ (formData.value.longitude || '') + '&latitude=' + (formData.value.latitude || '')
-	 })
+  uni.navigateTo({
+    url:
+      "/pages/map-webview/index?longitude=" +
+      (formData.value.longitude || "114.1667") +
+      "&latitude=" +
+      (formData.value.latitude || "22.2500"),
+  });
   //
   // uni.chooseLocation({
   //   success: (result) => {
@@ -143,8 +156,7 @@ const handleLocation = () => {
   //     console.log(result, 'complete')
   //   }
   // })
-  
-}
+};
 </script>
 
 <template>
@@ -163,7 +175,13 @@ const handleLocation = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseAvatar">
-                <uv-image :src="formData.show_shop_avatar" mode="aspectFit" width="100%" height="100%" radius="5"/>
+                <uv-image
+                  :src="formData.show_shop_avatar"
+                  mode="aspectFit"
+                  width="100%"
+                  height="100%"
+                  radius="5"
+                />
               </view>
             </view>
           </view>
@@ -178,7 +196,13 @@ const handleLocation = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseBg">
-                <uv-image :src="formData.show_bg_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
+                <uv-image
+                  :src="formData.show_bg_image"
+                  mode="aspectFit"
+                  width="100%"
+                  height="100%"
+                  radius="5"
+                />
               </view>
             </view>
           </view>
@@ -189,7 +213,13 @@ const handleLocation = () => {
               <text>店鋪名稱</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.shop_name" inputAlign="right" fontSize="26rpx" :border="false" placeholder="請輸入店鋪名稱"/>
+              <uv-input
+                v-model="formData.shop_name"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入店鋪名稱"
+              />
             </view>
           </view>
 
@@ -199,7 +229,9 @@ const handleLocation = () => {
               <text>門店定位</text>
             </view>
             <view class="form-value">
-              <view class="setting-mode" @click="handleLocation">{{formData.address_name || '獲取門店定位'}}</view>
+              <view class="setting-mode" @click="handleLocation">{{
+                formData.address_name || "獲取門店定位"
+              }}</view>
             </view>
           </view>
 
@@ -207,10 +239,18 @@ const handleLocation = () => {
             <view class="form-label">
               <text class="red-text">*</text>
               <text>店鋪地址</text>
-              <text style="font-size: 20rpx; color: #007aff" @click="handleLocation">(點擊獲取)</text>
+              <text style="font-size: 20rpx; color: #007aff" @click="handleLocation"
+                >(點擊獲取)</text
+              >
             </view>
-            <view class="form-value" >
-              <uv-input v-model="formData.address" inputAlign="right" fontSize="26rpx" :border="false" placeholder="請輸入店鋪地址"/>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.address"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入店鋪地址"
+              />
             </view>
           </view>
 
@@ -222,7 +262,7 @@ const handleLocation = () => {
             <PickerSelect :options="types" key-name="name" @change="handleSelectType">
               <view class="form-value">
                 <text class="placeholder">
-                  {{formData.shop_type_name || '請選擇門店分類'}}
+                  {{ formData.shop_type_name || "請選擇門店分類" }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -239,8 +279,13 @@ const handleLocation = () => {
         <view class="card-content">
           <view class="img-list" style="min-height: 150rpx">
             <view class="empty" v-if="!viewAlbum?.length">暫無相片</view>
-            <view class="img-item" @click="handlePreviewImage" v-for="(img, index) in viewAlbum" :key="index">
-              <uv-image :src="img" mode="widthFix" width="100%" height="150rpx"  />
+            <view
+              class="img-item"
+              @click="handlePreviewImage"
+              v-for="(img, index) in viewAlbum"
+              :key="index"
+            >
+              <uv-image :src="img" mode="widthFix" width="100%" height="150rpx" />
             </view>
           </view>
         </view>
@@ -282,7 +327,9 @@ const handleLocation = () => {
       </view>
     </view>
     <view class="submit-button">
-      <uv-button custom-style="background: black; color: #fff" @click="handleSubmit">提交</uv-button>
+      <uv-button custom-style="background: black; color: #fff" @click="handleSubmit"
+        >提交</uv-button
+      >
     </view>
   </view>
 </template>
@@ -319,7 +366,6 @@ const handleLocation = () => {
   //height: 100%;
   background-color: #f8f8f8;
 }
-
 
 .card {
   padding: 20rpx;

@@ -2,8 +2,9 @@ import request from './request'
 // export const baseUrl = 'https://storeapi.totxlive.com'
 export const baseUrl = 'https://api.bulka.fun'
 // 設置全局配置
+// #ifdef APP
 request.config.baseUrl = baseUrl
-
+// #endif
 // 添加請求攔截器（示例：添加時間戳）
 request.addRequestInterceptor(async (config) => {
     // config.url += `?timestamp=${Date.now()}`
@@ -12,7 +13,7 @@ request.addRequestInterceptor(async (config) => {
 
 // 添加響應攔截器（示例：處理數據結構）
 request.addResponseInterceptor(async (response) => {
-    if(response.data?.code === 401) {
+    if (response.data?.code === 401) {
         return Promise.reject(response)
     }
     if (response.data.code !== 0) {

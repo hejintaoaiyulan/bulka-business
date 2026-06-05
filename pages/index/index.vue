@@ -1,9 +1,16 @@
 <template>
   <PageWrapper>
     <view class="content">
-      <uv-navbar title="" bg-color="#000000" left-icon-color="#ffffff" leftText="店鋪詳情" safeAreaInsetTop placeholder
-                 fixed
-                 leftIcon="">
+      <uv-navbar
+        title=""
+        bg-color="#000000"
+        left-icon-color="#ffffff"
+        leftText="店鋪詳情"
+        safeAreaInsetTop
+        placeholder
+        fixed
+        leftIcon=""
+      >
         <template #right>
           <view class="right" @click="handleRight">
             <text class="iconfont icon-saoma"></text>
@@ -128,7 +135,14 @@
         </view>
       </view>
 
-      <uv-popup ref="popup" mode="center" :closeable="true" @change="handleChangeModal" bg-color="white" round="20rpx">
+      <uv-popup
+        ref="popup"
+        mode="center"
+        :closeable="true"
+        @change="handleChangeModal"
+        bg-color="white"
+        round="20rpx"
+      >
         <view class="stock-container">
           <view class="stock-content">
             <view class="stock-title">
@@ -143,7 +157,11 @@
                   <view class="activity-name">{{ activity.name }}</view>
                 </view>
                 <view class="activity-list">
-                  <view class="activity-item" v-for="(goods, index) in activity.children" :key="index">
+                  <view
+                    class="activity-item"
+                    v-for="(goods, index) in activity.children"
+                    :key="index"
+                  >
                     <view class="goods-item">
                       <view class="goods_name">{{ goods.goods_name }}</view>
                       <view class="tip">庫存不足</view>
@@ -153,7 +171,6 @@
               </view>
             </view>
           </view>
-
         </view>
       </uv-popup>
     </view>
@@ -161,113 +178,114 @@
 </template>
 
 <script setup>
-import {onShow} from '@dcloudio/uni-app'
-import {shopStatictis} from "../../api/shop";
-import {ref, watch, computed} from "vue";
-import {useUserStore} from "../../model/user";
-import {scanCodeByOrder, Toast, toPromise} from "@/utils";
+import { onShow } from "@dcloudio/uni-app";
+import { shopStatictis } from "../../api/shop";
+import { ref, watch, computed } from "vue";
+import { useUserStore } from "../../model/user";
+import { scanCodeByOrder, Toast, toPromise } from "@/utils";
 // import {scanOrder} from "@/api/order";
-import {useShowModalTime} from "@/hooks";
+import { useShowModalTime } from "@/hooks";
 import PageWrapper from "@/components/PageWrapper.vue";
 
-const popup = ref(null)
+const popup = ref(null);
 
-const {open, visible, close} = useShowModalTime()
+const { open, visible, close } = useShowModalTime();
 
-watch(() => visible.value, (newVal) => {
-  if (newVal) {
-    popup.value?.open()
-  } else {
-    popup.value?.close()
-  }
-}, {
-  immediate: true,
-})
+watch(
+  () => visible.value,
+  (newVal) => {
+    if (newVal) {
+      popup.value?.open();
+    } else {
+      popup.value?.close();
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 const handleChangeModal = (e) => {
   if (e.show === false) {
-    close()
+    close();
   }
-}
+};
 
 const handleMore = () => {
   // Toast.info('開發中，敬請期待')
   // return
   uni.navigateTo({
-    url: '/pages/index/statistics'
-  })
-}
+    url: "/pages/index/statistics",
+  });
+};
 
 // header掃碼
 const handleRight = () => {
-  scanCodeByOrder().then(({order_no}) => {
-    Toast.success('掃碼成功')
+  scanCodeByOrder().then(({ order_no }) => {
+    Toast.success("掃碼成功");
     setTimeout(() => {
       uni.navigateTo({
-        url: `/pages/orders/order-info?order_no=${order_no}`
-      })
-    }, 2000)
-  })
-}
+        url: `/pages/orders/order-info?order_no=${order_no}`,
+      });
+    }, 2000);
+  });
+};
 
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 const info = ref({
-  sales_price: '',
-  order_num: '',
-  sales_num: '',
-  shop_uv: ''
-})
+  sales_price: "",
+  order_num: "",
+  sales_num: "",
+  shop_uv: "",
+});
 
-const activeList = ref([])
+const activeList = ref([]);
 
 const showActiveList = computed(() => {
-  const obj = activeList.value.reduce((acc, cur) => {
-    if (acc[cur.discount_activity_id]) {
-      acc[cur.discount_activity_id] = {
-        name: cur.activity_name,
-        id: cur.discount_activity_id,
-        children: (acc[cur.discount_activity_id]?.children || []).concat(cur)
+  const obj =
+    activeList.value.reduce((acc, cur) => {
+      if (acc[cur.discount_activity_id]) {
+        acc[cur.discount_activity_id] = {
+          name: cur.activity_name,
+          id: cur.discount_activity_id,
+          children: (acc[cur.discount_activity_id]?.children || []).concat(cur),
+        };
+      } else {
+        acc[cur.discount_activity_id] = {
+          name: cur.activity_name,
+          id: cur.discount_activity_id,
+          children: [cur],
+        };
       }
-    } else {
-      acc[cur.discount_activity_id] = {
-        name: cur.activity_name,
-        id: cur.discount_activity_id,
-        children: [cur]
-      }
-    }
-    return acc
-  }, {}) || {}
-  return Object.values(obj || {})
-})
-
+      return acc;
+    }, {}) || {};
+  return Object.values(obj || {});
+});
 
 const getInfo = () => {
-  shopStatictis().then(res => {
-    activeList.value = res.data?.sold_out || []
-    if (activeList.value.length)
-      open(userStore.userInfo.mobile, true)
+  shopStatictis().then((res) => {
+    activeList.value = res.data?.sold_out || [];
+    if (activeList.value.length) open(userStore.userInfo.mobile, true);
     info.value = res.data || {};
-  })
-}
+  });
+};
 
 onShow(() => {
-  if (userStore.isLogin())
-    getInfo()
-})
-
+  if (userStore.isLogin()) getInfo();
+});
 
 // 分類管理
 const handleToCategory = () => {
   uni.navigateTo({
-    url: '/pages/manages/goods-category/index'
-  })
-}
+    url: "/pages/manages/goods-category/index",
+  });
+};
 
 const handleToRouter = (path) => {
   uni.navigateTo({
-    url: path
-  })
-}
+    url: path,
+  });
+};
 </script>
 <style>
 page {
@@ -333,7 +351,7 @@ page {
       color: #fff;
 
       &:before {
-        content: '';
+        content: "";
         position: absolute;
         z-index: 0;
         border-radius: 6rpx;

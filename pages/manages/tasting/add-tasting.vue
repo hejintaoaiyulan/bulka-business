@@ -6,12 +6,7 @@ import { useFileUpload } from "../../../utils/uploadFile";
 import { getGoodsCategory, UploadUrl } from "../../../api/public";
 import PickerSelect from "../../../components/PickerSelect.vue";
 import { pick } from "lodash";
-import {
-  getGoodsInfo,
-  getGoodsTypes,
-  saveGoods,
-  getFoodConditionConfig,
-} from "../../../api/goods";
+import { getGoodsInfo, getGoodsTypes, saveGoods, getFoodConditionConfig } from "../../../api/goods";
 import { Toast } from "../../../utils";
 
 const { uploadFile, isUploading } = useFileUpload({ showUploadLoading: true });
@@ -42,6 +37,41 @@ const formData = ref({
   weigh: "",
 });
 
+const startPicker = ref(null);
+const endPicker = ref(null);
+const startValue = ref("");
+const endValue = ref("");
+const startTime = ref("");
+const endTime = ref("");
+// 转时分字符串为分钟数字：08:30 → 510
+const timeToMin = (str) => {
+  if (!str) return 0;
+  const [h, m] = str.split(":").map(Number);
+  return h * 60 + m;
+};
+const openStartPicker = () => startPicker.value.open();
+const openEndPicker = () => endPicker.value.open();
+// 选开始
+const handleStartConfirm = (e) => {
+  const val = e.value;
+  // 已有结束时间，开始不能>=结束
+  if (endTime.value && timeToMin(val) >= timeToMin(endTime.value)) {
+    uni.showToast({ title: "開始時間不能大於等於結束時間", icon: "none" });
+    return;
+  }
+  startTime.value = val;
+};
+// 选结束
+const handleEndConfirm = (e) => {
+  const val = e.value;
+  // 已有开始，结束不能<=开始
+  if (startTime.value && timeToMin(val) <= timeToMin(startTime.value)) {
+    uni.showToast({ title: "結束時間不能小於等於開始時間", icon: "none" });
+    return;
+  }
+  endTime.value = val;
+};
+
 const single = computed(() => {
   return formData.value.goods_spec_type === 1;
 });
@@ -64,9 +94,13 @@ const getInfo = (id) => {
         .map((item) => item.goods_spec_name)
         .join("、");
     }
+    if (formData.value.pickup_time != "") {
+      let m = formData.value.pickup_time.split("-");
+      startTime.value = m[0];
+      endTime.value = m[1];
+    }
 
-    formData.value.show_goods_image =
-      formData.value.base_url + formData.value.goods_image;
+    formData.value.show_goods_image = formData.value.base_url + formData.value.goods_image;
   });
 };
 
@@ -114,10 +148,7 @@ const handleToSetSpecification = () => {
   }
   uni.navigateTo({
     url:
-      "/pages/manages/goods/specification?type=" +
-      n +
-      "&goods_name=" +
-      formData.value.goods_name,
+      "/pages/manages/goods/specification?type=" + n + "&goods_name=" + formData.value.goods_name,
     success: () => {
       uni.$once("updateSpecification", (data) => {
         formData.value.goods_spec = unref(data);
@@ -187,10 +218,7 @@ const validateStock = () => {
 const validatePrice = () => {
   const config = conditionConfig.value;
   const salePrice = Number(formData.value.sale_price) || 0;
-  if (
-    config.food_condition_price > 0 &&
-    salePrice > config.food_condition_price
-  ) {
+  if (config.food_condition_price > 0 && salePrice > config.food_condition_price) {
     Toast.info(`商品售價不能超過 ${config.food_condition_price}`);
     formData.value.sale_price = config.food_condition_price;
   }
@@ -199,10 +227,7 @@ const validatePrice = () => {
 const validateDiscount = () => {
   const config = conditionConfig.value;
   const discountVal = Number(formData.value.discount) || 0;
-  if (
-    config.food_condition_discount > 0 &&
-    discountVal > config.food_condition_discount
-  ) {
+  if (config.food_condition_discount > 0 && discountVal > config.food_condition_discount) {
     Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
     formData.value.discount = config.food_condition_discount;
   }
@@ -234,31 +259,19 @@ const handleSave = () => {
     const salePrice = Number(formData.value.sale_price) || 0;
     const discountVal = Number(formData.value.discount) || 0;
 
-    if (
-      config.food_condition_stock > 0 &&
-      stock > config.food_condition_stock
-    ) {
+    if (config.food_condition_stock > 0 && stock > config.food_condition_stock) {
       return Toast.info(`商品庫存不能超過 ${config.food_condition_stock}`);
     }
-    if (
-      config.food_condition_price > 0 &&
-      salePrice > config.food_condition_price
-    ) {
+    if (config.food_condition_price > 0 && salePrice > config.food_condition_price) {
       return Toast.info(`商品售價不能超過 ${config.food_condition_price}`);
     }
-    if (
-      config.food_condition_discount > 0 &&
-      discountVal > config.food_condition_discount
-    ) {
+    if (config.food_condition_discount > 0 && discountVal > config.food_condition_discount) {
       return Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
     }
   } else {
     // 多規格驗證
     const discountVal = Number(formData.value.discount) || 0;
-    if (
-      config.food_condition_discount > 0 &&
-      discountVal > config.food_condition_discount
-    ) {
+    if (config.food_condition_discount > 0 && discountVal > config.food_condition_discount) {
       return Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
     }
     // 驗證每個規格項的庫存和價格
@@ -267,18 +280,12 @@ const handleSave = () => {
       for (const attr of spec.goods_spec_attr || []) {
         const attrStock = Number(attr.goods_stock) || 0;
         const attrPrice = Number(attr.sale_price) || 0;
-        if (
-          config.food_condition_stock > 0 &&
-          attrStock > config.food_condition_stock
-        ) {
+        if (config.food_condition_stock > 0 && attrStock > config.food_condition_stock) {
           return Toast.info(
             `規格「${attr.goods_spec_name || ""}」庫存不能超過 ${config.food_condition_stock}`,
           );
         }
-        if (
-          config.food_condition_price > 0 &&
-          attrPrice > config.food_condition_price
-        ) {
+        if (config.food_condition_price > 0 && attrPrice > config.food_condition_price) {
           return Toast.info(
             `規格「${attr.goods_spec_name || ""}」售價不能超過 ${config.food_condition_price}`,
           );
@@ -307,10 +314,7 @@ const handleSave = () => {
   const singleFields =
     formData.value.goods_spec_type === 1
       ? baseFields.filter((key) => !["goods_spec"].includes(key))
-      : baseFields.filter(
-          (key) =>
-            !["goods_stock", "original_price", "sale_price"].includes(key),
-        );
+      : baseFields.filter((key) => !["goods_stock", "original_price", "sale_price"].includes(key));
   formData.value.discount = Number(formData.value.discount || 0).toFixed(2);
   const saveParams = pick(formData.value, singleFields);
 
@@ -320,6 +324,10 @@ const handleSave = () => {
   console.log("=== 试吃商品保存参数 ===");
   console.log("formData原始数据:", JSON.stringify(formData.value, null, 2));
   console.log("saveParams提交参数:", JSON.stringify(saveParams, null, 2));
+
+  if (startTime.value != "" && endTime.value != "") {
+    saveParams.pickup_time = startTime.value + "-" + endTime.value;
+  }
 
   saveGoods(saveParams).then((res) => {
     Toast.success("保存成功");
@@ -342,26 +350,15 @@ const handleSave = () => {
               <text>商品圖片</text>
             </view>
             <view class="form-value flex-right">
-              <view
-                class="add-file-box"
-                v-if="!formData.goods_image"
-                @click="handleChooseImage"
-              >
-                <view
-                  class="iconfont icon-jiajianzujianjiahao"
-                  v-if="!isUploading"
-                ></view>
+              <view class="add-file-box" v-if="!formData.goods_image" @click="handleChooseImage">
+                <view class="iconfont icon-jiajianzujianjiahao" v-if="!isUploading"></view>
                 <view
                   v-else
                   class="iconfont icon-loading rotate-loading"
                   style="display: inline-block"
                 ></view>
               </view>
-              <view
-                class="add-file-box show-picture"
-                v-else
-                @click="handleChooseImage"
-              >
+              <view class="add-file-box show-picture" v-else @click="handleChooseImage">
                 <uv-image
                   :src="formData.show_goods_image"
                   mode="aspectFit"
@@ -426,11 +423,7 @@ const handleSave = () => {
               <text class="red-text">*</text>
               <text>商家商品分類</text>
             </view>
-            <PickerSelect
-              :options="types"
-              key-name="goods_type_name"
-              @change="handleChangeType"
-            >
+            <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeType">
               <view class="form-value">
                 <text class="placeholder">
                   {{ formData.goods_type_name || "請選擇分類" }}
@@ -439,6 +432,42 @@ const handleSave = () => {
               </view>
             </PickerSelect>
           </view>
+          <!-- 开始时间 -->
+          <view class="form-item">
+            <view class="form-label">
+              <text>試食可提取時間（開始）</text>
+            </view>
+            <view class="item" @click="openStartPicker" style="color: #888888; font-size: 24rpx">
+              <text>{{ startTime || "請選擇開始時間" }}</text>
+            </view>
+          </view>
+
+          <!-- 结束时间 -->
+          <view class="form-item">
+            <view class="form-label">
+              <text>試食可提取時間（結束）</text>
+            </view>
+            <view class="item" @click="openEndPicker" style="color: #888888; font-size: 24rpx">
+              <text>{{ endTime || "請選擇結束時間" }}</text>
+            </view>
+          </view>
+
+          <!-- 两个时间选择器 -->
+          <uv-datetime-picker
+            title="試食可提取時間（開始）"
+            ref="startPicker"
+            v-model="startValue"
+            mode="time"
+            @confirm="handleStartConfirm"
+          ></uv-datetime-picker>
+
+          <uv-datetime-picker
+            title="試食可提取時間（結束）"
+            ref="endPicker"
+            v-model="endValue"
+            mode="time"
+            @confirm="handleEndConfirm"
+          ></uv-datetime-picker>
         </view>
       </view>
       <view class="card">
@@ -497,9 +526,7 @@ const handleSave = () => {
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
               <text>商品折扣</text>
-              <text class="form-label-tip"
-                >(超過50%折扣自動參加首頁試食活動)</text
-              >
+              <text class="form-label-tip">(超過50%折扣自動參加首頁試食活動)</text>
             </view>
             <view class="form-value">
               <text>{{ discount }}</text>

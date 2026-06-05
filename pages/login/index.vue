@@ -60,6 +60,9 @@ const handleLogin = () => {
     },
   });
   // #endif
+  // #ifndef APP
+  handleLogin2("888");
+  // #endif
 };
 const handleLogin2 = (cid) => {
   Login({ ...formData.value, prefix: formData.value.prefix, push_clientid: cid })
@@ -68,7 +71,7 @@ const handleLogin2 = (cid) => {
       setToken(access_token, expires_in);
       uni.setStorageSync("token_type", token_type);
       userStore.getInfo();
-      uni.$emit('connectWebSocket')
+      uni.$emit("connectWebSocket");
       if (check_status !== 4) {
         uni.navigateTo({
           url: "/pages/register/set-info",
