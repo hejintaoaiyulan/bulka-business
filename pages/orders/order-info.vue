@@ -1,81 +1,82 @@
 <script setup>
-import {onLoad, onShow} from '@dcloudio/uni-app'
-import {ref, computed} from 'vue'
-import {AcceptOrder, cancelOrder, getOrderDetail, ServingFood} from "../../api/order";
-import {OrderStatusText} from "../../utils/fields";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+import { ref, computed } from "vue";
+import { AcceptOrder, cancelOrder, getOrderDetail, ServingFood } from "../../api/order";
+import { OrderStatusText } from "../../utils/fields";
 import UvButton from "../../uni_modules/uv-button/components/uv-button/uv-button.vue";
-import {scanCodeByOrder, showModal, Toast} from "../../utils";
+import { scanCodeByOrder, showModal, Toast } from "../../utils";
 
-let option = {}
-const info = ref({})
+let option = {};
+const info = ref({});
 
 onLoad((query) => {
-  option = query
-})
+  option = query;
+});
 
 onShow(() => {
-  getInfo()
-})
+  getInfo();
+});
 
 const getInfo = () => {
-  getOrderDetail({order_no: option.order_no}).then(res => {
-    info.value = res.data || {}
-  })
-}
+  getOrderDetail({ order_no: option.order_no }).then((res) => {
+    info.value = res.data || {};
+  });
+};
 
 const handleConnect = () => {
   if (info.value.user?.mobile) {
     uni.makePhoneCall({
       phoneNumber: info.value.user?.mobile,
-    })
+    });
   }
-}
+};
 
 const freebies = computed(() => {
-  return info.value.goods_list?.reduce((t, c) => {
-    if (c.freebies) {
-      t.push(c.freebies)
-    }
-    return t
-  }, []) || []
-})
-
+  return (
+    info.value.goods_list?.reduce((t, c) => {
+      if (c.freebies) {
+        t.push(c.freebies);
+      }
+      return t;
+    }, []) || []
+  );
+});
 
 const handleServingFood = () => {
   // 出餐
-  showModal('是否確定出餐').then(() => {
-    ServingFood({order_no: info.value.order_no}).then(() => {
-      getInfo()
+  showModal("是否確定出餐")
+    .then(() => {
+      ServingFood({ order_no: info.value.order_no }).then(() => {
+        getInfo();
+      });
     })
-  }).catch(() => {
-  })
-}
+    .catch(() => {});
+};
 
 const handleAccept = () => {
   // 接單
-  showModal('是否確定接單').then(() => {
-    AcceptOrder({order_no: info.value.order_no}).then(() => {
-      getInfo()
-    })
-  })
-}
+  showModal("是否確定接單").then(() => {
+    AcceptOrder({ order_no: info.value.order_no }).then(() => {
+      getInfo();
+    });
+  });
+};
 
 const handleCancel = () => {
   // 取消訂單
-  showModal('是否確定取消訂單').then(() => {
-    cancelOrder({order_no: info.value.order_no}).then(() => {
-      getInfo()
-    })
-  })
-}
+  showModal("是否確定取消訂單").then(() => {
+    cancelOrder({ order_no: info.value.order_no }).then(() => {
+      getInfo();
+    });
+  });
+};
 
 const handleScanCode = () => {
   scanCodeByOrder().then(() => {
-    Toast.success('掃碼成功')
-    getInfo()
-  })
-}
-
+    Toast.success("掃碼成功");
+    getInfo();
+  });
+};
 </script>
 
 <template>
@@ -96,13 +97,14 @@ const handleScanCode = () => {
         <view class="title">客戶信息</view>
         <view class="user-content">
           <view class="user">
-            <uv-avatar :size="30" :src="info.user?.avatar"/>
+            <uv-avatar :size="30" :src="info.user?.avatar" />
             <text>{{ info.user?.nickname }}</text>
           </view>
           <view class="mobile">{{ info.user?.mobile }}</view>
         </view>
         <view class="call">
-          <view class="call-button" @click="handleConnect">聯繫客戶
+          <view class="call-button" @click="handleConnect"
+            >聯繫客戶
             <view class="iconfont icon-dianhua"></view>
           </view>
         </view>
@@ -113,8 +115,11 @@ const handleScanCode = () => {
         <view class="order-content" v-for="goods in info.goods_list" :key="goods.goods_id">
           <view class="order-single-msg">
             <view class="order-img">
-              <image :src="goods.goods_image" mode="aspectFit"
-                     style="width: 100rpx; height: 100rpx"/>
+              <image
+                :src="goods.goods_image"
+                mode="aspectFit"
+                style="width: 100rpx; height: 100rpx"
+              />
             </view>
             <view class="order-msg">
               <view class="order-title">{{ goods.goods_name }}</view>
@@ -133,8 +138,11 @@ const handleScanCode = () => {
           <view class="title">贈品</view>
           <view class="gift-item" v-for="(gift, index) in freebies" :key="index">
             <view class="gift-img">
-              <image :src="gift.freebies_image" mode="aspectFit"
-                     style="width: 90rpx; height: 90rpx"/>
+              <image
+                :src="gift.freebies_image"
+                mode="aspectFit"
+                style="width: 90rpx; height: 90rpx"
+              />
             </view>
             <view class="gift-content">
               <view class="gift-title">{{ gift.freebies_name }}</view>
@@ -145,14 +153,12 @@ const handleScanCode = () => {
 
         <view class="form-item" style="margin-top: 20rpx">
           <view class="form-label">費用合計</view>
-          <view class="form-value red-text">
-            HK$ {{ info.price }}
-          </view>
+          <view class="form-value red-text"> HK$ {{ info.price }} </view>
         </view>
         <view class="form-item">
           <view class="form-label">訂單備註</view>
           <view class="form-value">
-            <text class="placeholder">{{ info.mark || '無備注' }}</text>
+            <text class="placeholder">{{ info.mark || "無備注" }}</text>
           </view>
         </view>
       </view>
@@ -186,10 +192,16 @@ const handleScanCode = () => {
       </view>
     </view>
     <view class="submit-button flex-right safe-pb">
-      <uv-button size="small" v-if="[1,2,3].includes(info.status)" @click="handleCancel">取消訂單</uv-button>
+      <uv-button size="small" v-if="[1, 2, 3, 4].includes(info.status)" @click="handleCancel"
+        >取消訂單</uv-button
+      >
       <uv-button size="small" v-if="info.status === 2" @click="handleAccept">接單</uv-button>
-      <uv-button size="small" v-if="info.status === 3" @click="handleServingFood">確認出餐</uv-button>
-      <uv-button size="small" v-if="info.status === 4" @click="handleConnect">聯繫客戶領取</uv-button>
+      <uv-button size="small" v-if="info.status === 3" @click="handleServingFood"
+        >確認出餐</uv-button
+      >
+      <uv-button size="small" v-if="info.status === 4" @click="handleConnect"
+        >聯繫客戶領取</uv-button
+      >
     </view>
   </view>
 </template>
@@ -228,8 +240,6 @@ const handleScanCode = () => {
     font-size: 26rpx;
     color: #333;
   }
-
-
 }
 
 .call {
@@ -308,7 +318,6 @@ const handleScanCode = () => {
   }
 }
 
-
 .order-content {
   display: flex;
   column-gap: 50rpx;
@@ -381,7 +390,6 @@ const handleScanCode = () => {
     color: #666;
   }
 }
-
 
 .operation-item {
   :global(.uv-button) {

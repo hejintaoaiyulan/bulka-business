@@ -1,119 +1,139 @@
 <script setup>
-import {ref} from 'vue'
-import {usePageLoading} from "../../../hooks";
-import {countComment, getCommentList} from "../../../api/commentary";
-import {onShow, onLoad, onReachBottom} from '@dcloudio/uni-app'
+import { ref } from "vue";
+import { usePageLoading } from "../../../hooks";
+import {
+  countComment,
+  getCommentList,
+  commentary_getScoringCriteria,
+} from "../../../api/commentary";
+import { onShow, onLoad, onReachBottom } from "@dcloudio/uni-app";
 
-const {dataList, getData, loadNext, reload} = usePageLoading(getCommentList, {
+const { dataList, getData, loadNext, reload } = usePageLoading(getCommentList, {
   onFinish: uni.stopPullDownRefresh,
   transform: (data) => {
     return data.map((item) => {
-      let imgUrls = typeof item.images === 'string' && item.images ? JSON.parse(item.images) : item.images
-      
-      imgUrls = imgUrls.map(img => {
-        if (img.indexOf('http') === -1) {
-          return item.base_url + img
+      let imgUrls =
+        typeof item.images === "string" && item.images ? JSON.parse(item.images) : item.images;
+
+      imgUrls = imgUrls.map((img) => {
+        if (img.indexOf("http") === -1) {
+          return item.base_url + img;
         }
-        return img
-      })
+        return img;
+      });
 
       return {
         ...item,
-        images: imgUrls
-      }
-    })
-  }
-})
+        images: imgUrls,
+      };
+    });
+  },
+});
 
 const requestParams = ref({
-  star_status: '',
-  img_status: '',
-  response_status: ''
-})
+  star_status: "",
+  img_status: "",
+  response_status: "",
+});
 
 onShow(() => {
-  getCount()
-  reload()
-})
+  getCount();
+  reload();
+  getScoringCriteria();
+});
+const criteriaList = ref([]);
+const getScoringCriteria = () => {
+  commentary_getScoringCriteria()
+    .then((res) => {
+      criteriaList.value = res.data || [];
+      // 自动初始化每个评分key
+      res.data.forEach((item) => {
+        console.log(formData.value, item.key);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 const tabs = ref([
   {
-    name: '全部',
+    name: "全部",
     key: 1,
     badge: {
-      value: 0
-    }
+      value: 0,
+    },
   },
   {
-    name: '有圖',
+    name: "有圖",
     key: 2,
     badge: {
-      value: 0
-    }
+      value: 0,
+    },
   },
   {
-    name: '好評',
+    name: "好評",
     key: 3,
     badge: {
-      value: 0
-    }
+      value: 0,
+    },
   },
   {
-    name: '中評',
+    name: "中評",
     key: 4,
     badge: {
-      value: 0
-    }
+      value: 0,
+    },
   },
   {
-    name: '差評',
+    name: "差評",
     key: 5,
     badge: {
-      value: 0
-    }
-  }
-])
+      value: 0,
+    },
+  },
+]);
 
 const search = () => {
-  reload(requestParams.value).then(res => {
-    console.log(dataList.value)
-  })
-}
+  reload(requestParams.value).then((res) => {
+    console.log(dataList.value);
+  });
+};
 onReachBottom(() => {
-  console.log('刷新')
-  loadNext()
-})
+  console.log("刷新");
+  loadNext();
+});
 
 const getCount = () => {
-  countComment().then(res => {
+  countComment().then((res) => {
     // console.log(res)
     const obj = {
-      1: 'count',
-      2: 'img_status',
-      3: 'star_status_1',
-      4: 'star_status_2',
-      5: 'star_status_3'
-    }
-    tabs.value = tabs.value.map(item => {
-      item.badge.value = res.data[obj[item.key]]
-      return item
-    })
-  })
-}
+      1: "count",
+      2: "img_status",
+      3: "star_status_1",
+      4: "star_status_2",
+      5: "star_status_3",
+    };
+    tabs.value = tabs.value.map((item) => {
+      item.badge.value = res.data[obj[item.key]];
+      return item;
+    });
+  });
+};
 
 const handleReply = (val) => {
   uni.navigateTo({
-    url: '/pages/manages/comments/reply-comment?id=' + val.id + '&user_name=' + val.user_name
-  })
-}
+    url: "/pages/manages/comments/reply-comment?id=" + val.id + "&user_name=" + val.user_name,
+  });
+};
 
-const handleStatus = ({key}) => {
+const handleStatus = ({ key }) => {
   const config = {
-    1: {star_status: '', img_status: '', response_status: ''},
-    2: {star_status: '', img_status: 1, response_status: ''},
-    3: {star_status: 1, img_status: '', response_status: ''},
-    4: {star_status: 2, img_status: '', response_status: ''},
-    5: {star_status: 3, img_status: '', response_status: ''},
+    1: { star_status: "", img_status: "", response_status: "" },
+    2: { star_status: "", img_status: 1, response_status: "" },
+    3: { star_status: 1, img_status: "", response_status: "" },
+    4: { star_status: 2, img_status: "", response_status: "" },
+    5: { star_status: 3, img_status: "", response_status: "" },
   };
 
   if (Object.prototype.hasOwnProperty.call(config, key)) {
@@ -127,19 +147,16 @@ const handleStatus = ({key}) => {
 <template>
   <view class="container">
     <view class="header">
-      <uv-tabs :list="tabs" line-color="#c74336" :scrollable="false" @change="handleStatus"/>
+      <uv-tabs :list="tabs" line-color="#c74336" :scrollable="false" @change="handleStatus" />
     </view>
-    <scroll-view :scroll-y="true" @scrolltolower="loadNext" style="flex: 1; overflow: hidden;">
+    <scroll-view :scroll-y="true" @scrolltolower="loadNext" style="flex: 1; overflow: hidden">
       <view class="content">
-
         <view class="comment-list">
-          <view class="empty" v-if="!dataList.length">
-            暫無評論
-          </view>
+          <view class="empty" v-if="!dataList.length"> 暫無評論 </view>
           <view class="comment-item" v-for="item in dataList" :key="item.id">
             <view class="comment-title">
               <view class="user">
-                <uv-avatar :src="item.avatar" :size="30"/>
+                <uv-avatar :src="item.avatar" :size="30" />
                 <text>{{ item.user_name }}</text>
               </view>
               <view class="time">
@@ -147,17 +164,33 @@ const handleStatus = ({key}) => {
               </view>
             </view>
             <view class="comment-star">
+              <text>當前平均分：</text>
               <uv-rate :count="5" :value="item.star"></uv-rate>
+              <view class="score-item" v-for="(itm, index) in criteriaList" :key="index">
+                <view class="score-title">
+                  <text>{{ itm.title }}</text>
+                  <!-- <text class="score-desc">{{ itm.description }}</text> -->
+                </view>
+                <view class="score-rate">
+                  <uv-rate :count="5" :allow-half="false" v-model="item[itm.key]" />
+                </view>
+                <view class="option-desc">
+                  {{ itm.options.find((opt) => opt.score === item[itm.key]).description }}
+                </view>
+              </view>
             </view>
+
             <view class="comment-content">
               {{ item.content }}
             </view>
             <view class="comment-pictures">
               <view class="picture-item" v-for="(img, index) in item.images" :key="index">
-                <uv-image :src="img" mode="aspectFit" width="100%" height="100%"/>
+                <uv-image :src="img" mode="aspectFit" width="100%" height="100%" />
               </view>
             </view>
-            <view class="comment-goods">{{ Array.isArray(item.goods_name) ? item.goods_name.join('、') : item.goods_name }}</view>
+            <view class="comment-goods">{{
+              Array.isArray(item.goods_name) ? item.goods_name.join("、") : item.goods_name
+            }}</view>
             <view class="response-text" v-if="item.response_status === 1">
               回覆：{{ item.response }}
             </view>
@@ -166,7 +199,6 @@ const handleStatus = ({key}) => {
             </view>
           </view>
         </view>
-
       </view>
     </scroll-view>
   </view>
@@ -272,5 +304,26 @@ const handleStatus = ({key}) => {
   align-items: center;
   color: #999;
   font-size: 28rpx;
+}
+.score-item {
+  margin-top: 20rpx;
+  .score-title {
+    font-size: 28rpx;
+    color: #222;
+    .score-desc {
+      display: block;
+      font-size: 24rpx;
+      color: #777;
+      margin-top: 8rpx;
+    }
+  }
+  .score-rate {
+    margin-top: 16rpx;
+  }
+  .option-desc {
+    margin-top: 12rpx;
+    font-size: 24rpx;
+    color: #6449cc;
+  }
 }
 </style>

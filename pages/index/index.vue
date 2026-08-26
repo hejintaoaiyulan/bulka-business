@@ -21,7 +21,17 @@
       <view class="main">
         <view class="top-statictis">
           <view class="title-statictis">
-            <view class="title-name">數據統計</view>
+            <view class="title-name"
+              >數據統計
+              <view class="review-badge" v-if="info.food_badge?.status === 1">
+                <image
+                  src="../../static/dz/review_expert.png"
+                  mode="aspectFit"
+                  class="badge-icon"
+                ></image>
+                <text class="badge-text">{{ info.food_badge.name }}</text>
+              </view>
+            </view>
             <view class="title-operation" @click="handleMore">查看更多</view>
           </view>
           <view class="grid">
@@ -412,6 +422,26 @@ page {
     font-size: 32rpx;
     color: #333;
     font-weight: bold;
+
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+    .review-badge {
+      display: flex;
+      align-items: center;
+      gap: 6rpx;
+      padding: 4rpx 10rpx;
+      background-color: #fff3e6;
+      border-radius: 8rpx;
+    }
+    .badge-icon {
+      width: 28rpx;
+      height: 28rpx;
+    }
+    .badge-text {
+      font-size: 22rpx;
+      color: #ff8a00;
+    }
   }
 
   .title-operation {

@@ -1,30 +1,29 @@
 <script setup>
-import {useUserStore} from "../../model/user";
-import {computed} from "vue";
-import {onShow} from '@dcloudio/uni-app'
-import {useNotAuthModal} from "../../hooks";
+import { useUserStore } from "../../model/user";
+import { computed } from "vue";
+import { onShow } from "@dcloudio/uni-app";
+import { useNotAuthModal } from "../../hooks";
 import PageWrapper from "@/components/PageWrapper.vue";
 
-const {open} = useNotAuthModal()
+const { open } = useNotAuthModal();
 
-const userStore = useUserStore()
+const userStore = useUserStore();
 const handleToRoute = (path) => {
   if (!userStore.isLogin()) {
-    return open()
+    return open();
   }
   uni.navigateTo({
-    url: path
-  })
-}
+    url: path,
+  });
+};
 
-const userInfo = computed(() => userStore.userInfo)
+const userInfo = computed(() => userStore.userInfo);
 
 onShow(() => {
   if (!userStore.isLogin()) {
-    open()
+    open();
   }
-})
-
+});
 </script>
 
 <template>
@@ -32,11 +31,23 @@ onShow(() => {
     <view class="container">
       <view class="header">
         <view class="avatar">
-          <uv-avatar :size="60" shape="square" :src="userInfo.shop_avatar"/>
+          <uv-avatar :size="60" shape="square" :src="userInfo.shop_avatar" />
         </view>
         <view class="content">
-          <view class="user-name">{{ userInfo.shop_name }}</view>
-          <view class="sub-title" v-if="!userInfo.shop_no">電話：{{ userInfo.prefix }}{{ userInfo.mobile }}</view>
+          <view class="user-name"
+            >{{ userInfo.shop_name }}
+            <view class="review-badge" v-if="userInfo.food_badge?.status === 1">
+              <image
+                src="../../static/dz/review_expert.png"
+                mode="aspectFit"
+                class="badge-icon"
+              ></image>
+              <text class="badge-text">{{ userInfo.food_badge.name }}</text>
+            </view>
+          </view>
+          <view class="sub-title" v-if="!userInfo.shop_no"
+            >電話：{{ userInfo.prefix }}{{ userInfo.mobile }}</view
+          >
           <view v-else class="sub-title">ID: {{ userInfo.shop_no }}</view>
         </view>
       </view>
@@ -154,6 +165,25 @@ onShow(() => {
   .user-name {
     font-size: 30rpx;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 16rpx;
+    .review-badge {
+      display: flex;
+      align-items: center;
+      gap: 6rpx;
+      padding: 4rpx 10rpx;
+      background-color: #fff3e6;
+      border-radius: 8rpx;
+    }
+    .badge-icon {
+      width: 28rpx;
+      height: 28rpx;
+    }
+    .badge-text {
+      font-size: 22rpx;
+      color: #ff8a00;
+    }
   }
 
   .sub-title {
@@ -174,6 +204,5 @@ onShow(() => {
     font-size: 60rpx;
     color: #333;
   }
-
 }
 </style>

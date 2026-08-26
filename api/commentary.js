@@ -14,3 +14,8 @@ export const replyComment = (params) => {
 export const countComment = (params) => {
   return request.get('/store/commentary/getCommentaryStatistics', params)
 }
+
+// 获取评分题目
+export const commentary_getScoringCriteria = (params) => {
+  return request.get('/store/commentary/getScoringCriteria', params)
+}
