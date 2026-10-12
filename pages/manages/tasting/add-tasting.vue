@@ -24,8 +24,12 @@ const formData = ref({
   show_goods_image: "",
   goods_name: "",
   goods_desc: "",
+  goods_name_en: "",
+  goods_desc_en: "",
   goods_type_id: "",
   goods_type_name: "",
+  goods_type_name_en: "",
+  goods_category_name_en: "",
   goods_spec_type: 1,
   goods_stock: "",
   original_price: "",
@@ -182,12 +186,14 @@ const handleChooseImage = () => {
 
 const handleChangeType = (val) => {
   formData.value.goods_type_name = val.goods_type_name;
+  formData.value.goods_type_name_en = val.goods_type_name_en;
   formData.value.goods_type_id = val.id;
 };
 
 const handleChangeCategory = (val) => {
   formData.value.goods_category_id = val.id;
   formData.value.goods_category_name = val.category_name;
+  formData.value.goods_category_name_en = val.category_name_en;
 };
 
 onShow(() => {
@@ -299,6 +305,10 @@ const handleSave = () => {
     "id",
     "goods_name",
     "goods_desc",
+    "goods_name_en",
+    "goods_desc_en",
+    "goods_type_name_en",
+    "goods_category_name_en",
     "goods_type_id",
     "goods_category_id",
     "goods_spec_type",
@@ -385,6 +395,24 @@ const handleSave = () => {
               />
             </view>
           </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品名稱(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.goods_name_en"
+                inputAlign="right"
+                class="form-input"
+                :border="false"
+                placeholder="請輸入商品名稱(英文)"
+                fontSize="26rpx"
+              />
+            </view>
+          </view>
+
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
@@ -400,6 +428,23 @@ const handleSave = () => {
               />
             </view>
           </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品描述(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.goods_desc_en"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入商品描述(英文)"
+              />
+            </view>
+          </view>
+
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>

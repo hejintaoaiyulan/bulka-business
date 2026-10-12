@@ -1,6 +1,7 @@
 import request from './request'
 // export const baseUrl = 'https://storeapi.totxlive.com'
-export const baseUrl = 'https://api.bulka.fun'
+// export const baseUrl = 'https://api.bulka.fun'
+export const baseUrl = 'http://test.bulka.fun'
 // 設置全局配置
 // #ifdef APP
 request.config.baseUrl = baseUrl

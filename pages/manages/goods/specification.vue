@@ -1,152 +1,166 @@
 <script setup>
-import {ref} from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { ref } from "vue";
+import { onLoad } from "@dcloudio/uni-app";
 import UvPopup from "../../../uni_modules/uv-popup/components/uv-popup/uv-popup.vue";
 import UvInput from "../../../uni_modules/uv-input/components/uv-input/uv-input.vue";
-import {uniqueId} from "lodash";
-import {Toast} from "../../../utils";
-const popUp = ref()
+import { uniqueId } from "lodash";
+import { Toast } from "../../../utils";
+const popUp = ref();
 const keyName = {
-  1: '一',
-  2: '二',
-  3: '三',
-  4: '四',
-  5: '五',
-  6: '六',
-  7: '七',
-  8: '八',
-  9: '九',
-  10: '十'
-}
-const options = ref({})
+  1: "一",
+  2: "二",
+  3: "三",
+  4: "四",
+  5: "五",
+  6: "六",
+  7: "七",
+  8: "八",
+  9: "九",
+  10: "十",
+};
+const options = ref({});
 onLoad((query) => {
-  options.value = query || {}
-  if(query?.type?.toString() === '1') {
-    const d = uni.getStorageSync('goods_spec')
-    uni.removeStorageSync('goods_spec')
-    formListData.value = d
+  options.value = query || {};
+  if (query?.type?.toString() === "1") {
+    const d = uni.getStorageSync("goods_spec");
+    uni.removeStorageSync("goods_spec");
+    formListData.value = d;
   }
-})
+});
 
 const defaultData = {
-  goods_spec_name: '',
+  goods_spec_name: "",
   multiple_status: 1,
-  goods_spec_attr: []
-}
+  goods_spec_attr: [],
+};
 
 const activeForm = ref({
-  name: '',
-  original_price: '',
-  sale_price: '',
-  stock: ''
-})
+  name: "",
+  original_price: "",
+  sale_price: "",
+  stock: "",
+});
 
-const isEditMode = ref(false)
-const editingAttrId = ref(null)
+const isEditMode = ref(false);
+const editingAttrId = ref(null);
 
 const clearActiveForm = () => {
   activeForm.value = {
-    name: '',
-    original_price: '',
-    sale_price: '',
-    stock: ''
-  }
-  isEditMode.value = false
-  editingAttrId.value = null
-}
+    name: "",
+    original_price: "",
+    sale_price: "",
+    stock: "",
+  };
+  isEditMode.value = false;
+  editingAttrId.value = null;
+};
 
-const activeSpecification = ref({})
+const activeSpecification = ref({});
 
-const formListData = ref([])
+const formListData = ref([]);
 const handleBack = () => {
-  uni.navigateBack()
-}
+  uni.navigateBack();
+};
 
 const handleAddItem = (val) => {
-  clearActiveForm()
-  popUp.value?.open()
-  activeSpecification.value = val
-}
+  clearActiveForm();
+  popUp.value?.open();
+  activeSpecification.value = val;
+};
 
 const handleEditItem = (spec, attr) => {
-  isEditMode.value = true
-  editingAttrId.value = attr._id || attr.id
+  isEditMode.value = true;
+  editingAttrId.value = attr._id || attr.id;
   activeForm.value = {
     name: attr.name,
     original_price: attr.original_price,
     sale_price: attr.sale_price,
-    stock: attr.stock
-  }
-  activeSpecification.value = spec
-  popUp.value?.open()
-}
+    stock: attr.stock,
+  };
+  activeSpecification.value = spec;
+  popUp.value?.open();
+};
 
 const handleAddSpecification = () => {
-  formListData.value.push({...defaultData, _id: uniqueId()})
-}
+  formListData.value.push({ ...defaultData, _id: uniqueId() });
+};
 
 // 保存多屬性規格數據
 const handleSaveAttr = () => {
-  if(!activeForm.value.name) {
-    return Toast.info('請輸入規格項名稱')
+  if (!activeForm.value.name) {
+    return Toast.info("請輸入規格項名稱");
   }
-  if(!activeForm.value.original_price) {
-    return Toast.info('請輸入規格項的原價')
+  if (!activeForm.value.original_price) {
+    return Toast.info("請輸入規格項的原價");
   }
-  if(!activeForm.value.sale_price) {
-    return Toast.info('請輸入規格項的售價')
+  if (!activeForm.value.sale_price) {
+    return Toast.info("請輸入規格項的售價");
   }
-  if(!activeForm.value.stock) {
-    return Toast.info('請輸入庫存')
+  if (!activeForm.value.stock) {
+    return Toast.info("請輸入庫存");
   }
 
   formListData.value = formListData.value.map((item) => {
-    if((item._id === activeSpecification.value._id && item._id) || (item.id === activeSpecification.value.id && item.id)) {
+    if (
+      (item._id === activeSpecification.value._id && item._id) ||
+      (item.id === activeSpecification.value.id && item.id)
+    ) {
       if (isEditMode.value) {
         // 編輯模式：更新現有規格項
-        item.goods_spec_attr = item.goods_spec_attr.map(attr => {
-          if ((attr._id === editingAttrId.value && attr._id) || (attr.id === editingAttrId.value && attr.id)) {
-            return {...activeForm.value, _id: attr._id || attr.id, id: attr.id}
+        item.goods_spec_attr = item.goods_spec_attr.map((attr) => {
+          if (
+            (attr._id === editingAttrId.value && attr._id) ||
+            (attr.id === editingAttrId.value && attr.id)
+          ) {
+            return { ...activeForm.value, _id: attr._id || attr.id, id: attr.id };
           }
-          return attr
-        })
+          return attr;
+        });
       } else {
         // 新增模式：添加新規格項
-        item.goods_spec_attr = (item.goods_spec_attr || []).concat({...activeForm.value, _id: uniqueId()})
+        item.goods_spec_attr = (item.goods_spec_attr || []).concat({
+          ...activeForm.value,
+          _id: uniqueId(),
+        });
       }
-      return item
+      return item;
     }
-    return item
-  })
+    return item;
+  });
 
-  clearActiveForm()
-  popUp.value?.close()
-}
+  clearActiveForm();
+  popUp.value?.close();
+};
 
 const handleRemoveAttr = (data, item) => {
   uni.showModal({
-    title: '提示',
+    title: "提示",
     content: `確認刪除【${item.name}】 規格選項嗎？`,
     success: (result) => {
-      if(result.confirm) {
+      if (result.confirm) {
         formListData.value = formListData.value.map((dataItem) => {
-          if((dataItem.id === data.id && dataItem.id) || (dataItem._id === data._id && dataItem._id) ) {
-            dataItem.goods_spec_attr = dataItem.goods_spec_attr.filter(attr => (attr._id !== item._id && attr._id) || (attr.id !== item.id && attr.id))
+          if (
+            (dataItem.id === data.id && dataItem.id) ||
+            (dataItem._id === data._id && dataItem._id)
+          ) {
+            dataItem.goods_spec_attr = dataItem.goods_spec_attr.filter(
+              (attr) => (attr._id !== item._id && attr._id) || (attr.id !== item.id && attr.id),
+            );
           }
-          return dataItem
-        })
+          return dataItem;
+        });
       }
-    }
-  })
-}
+    },
+  });
+};
 
 const handleSubmit = () => {
   uni.navigateBack({
     success: () => {
-      uni.$emit('updateSpecification', formListData.value)
-    }
-  })
-}
+      uni.$emit("updateSpecification", formListData.value);
+    },
+  });
+};
 </script>
 
 <template>
@@ -167,13 +181,13 @@ const handleSubmit = () => {
     </uv-navbar>
     <view class="content">
       <view class="card">
-        <view class="card-title">當前商品名稱：{{ options.goods_name || '' }}</view>
+        <view class="card-title">當前商品名稱：{{ options.goods_name || "" }}</view>
       </view>
       <view class="empty" v-if="!formListData.length">
         <text>暫無規格，點擊右上角添加</text>
       </view>
       <view v-for="(item, index) in formListData" :key="item.id" class="card">
-        <view class="card-title">規格{{keyName[index + 1]}}</view>
+        <view class="card-title">規格{{ keyName[index + 1] }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
@@ -181,8 +195,32 @@ const handleSubmit = () => {
               <text>規格名稱</text>
             </view>
             <view class="form-value">
-              <uv-input customStyle="padding: 0" v-model="item.goods_spec_name" inputAlign="right" class="form-input" :border="false" placeholder="請輸入規格名稱"
-                        fontSize="26rpx"/>
+              <uv-input
+                customStyle="padding: 0"
+                v-model="item.goods_spec_name"
+                inputAlign="right"
+                class="form-input"
+                :border="false"
+                placeholder="請輸入規格名稱"
+                fontSize="26rpx"
+              />
+            </view>
+          </view>
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>規格名稱(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                customStyle="padding: 0"
+                v-model="item.goods_spec_name_en"
+                inputAlign="right"
+                class="form-input"
+                :border="false"
+                placeholder="請輸入規格名稱(英文)"
+                fontSize="26rpx"
+              />
             </view>
           </view>
           <view class="form-item">
@@ -191,7 +229,10 @@ const handleSubmit = () => {
               <text>是否支援多選</text>
             </view>
             <view class="form-value">
-              <uv-radio-group custom-style="display: flex; justify-content: flex-end; gap: 20rpx" v-model="item.multiple_status">
+              <uv-radio-group
+                custom-style="display: flex; justify-content: flex-end; gap: 20rpx"
+                v-model="item.multiple_status"
+              >
                 <uv-radio :name="2" label="是"></uv-radio>
                 <uv-radio :name="1" label="否"></uv-radio>
               </uv-radio-group>
@@ -211,7 +252,7 @@ const handleSubmit = () => {
         <view class="option-list">
           <view class="option" v-for="opt in item.goods_spec_attr" :key="opt.id">
             <view class="option-title">
-              <view class="name">{{opt.name}}</view>
+              <view class="name">{{ opt.name }}</view>
               <view class="option-actions">
                 <view class="edit-icon" @click.stop="handleEditItem(item, opt)">
                   <text class="iconfont icon-bianji"></text>
@@ -222,13 +263,11 @@ const handleSubmit = () => {
               </view>
             </view>
             <view class="option-price">
-              <view class="price">HK$ {{opt.sale_price}}</view>
-              <view class="inventory">庫存{{opt.stock}}</view>
+              <view class="price">HK$ {{ opt.sale_price }}</view>
+              <view class="inventory">庫存{{ opt.stock }}</view>
             </view>
           </view>
-          <view class="empty" v-if="!item.goods_spec_attr?.length">
-            暫無規格項，請新增
-          </view>
+          <view class="empty" v-if="!item.goods_spec_attr?.length"> 暫無規格項，請新增 </view>
         </view>
       </view>
     </view>
@@ -238,10 +277,13 @@ const handleSubmit = () => {
 
     <uv-popup mode="bottom" ref="popUp">
       <view class="pop-content">
-        <view class="title">{{ isEditMode ? '編輯規格項' : '新增規格項' }}</view>
+        <view class="title">{{ isEditMode ? "編輯規格項" : "新增規格項" }}</view>
         <view class="form">
           <view class="form-item">
             <uv-input placeholder="輸入規格項名稱" v-model="activeForm.name" />
+          </view>
+          <view class="form-item">
+            <uv-input placeholder="輸入規格項名稱(英文)" v-model="activeForm.name_en" />
           </view>
           <view class="form-item">
             <uv-input placeholder="輸入原價（HK$）" v-model="activeForm.original_price" />
@@ -355,7 +397,8 @@ const handleSubmit = () => {
       gap: 10rpx;
     }
 
-    .edit-icon, .remove-icon {
+    .edit-icon,
+    .remove-icon {
       padding: 5rpx;
       color: #666;
       font-size: 24rpx;
@@ -396,7 +439,6 @@ const handleSubmit = () => {
     padding: 10rpx 0;
   }
 }
-
 
 .operation-item {
   :global(.uv-button) {

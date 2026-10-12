@@ -1,128 +1,145 @@
 <script setup>
-import {onLoad, onShow} from '@dcloudio/uni-app'
-import {ref, unref, toRef} from "vue";
-import UvDatetimePicker
-  from "../../../uni_modules/uv-datetime-picker/components/uv-datetime-picker/uv-datetime-picker.vue";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+import { ref, unref, toRef } from "vue";
+import UvDatetimePicker from "../../../uni_modules/uv-datetime-picker/components/uv-datetime-picker/uv-datetime-picker.vue";
 import dayjs from "dayjs";
-import {pick} from "lodash";
-import {getDiscountActivityInfo, updateDiscountActivity} from "../../../api/discount";
-import {Toast} from "../../../utils";
-import {useUserStore} from "@/model/user";
+import { pick } from "lodash";
+import { getDiscountActivityInfo, updateDiscountActivity } from "../../../api/discount";
+import { Toast } from "../../../utils";
+import { useUserStore } from "@/model/user";
 
-const startTimePicker = ref()
-const endTimePicker = ref()
-const timeFormat = 'YYYY-MM-DD HH:mm:ss'
+const startTimePicker = ref();
+const endTimePicker = ref();
+const timeFormat = "YYYY-MM-DD HH:mm:ss";
 
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 // 活動商品限制數據
-const shopConfig = toRef(userStore.shopConfig, 'shopConfig')
+const shopConfig = toRef(userStore.shopConfig, "shopConfig");
 
 const formData = ref({
-  activity_name: '',
+  activity_name: "",
   start_time: dayjs().valueOf(),
-  end_time: '',
-  goods: []
-})
+  end_time: "",
+  goods: [],
+});
 
 const getInfo = (id) => {
-  getDiscountActivityInfo({id}).then(res => {
-    formData.value = res.data || { goods: [] }
+  getDiscountActivityInfo({ id }).then((res) => {
+    formData.value = res.data || { goods: [] };
 
-    formData.value.goods = formData.value.goods.map(item => {
-      item.show_goods_image = item.base_url + item.goods_image
-      item.show_freebies_image = item.base_url + item.freebies_image
-      return {...item}
-    })
-    console.log(formData.value.goods)
-  })
-}
+    formData.value.goods = formData.value.goods.map((item) => {
+      item.show_goods_image = item.base_url + item.goods_image;
+      item.show_freebies_image = item.base_url + item.freebies_image;
+      return { ...item };
+    });
+    console.log(formData.value.goods);
+  });
+};
 
 onLoad((query) => {
-  if(query?.id) {
-    getInfo(query.id)
+  if (query?.id) {
+    getInfo(query.id);
     uni.setNavigationBarTitle({
-      title: '編輯優惠活動'
-    })
+      title: "編輯優惠活動",
+    });
   }
-})
+});
 
 onShow(() => {
-  uni.$off('addGoods')
-  uni.$off('editGoods')
-  uni.$on('addGoods', (d) => {
-    formData.value.goods.push(d)
-  })
-  uni.$on('editGoods', (d) => {
-    formData.value.goods = formData.value.goods.map(item => {
+  uni.$off("addGoods");
+  uni.$off("editGoods");
+  uni.$on("addGoods", (d) => {
+    formData.value.goods.push(d);
+  });
+  uni.$on("editGoods", (d) => {
+    formData.value.goods = formData.value.goods.map((item) => {
       if ((item.id === d.id && item.id) || (item._id === d._id && item._id)) {
-        return d
+        return d;
       }
-      return item
-    })
-  })
-})
+      return item;
+    });
+  });
+});
 
 const handleToAddGoods = () => {
-  if(shopConfig.value?.discount_activity_max_count) {
-    if(formData.value.goods.length >= shopConfig.value.discount_activity_max_count) {
-      return Toast.info(`最多隻能添加${shopConfig.value.discount_activity_max_count}件商品`)
+  if (shopConfig.value?.discount_activity_max_count) {
+    if (formData.value.goods.length >= shopConfig.value.discount_activity_max_count) {
+      return Toast.info(`最多隻能添加${shopConfig.value.discount_activity_max_count}件商品`);
     }
   }
   uni.navigateTo({
-    url: '/pages/manages/promotions/add-goods',
-  })
-}
+    url: "/pages/manages/promotions/add-goods",
+  });
+};
 
 const handleSetStartTime = (evt) => {
   // console.log(evt)
-  formData.value.start_time = evt.value
-}
+  formData.value.start_time = evt.value;
+};
 
 const handleSetEndTime = (evt) => {
   // console.log(evt)
-  formData.value.end_time = evt.value
-}
+  formData.value.end_time = evt.value;
+};
 
 const handleRemoveGoods = (goods) => {
   uni.showModal({
-    title: '提示',
-    content: '確定刪除此商品嗎？',
+    title: "提示",
+    content: "確定刪除此商品嗎？",
     success(res) {
       if (res.confirm) {
-        formData.value.goods = formData.value.goods.filter(item => (item._id !== goods._id && item._id) || (item.id !== goods.id && item.id))
+        formData.value.goods = formData.value.goods.filter(
+          (item) => (item._id !== goods._id && item._id) || (item.id !== goods.id && item.id),
+        );
       }
-    }
-  })
-}
+    },
+  });
+};
 
 const handleEditGoods = (goods) => {
-  uni.setStorageSync('PromotionGoods', JSON.parse(JSON.stringify(goods)))
+  uni.setStorageSync("PromotionGoods", JSON.parse(JSON.stringify(goods)));
   uni.navigateTo({
-    url: '/pages/manages/promotions/add-goods?isEdit=1',
-    success: () => {
-
-    }
-  })
-}
+    url: "/pages/manages/promotions/add-goods?isEdit=1",
+    success: () => {},
+  });
+};
 
 const handleSubmit = () => {
-  const goodsFields = ['discount_activity_id', 'id', 'goods_image', 'goods_name', 'goods_desc', 'original_price', 'sale_price', 'goods_stock', 'freebies_image', 'freebies_name', 'freebies_stock', 'freebies_num']
-  const saveParams = unref(formData.value)
-  if(!saveParams.goods?.length) {
-    return Toast.info('請添加商品')
+  const goodsFields = [
+    "discount_activity_id",
+    "id",
+    "goods_image",
+    "goods_name",
+    "goods_desc",
+    "goods_name_en",
+    "goods_desc_en",
+    "original_price",
+    "sale_price",
+    "goods_stock",
+    "freebies_image",
+    "freebies_name",
+    "freebies_name_en",
+    "freebies_stock",
+    "freebies_num",
+  ];
+  const saveParams = unref(formData.value);
+  if (!saveParams.goods?.length) {
+    return Toast.info("請添加商品");
   }
-  saveParams.goods = saveParams.goods.map(item => {
-    return pick(item, goodsFields)
-  })
-  saveParams.start_time = dayjs(saveParams.start_time).format(timeFormat)
-  saveParams.end_time = dayjs(saveParams.end_time).format(timeFormat)
-  updateDiscountActivity(pick(saveParams,['id','activity_name', 'start_time', 'end_time', 'goods'])).then(res => {
+  saveParams.goods = saveParams.goods.map((item) => {
+    return pick(item, goodsFields);
+  });
+  saveParams.start_time = dayjs(saveParams.start_time).format(timeFormat);
+  saveParams.end_time = dayjs(saveParams.end_time).format(timeFormat);
+  updateDiscountActivity(
+    pick(saveParams, ["id", "activity_name", "start_time", "end_time", "goods"]),
+  ).then((res) => {
     uni.redirectTo({
-      url: '/pages/manages/promotions/save-success'
-    })
-  })
-}
+      url: "/pages/manages/promotions/save-success",
+    });
+  });
+};
 </script>
 
 <template>
@@ -137,10 +154,32 @@ const handleSubmit = () => {
               <text>活動名稱</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.activity_name" placeholder="請輸入活動名稱" :border="false"
-                        input-align="right" fontSize="26rpx"/>
+              <uv-input
+                v-model="formData.activity_name"
+                placeholder="請輸入活動名稱"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+              />
             </view>
           </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>活動名稱(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.activity_name_en"
+                placeholder="請輸入活動名稱(英文)"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+              />
+            </view>
+          </view>
+
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
@@ -148,7 +187,11 @@ const handleSubmit = () => {
             </view>
             <view class="form-value" @click="startTimePicker.open()">
               <view class="placeholder">
-                {{ formData.start_time ? dayjs(formData.start_time).format(timeFormat) : '請選擇活動開始時間' }}
+                {{
+                  formData.start_time
+                    ? dayjs(formData.start_time).format(timeFormat)
+                    : "請選擇活動開始時間"
+                }}
                 <text class="iconfont icon-shijian"></text>
               </view>
             </view>
@@ -156,12 +199,15 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動結束時間
-              </text>
+              <text>活動結束時間 </text>
             </view>
             <view class="form-value" @click="endTimePicker.open()">
               <view class="placeholder">
-                {{ formData.end_time ? dayjs(formData.end_time).format(timeFormat) : '請選擇活動結束時間' }}
+                {{
+                  formData.end_time
+                    ? dayjs(formData.end_time).format(timeFormat)
+                    : "請選擇活動結束時間"
+                }}
                 <text class="iconfont icon-shijian"></text>
               </view>
             </view>
@@ -192,8 +238,11 @@ const handleSubmit = () => {
             <view class="order-content">
               <view class="order-single-msg">
                 <view class="order-img">
-                  <image :src="item.show_goods_image" mode="aspectFit"
-                         style="width: 100rpx; height: 100rpx"/>
+                  <image
+                    :src="item.show_goods_image"
+                    mode="aspectFit"
+                    style="width: 100rpx; height: 100rpx"
+                  />
                 </view>
                 <view class="order-msg">
                   <view class="order-title">{{ item.goods_name }}</view>
@@ -214,8 +263,11 @@ const handleSubmit = () => {
               <view class="title">贈品</view>
               <view class="gift-item">
                 <view class="gift-img">
-                  <image :src="item.show_freebies_image" mode="aspectFit"
-                         style="width: 90rpx; height: 90rpx"/>
+                  <image
+                    :src="item.show_freebies_image"
+                    mode="aspectFit"
+                    style="width: 90rpx; height: 90rpx"
+                  />
                 </view>
                 <view class="gift-content">
                   <view class="gift-title">{{ item.freebies_name }}</view>
@@ -232,11 +284,21 @@ const handleSubmit = () => {
       <uv-button class="operation-item" block @click="handleSubmit">保存</uv-button>
     </view>
 
-    <uv-datetime-picker ref="startTimePicker" v-model="formData.start_time" :max-date="formData.end_time || undefined"
-                        mode="datetime" @confirm="handleSetStartTime">
+    <uv-datetime-picker
+      ref="startTimePicker"
+      v-model="formData.start_time"
+      :max-date="formData.end_time || undefined"
+      mode="datetime"
+      @confirm="handleSetStartTime"
+    >
     </uv-datetime-picker>
-    <uv-datetime-picker ref="endTimePicker" v-model="formData.end_time" :min-date="formData.start_time" mode="datetime"
-                        @confirm="handleSetEndTime">
+    <uv-datetime-picker
+      ref="endTimePicker"
+      v-model="formData.end_time"
+      :min-date="formData.start_time"
+      mode="datetime"
+      @confirm="handleSetEndTime"
+    >
     </uv-datetime-picker>
   </view>
 </template>
@@ -411,7 +473,6 @@ const handleSubmit = () => {
     font-size: 24rpx;
   }
 }
-
 
 .operation-item {
   :global(.uv-button) {

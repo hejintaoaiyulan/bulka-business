@@ -1,78 +1,77 @@
 <script setup>
 import UvImage from "../../../uni_modules/uv-image/components/uv-image/uv-image.vue";
-import {ref, unref} from "vue";
+import { ref, unref } from "vue";
 import UvNumberBox from "../../../uni_modules/uv-number-box/components/uv-number-box/uv-number-box.vue";
-import {useFileUpload} from "../../../utils/uploadFile";
-import {UploadUrl} from "../../../api/public";
-import {onShow, onLoad} from "@dcloudio/uni-app";
-import {uniqueId} from "lodash";
+import { useFileUpload } from "../../../utils/uploadFile";
+import { UploadUrl } from "../../../api/public";
+import { onShow, onLoad } from "@dcloudio/uni-app";
+import { uniqueId } from "lodash";
 
-const {uploadFile} = useFileUpload()
+const { uploadFile } = useFileUpload();
 
 const formData = ref({
   freebies_num: 1,
-  goods_stock: 1
-})
+  goods_stock: 1,
+});
 
-let option = {}
+let option = {};
 onLoad((query) => {
-  option = query
-  if(query?.isEdit?.toString() === '1') {
-    const data = uni.getStorageSync('PromotionGoods')
-    uni.removeStorageSync('PromotionGoods')
-    if(data) {
-      formData.value = unref(data)
+  option = query;
+  if (query?.isEdit?.toString() === "1") {
+    const data = uni.getStorageSync("PromotionGoods");
+    uni.removeStorageSync("PromotionGoods");
+    if (data) {
+      formData.value = unref(data);
       uni.setNavigationBarTitle({
-        title: '編輯優惠活動'
-      })
+        title: "編輯優惠活動",
+      });
     }
   }
-})
+});
 
 onShow(() => {
-  if(!formData.value._id){
-    formData.value._id = uniqueId()
+  if (!formData.value._id) {
+    formData.value._id = uniqueId();
   }
-})
+});
 
 const handleChooseImage = () => {
   uploadFile({
     count: 1,
     url: UploadUrl,
-    name: 'image',
-    fileType: ['image']
-  }).then(res => {
-    const [result] = res || []
-    formData.value.goods_image = result?.path
-    formData.value.show_goods_image = result?.url
-  })
-}
+    name: "image",
+    fileType: ["image"],
+  }).then((res) => {
+    const [result] = res || [];
+    formData.value.goods_image = result?.path;
+    formData.value.show_goods_image = result?.url;
+  });
+};
 
 const handleChooseFreebiesImage = () => {
   uploadFile({
     count: 1,
     url: UploadUrl,
-    name: 'image',
-    fileType: ['image']
-  }).then(res => {
-    const [result] = res || []
-    formData.value.freebies_image = result?.path
-    formData.value.show_freebies_image = result?.url
-  })
-}
+    name: "image",
+    fileType: ["image"],
+  }).then((res) => {
+    const [result] = res || [];
+    formData.value.freebies_image = result?.path;
+    formData.value.show_freebies_image = result?.url;
+  });
+};
 
 const handleSave = () => {
-  console.log(formData.value)
+  console.log(formData.value);
   uni.navigateBack({
     success: () => {
-      console.log(option,'option')
-      if(option?.isEdit?.toString() === '1') {
-        uni.$emit('editGoods', unref(formData))
-      }else
-      uni.$emit('addGoods', unref(formData))
-    }
-  })
-}
+      console.log(option, "option");
+      if (option?.isEdit?.toString() === "1") {
+        uni.$emit("editGoods", unref(formData));
+      } else uni.$emit("addGoods", unref(formData));
+    },
+  });
+};
 </script>
 
 <template>
@@ -91,7 +90,13 @@ const handleSave = () => {
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseImage">
-                <uv-image :src="formData.show_goods_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
+                <uv-image
+                  :src="formData.show_goods_image"
+                  mode="aspectFit"
+                  width="100%"
+                  height="100%"
+                  radius="5"
+                />
               </view>
             </view>
           </view>
@@ -101,29 +106,79 @@ const handleSave = () => {
               <text>商品名稱</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.goods_name" inputAlign="right" class="form-input" :border="false"
-                        placeholder="請輸入商品名稱"
-                        fontSize="26rpx"/>
+              <uv-input
+                v-model="formData.goods_name"
+                inputAlign="right"
+                class="form-input"
+                :border="false"
+                placeholder="請輸入商品名稱"
+                fontSize="26rpx"
+              />
             </view>
           </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品名稱(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.goods_name_en"
+                inputAlign="right"
+                class="form-input"
+                :border="false"
+                placeholder="請輸入商品名稱(英文)"
+                fontSize="26rpx"
+              />
+            </view>
+          </view>
+
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
               <text>商品描述</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.goods_desc" inputAlign="right" fontSize="26rpx" :border="false"
-                        placeholder="請輸入商品描述"/>
+              <uv-input
+                v-model="formData.goods_desc"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入商品描述"
+              />
             </view>
           </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品描述(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.goods_desc_en"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入商品描述(英文)"
+              />
+            </view>
+          </view>
+
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
               <text>商品原價</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.original_price" inputAlign="right" fontSize="26rpx" :border="false"
-                        placeholder="請輸入商品原價(HK$)"/>
+              <uv-input
+                v-model="formData.original_price"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入商品原價(HK$)"
+              />
             </view>
           </view>
 
@@ -133,8 +188,13 @@ const handleSave = () => {
               <text>換購價</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.sale_price" inputAlign="right" fontSize="26rpx" :border="false"
-                        placeholder="請輸入換購價(HK$)"/>
+              <uv-input
+                v-model="formData.sale_price"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入換購價(HK$)"
+              />
             </view>
           </view>
 
@@ -144,8 +204,7 @@ const handleSave = () => {
               <text>商品數量</text>
             </view>
             <view class="form-value flex-right">
-              <uv-number-box v-model="formData.goods_stock"
-                             input-align="right" fontSize="26rpx"/>
+              <uv-number-box v-model="formData.goods_stock" input-align="right" fontSize="26rpx" />
             </view>
           </view>
         </view>
@@ -159,11 +218,21 @@ const handleSave = () => {
               <text>贈品圖片</text>
             </view>
             <view class="form-value flex-right">
-              <view class="add-file-box" v-if="!formData.freebies_image" @click="handleChooseFreebiesImage">
+              <view
+                class="add-file-box"
+                v-if="!formData.freebies_image"
+                @click="handleChooseFreebiesImage"
+              >
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseFreebiesImage">
-                <uv-image :src="formData.show_freebies_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
+                <uv-image
+                  :src="formData.show_freebies_image"
+                  mode="aspectFit"
+                  width="100%"
+                  height="100%"
+                  radius="5"
+                />
               </view>
             </view>
           </view>
@@ -173,8 +242,28 @@ const handleSave = () => {
               <text>贈品名稱</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.freebies_name" placeholder="請輸入贈品名稱" :border="false"
-                        input-align="right" fontSize="26rpx"/>
+              <uv-input
+                v-model="formData.freebies_name"
+                placeholder="請輸入贈品名稱"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+              />
+            </view>
+          </view>
+          <view class="form-item">
+            <view class="form-label">
+              <!--                <text class="red-text">*</text>-->
+              <text>贈品名稱(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.freebies_name_en"
+                placeholder="請輸入贈品名稱(英文)"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+              />
             </view>
           </view>
           <view class="form-item">
@@ -183,8 +272,14 @@ const handleSave = () => {
               <text>贈品庫存</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="formData.freebies_stock" placeholder="請輸入贈品庫存" type="digit" :border="false"
-                        input-align="right" fontSize="26rpx"/>
+              <uv-input
+                v-model="formData.freebies_stock"
+                placeholder="請輸入贈品庫存"
+                type="digit"
+                :border="false"
+                input-align="right"
+                fontSize="26rpx"
+              />
             </view>
           </view>
           <view class="form-item">
@@ -193,13 +288,11 @@ const handleSave = () => {
               <text>贈品數量</text>
             </view>
             <view class="form-value flex-right">
-              <uv-number-box v-model="formData.freebies_num"
-                        input-align="right" fontSize="26rpx"/>
+              <uv-number-box v-model="formData.freebies_num" input-align="right" fontSize="26rpx" />
             </view>
           </view>
         </view>
       </view>
-
     </view>
     <view class="submit-button safe-pb">
       <uv-button class="operation-item" @click="handleSave">保存</uv-button>

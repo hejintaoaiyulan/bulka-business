@@ -53,8 +53,7 @@ const getInfo = (id) => {
         .join("、");
     }
 
-    formData.value.show_goods_image =
-      formData.value.base_url + formData.value.goods_image;
+    formData.value.show_goods_image = formData.value.base_url + formData.value.goods_image;
   });
 };
 
@@ -102,10 +101,7 @@ const handleToSetSpecification = () => {
   }
   uni.navigateTo({
     url:
-      "/pages/manages/goods/specification?type=" +
-      n +
-      "&goods_name=" +
-      formData.value.goods_name,
+      "/pages/manages/goods/specification?type=" + n + "&goods_name=" + formData.value.goods_name,
     success: () => {
       uni.$once("updateSpecification", (data) => {
         formData.value.goods_spec = unref(data);
@@ -139,11 +135,13 @@ const handleChooseImage = () => {
 
 const handleChangeType = (val) => {
   formData.value.goods_type_name = val.goods_type_name;
+  formData.value.goods_type_name_en = val.goods_type_name_en;
   formData.value.goods_type_id = val.id;
 };
 
 const handleChangeCategory = (val) => {
   formData.value.goods_category_id = val.id;
+  formData.value.goods_category_name_en = val.category_name_en;
   formData.value.goods_category_name = val.category_name;
 };
 
@@ -174,6 +172,10 @@ const handleSave = () => {
     "id",
     "goods_name",
     "goods_desc",
+    "goods_name_en",
+    "goods_desc_en",
+    "goods_category_name_en",
+    "goods_type_name_en",
     "goods_type_id",
     "goods_category_id",
     "goods_spec_type",
@@ -189,10 +191,7 @@ const handleSave = () => {
   const singleFields =
     formData.value.goods_spec_type === 1
       ? baseFields.filter((key) => !["goods_spec"].includes(key))
-      : baseFields.filter(
-          (key) =>
-            !["goods_stock", "original_price", "sale_price"].includes(key),
-        );
+      : baseFields.filter((key) => !["goods_stock", "original_price", "sale_price"].includes(key));
   formData.value.discount = Number(formData.value.discount || 0).toFixed(2);
   const saveParams = pick(formData.value, singleFields);
   saveParams.goods_type_flag = 1; // 普通商品
@@ -217,26 +216,15 @@ const handleSave = () => {
               <text>商品圖片</text>
             </view>
             <view class="form-value flex-right">
-              <view
-                class="add-file-box"
-                v-if="!formData.goods_image"
-                @click="handleChooseImage"
-              >
-                <view
-                  class="iconfont icon-jiajianzujianjiahao"
-                  v-if="!isUploading"
-                ></view>
+              <view class="add-file-box" v-if="!formData.goods_image" @click="handleChooseImage">
+                <view class="iconfont icon-jiajianzujianjiahao" v-if="!isUploading"></view>
                 <view
                   v-else
                   class="iconfont icon-loading rotate-loading"
                   style="display: inline-block"
                 ></view>
               </view>
-              <view
-                class="add-file-box show-picture"
-                v-else
-                @click="handleChooseImage"
-              >
+              <view class="add-file-box show-picture" v-else @click="handleChooseImage">
                 <uv-image
                   :src="formData.show_goods_image"
                   mode="aspectFit"
@@ -263,6 +251,24 @@ const handleSave = () => {
               />
             </view>
           </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品名稱(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.goods_name_en"
+                inputAlign="right"
+                class="form-input"
+                :border="false"
+                placeholder="請輸入商品名稱(英文)"
+                fontSize="26rpx"
+              />
+            </view>
+          </view>
+
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
@@ -278,6 +284,23 @@ const handleSave = () => {
               />
             </view>
           </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>商品描述(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.goods_desc_en"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入商品描述(英文)"
+              />
+            </view>
+          </view>
+
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
@@ -301,11 +324,7 @@ const handleSave = () => {
               <text class="red-text">*</text>
               <text>商家商品分類</text>
             </view>
-            <PickerSelect
-              :options="types"
-              key-name="goods_type_name"
-              @change="handleChangeType"
-            >
+            <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeType">
               <view class="form-value">
                 <text class="placeholder">
                   {{ formData.goods_type_name || "請選擇分類" }}
@@ -405,13 +424,8 @@ const handleSave = () => {
                 <text class="red-text">*</text>
                 <text>商品規格</text>
               </view>
-              <view
-                class="form-value flex-right"
-                @click="handleToSetSpecification"
-              >
-                <text class="setting-mode">{{
-                  formData.goods_spec_name || "設置商品規格"
-                }}</text>
+              <view class="form-value flex-right" @click="handleToSetSpecification">
+                <text class="setting-mode">{{ formData.goods_spec_name || "設置商品規格" }}</text>
               </view>
             </view>
           </template>
@@ -419,9 +433,7 @@ const handleSave = () => {
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
               <text>商品折扣</text>
-              <text class="form-label-tip"
-                >(超過50%折扣自動參加首頁試食活動)</text
-              >
+              <text class="form-label-tip">(超過50%折扣自動參加首頁試食活動)</text>
             </view>
             <view class="form-value">
               <text v-if="single">{{ discount }}</text>

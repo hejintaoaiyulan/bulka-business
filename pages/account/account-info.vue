@@ -111,16 +111,20 @@ const handleChooseBg = () => {
 const handleSelectType = (val) => {
   formData.value.shop_type = val.id;
   formData.value.shop_type_name = val.name;
+  formData.value.shop_type_name_en = val.name_en;
 };
 
 const handleSubmit = () => {
   const params = pick(formData.value, [
     "shop_name",
+    "shop_name_en",
     "shop_type",
+    "shop_type_en",
     "shop_avatar",
     "bg_image",
     "images",
     "address",
+    "address_en",
     "order_on",
     "takeout_on",
     "dine_on",
@@ -206,7 +210,6 @@ const handleLocation = () => {
               </view>
             </view>
           </view>
-
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
@@ -222,6 +225,21 @@ const handleLocation = () => {
               />
             </view>
           </view>
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>店鋪名稱(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.shop_name_en"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入店鋪名稱(英文)"
+              />
+            </view>
+          </view>
 
           <view class="form-item" style="display: none">
             <view class="form-label">
@@ -232,6 +250,22 @@ const handleLocation = () => {
               <view class="setting-mode" @click="handleLocation">{{
                 formData.address_name || "獲取門店定位"
               }}</view>
+            </view>
+          </view>
+
+          <view class="form-item" style="display: none">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>門店定位(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.address_name_en"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入門店定位(英文)"
+              />
             </view>
           </view>
 
@@ -250,6 +284,22 @@ const handleLocation = () => {
                 fontSize="26rpx"
                 :border="false"
                 placeholder="請輸入店鋪地址"
+              />
+            </view>
+          </view>
+
+          <view class="form-item">
+            <view class="form-label">
+              <text class="red-text">*</text>
+              <text>店鋪地址(英文)</text>
+            </view>
+            <view class="form-value">
+              <uv-input
+                v-model="formData.address_en"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入店鋪地址(英文)"
               />
             </view>
           </view>

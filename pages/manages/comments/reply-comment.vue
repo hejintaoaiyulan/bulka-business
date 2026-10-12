@@ -1,44 +1,54 @@
 <script setup>
-import {onLoad} from '@dcloudio/uni-app'
-import {ref} from 'vue'
-import {replyComment} from "../../../api/commentary";
-import {Toast} from "../../../utils";
+import { onLoad } from "@dcloudio/uni-app";
+import { ref } from "vue";
+import { replyComment } from "../../../api/commentary";
+import { Toast } from "../../../utils";
 
 const formData = ref({
-  id: '',
-  response: ''
-})
+  id: "",
+  response: "",
+});
 
-const userName = ref('')
+const userName = ref("");
 
 onLoad((query) => {
   if (query?.id) {
-    formData.value.id = query.id
-    userName.value = query.user_name
+    formData.value.id = query.id;
+    userName.value = query.user_name;
   }
-})
-
+});
 
 const handleSubmit = () => {
-  replyComment(formData.value).then(res => {
-    Toast.success('已回覆')
+  replyComment(formData.value).then((res) => {
+    Toast.success("已回覆");
     setTimeout(() => {
-      uni.navigateBack({})
-    }, 1000)
-  })
-}
+      uni.navigateBack({});
+    }, 1000);
+  });
+};
 </script>
 
 <template>
   <view class="container">
     <view class="content">
       <view class="reply-content">
-        <view class="title">正在回復“
-          <text>{{formData.user_name}}</text>
+        <view class="title"
+          >正在回復“
+          <text>{{ formData.user_name }}</text>
           ”的評價
         </view>
         <view class="msg">
           <uv-textarea placeholder="請輸入" v-model="formData.response"></uv-textarea>
+        </view>
+      </view>
+      <view class="reply-content">
+        <view class="title"
+          >正在回復“
+          <text>{{ formData.user_name }}</text>
+          ”的評價(英文)
+        </view>
+        <view class="msg">
+          <uv-textarea placeholder="請輸入(英文)" v-model="formData.response_en"></uv-textarea>
         </view>
       </view>
 
@@ -71,7 +81,6 @@ const handleSubmit = () => {
 }
 
 .reply-content {
-
   padding: 30rpx;
   width: 100%;
   display: flex;
@@ -98,5 +107,4 @@ const handleSubmit = () => {
   padding: 30rpx 50rpx;
   width: 100%;
 }
-
 </style>

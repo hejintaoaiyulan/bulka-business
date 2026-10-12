@@ -1,100 +1,106 @@
 <script setup>
-import {ref, computed} from 'vue'
-import {uniqueId} from 'lodash'
-import {delGoodsType, getGoodsTypes, saveGoodsType} from "../../../api/goods";
-import {onShow} from '@dcloudio/uni-app'
-import {Toast} from "../../../utils";
+import { ref, computed } from "vue";
+import { uniqueId } from "lodash";
+import { delGoodsType, getGoodsTypes, saveGoodsType } from "../../../api/goods";
+import { onShow } from "@dcloudio/uni-app";
+import { Toast } from "../../../utils";
 
-const popRef = ref()
+const popRef = ref();
 
-const tags = ref([])
+const tags = ref([]);
 
 const getData = () => {
-  getGoodsTypes().then(res => {
-    tags.value = res.data || []
-  })
-}
+  getGoodsTypes().then((res) => {
+    tags.value = res.data || [];
+  });
+};
 
 const addFormData = ref({
-  goods_type_name: '',
-  weigh: '',
-  id: ''
-})
+  goods_type_name: "",
+  goods_type_name_en: "",
+  weigh: "",
+  id: "",
+});
 
 const maxSort = computed(() => {
-  return tags.value.length ? Math.max(...tags.value.map(item => item.weigh)) : 0
-})
+  return tags.value.length ? Math.max(...tags.value.map((item) => item.weigh)) : 0;
+});
 
 const handleRemoveTag = (id) => {
   uni.showModal({
-    title: '提示',
-    content: '是否刪除該分類？',
+    title: "提示",
+    content: "是否刪除該分類？",
     success: function (res) {
       if (res.confirm) {
-        delGoodsType({id: id}).then(() => {
-          tags.value = tags.value.filter(item => item.id !== id)
-        })
+        delGoodsType({ id: id }).then(() => {
+          tags.value = tags.value.filter((item) => item.id !== id);
+        });
       }
-    }
-  })
-}
+    },
+  });
+};
 // 添加分類標籤
 const handleAddTag = () => {
-  popRef.value?.open()
-  clearAddFormData()
-}
+  popRef.value?.open();
+  clearAddFormData();
+};
 
 const handleEditTag = (val) => {
   addFormData.value = {
     goods_type_name: val.goods_type_name,
+    goods_type_name_en: val.goods_type_name_en,
     weigh: val.weigh,
-    id: val.id
-  }
-  popRef.value?.open()
-}
+    id: val.id,
+  };
+  popRef.value?.open();
+};
 
 const clearAddFormData = () => {
   addFormData.value = {
-    goods_type_name: '',
-    weigh: '',
-    id: ''
-  }
-}
+    goods_type_name: "",
+    goods_type_name_en: "",
+    weigh: "",
+    id: "",
+  };
+};
 
 const submitAddTag = () => {
-  if(!addFormData.value.goods_type_name) return Toast.info('請輸入分類名稱')
-  saveGoodsType(addFormData.value).then(response => {
+  if (!addFormData.value.goods_type_name) return Toast.info("請輸入分類名稱");
+  saveGoodsType(addFormData.value).then((response) => {
     if (addFormData.value.id) {
-      tags.value = tags.value.map(item => {
+      tags.value = tags.value.map((item) => {
         if (item.id === addFormData.value.id) {
-          return response.data
+          return response.data;
         }
-        return item
-      })
+        return item;
+      });
     } else {
-      tags.value.push(response.data)
+      tags.value.push(response.data);
     }
-  })
+  });
 
-  popRef.value?.close()
-
-}
+  popRef.value?.close();
+};
 
 const sortTags = computed(() => {
-  return tags.value.sort((a, b) => +b.weigh - +a.weigh)
-})
-
+  return tags.value.sort((a, b) => +b.weigh - +a.weigh);
+});
 
 onShow(() => {
-  getData()
-})
+  getData();
+});
 </script>
 
 <template>
   <view class="container">
     <view class="category-list">
-      <view class="category-item flex-center" v-for="item in sortTags" :key="item.key" @click="handleEditTag(item)">
-        <view>{{ item.goods_type_name }}</view>
+      <view
+        class="category-item flex-center"
+        v-for="item in sortTags"
+        :key="item.key"
+        @click="handleEditTag(item)"
+      >
+        <view>{{ item.goods_type_name }}({{ item.goods_type_name_en }})</view>
         <view class="remove-icon flex-center" @click.stop="handleRemoveTag(item.id)">
           <text class="iconfont icon-jianhao"></text>
         </view>
@@ -108,11 +114,17 @@ onShow(() => {
         <view class="title">添加分類</view>
         <view class="form">
           <view class="form-item">
-            <uv-input placeholder="輸入分類名稱" v-model="addFormData.goods_type_name"/>
+            <uv-input placeholder="輸入分類名稱" v-model="addFormData.goods_type_name" />
           </view>
           <view class="form-item">
-            <uv-input :placeholder="`輸入排序（數字越大排序越靠前 當前最大 ${maxSort}）`" type="number"
-                      v-model="addFormData.weigh"/>
+            <uv-input placeholder="輸入分類名稱(英文)" v-model="addFormData.goods_type_name_en" />
+          </view>
+          <view class="form-item">
+            <uv-input
+              :placeholder="`輸入排序（數字越大排序越靠前 當前最大 ${maxSort}）`"
+              type="number"
+              v-model="addFormData.weigh"
+            />
           </view>
           <view class="form-item">
             <uv-button type="primary" class="button" @click="submitAddTag">確定新增/保存</uv-button>
