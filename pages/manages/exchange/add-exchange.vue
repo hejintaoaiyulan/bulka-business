@@ -6,7 +6,7 @@ import UvDatetimePicker from "../../../uni_modules/uv-datetime-picker/components
 import { pick } from "lodash";
 import { addExchange, getExchangeDetail } from "../../../api/exchange";
 import { Toast } from "../../../utils";
-
+import { $t } from "@/i18n-helper";
 const timeFormat = "YYYY-MM-DD HH:mm:ss";
 
 const formData = ref({
@@ -24,7 +24,7 @@ onLoad((query) => {
   if (query.id) {
     getInfo(query.id);
     uni.setNavigationBarTitle({
-      title: "編輯換購活動",
+      title: $t("編輯換購活動"),
     });
   }
 });
@@ -164,12 +164,12 @@ const handleSubmit = () => {
   <view class="container">
     <view class="content">
       <view class="card">
-        <view class="card-title">活動基本信息</view>
+        <view class="card-title">{{ $t("活動基本信息") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動名稱</text>
+              <text>{{ $t("活動名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -185,7 +185,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動名稱(英文)</text>
+              <text>{{ $t("活動名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -201,7 +201,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動開始時間</text>
+              <text>{{ $t("活動開始時間") }}</text>
             </view>
             <view class="form-value" @click="startTimePicker.open()">
               <view class="placeholder">
@@ -217,7 +217,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動結束時間 </text>
+              <text>{{ $t("活動結束時間") }} </text>
             </view>
             <view class="form-value" @click="endTimePicker.open()">
               <view class="placeholder">
@@ -233,7 +233,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>最低參與金額 </text>
+              <text>{{ $t("最低參與金額") }} </text>
             </view>
             <view class="form-value">
               <uv-input
@@ -250,15 +250,15 @@ const handleSubmit = () => {
       </view>
       <view class="card">
         <view class="card-title">
-          <view>換購活動</view>
+          <view>{{ $t("換購活動") }}</view>
         </view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
-              <text>換購商品</text>
+              <text>{{ $t("換購商品") }}</text>
             </view>
             <view class="form-value setting-mode" @click="handleToChoose">
-              <text>請選擇換購商品</text>
+              <text>{{ $t("請選擇換購商品") }}</text>
               <text class="iconfont icon-arrow-right-copy"></text>
             </view>
           </view>
@@ -280,8 +280,8 @@ const handleSubmit = () => {
                   <view class="goods-price">
                     <view class="price">HK$ {{ goods.sale_price }}</view>
                     <view class="operation" @click="handleToEdit(goods)">
-                      <text class="red" v-if="!goods._editend">*請完善信息</text>
-                      <text>修改信息</text>
+                      <text class="red" v-if="!goods._editend">*{{ $t("請完善信息") }}</text>
+                      <text>{{ $t("修改信息") }}</text>
                       <text class="iconfont icon-bianji"></text>
                     </view>
                   </view>
@@ -294,7 +294,7 @@ const handleSubmit = () => {
     </view>
 
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" block @click="handleSubmit">保存</uv-button>
+      <uv-button class="operation-item" block @click="handleSubmit">{{ $t("保存") }}</uv-button>
     </view>
 
     <uv-datetime-picker

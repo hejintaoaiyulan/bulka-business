@@ -1,6 +1,7 @@
-import {defineStore} from 'pinia'
-import {ref} from "vue";
-import {getSystemPublicConfig} from "@/api/public";
+import { defineStore } from 'pinia'
+import { ref } from "vue";
+import { getSystemPublicConfig } from "@/api/public";
+import { $t } from '@/i18n-helper'
 
 export const useSystemConfig = defineStore('system', () => {
   const systemConfig = ref({})
@@ -19,10 +20,10 @@ export const useSystemConfig = defineStore('system', () => {
         success: (info) => {
           if (info.platform === 'ios') {
             uni.showModal({
-              title: '更新提示',
-              content: '有新版本了，是否前往更新？',
-              confirmText: '去更新',
-              cancelText: '暫不更新',
+              title: $t("更新提示"),
+              content: $t('有新版本了，是否前往更新？'),
+              cancelText: $t("暫不更新"),
+              confirmText: $t("去更新"),
               success: (res) => {
                 if (res.confirm) {
                   // #ifdef APP-PLUS
@@ -33,10 +34,10 @@ export const useSystemConfig = defineStore('system', () => {
             })
           } else if (info.platform === 'android') {
             uni.showModal({
-              title: '更新提示',
-              content: '有新版本了，是否前往更新？',
-              confirmText: '去更新',
-              cancelText: '暫不更新',
+              title: $t("更新提示"),
+              content: $t('有新版本了，是否前往更新？'),
+              cancelText: $t("暫不更新"),
+              confirmText: $t("去更新"),
               success: (res) => {
                 if (res.confirm) {
                   uni.downloadFile({
@@ -57,7 +58,7 @@ export const useSystemConfig = defineStore('system', () => {
                         //#endif
                       } else {
                         uni.showToast({
-                          title: '下載失敗，請稍後重試',
+                          title: $t("下載失敗，請稍後重試"),
                           icon: 'none'
                         })
                       }
@@ -65,7 +66,7 @@ export const useSystemConfig = defineStore('system', () => {
                     fail: (err) => {
                       console.error('下載失敗', err)
                       uni.showToast({
-                        title: '下載失敗，請稍後重試',
+                        title: $t("下載失敗，請稍後重試"),
                         icon: 'none'
                       })
                     }

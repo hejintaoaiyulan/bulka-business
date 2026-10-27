@@ -1,16 +1,14 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <view class="container">
     <view class="result">
       <view>
-        <image src="/static/pass.png" style="width: 180rpx;height: 100rpx;" mode="widthFix"/>
+        <image src="/static/pass.png" style="width: 180rpx; height: 100rpx" mode="widthFix" />
       </view>
-      <view>綁定成功</view>
+      <view>{{ $t("綁定成功") }}</view>
       <view class="bind-btn">
-        <view class="btn" @click="uni.navigateBack()">我知道了</view>
+        <view class="btn" @click="uni.navigateBack()">{{ $t("我知道了") }}</view>
       </view>
     </view>
   </view>

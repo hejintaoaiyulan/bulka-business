@@ -43,9 +43,9 @@ const handleSubmit = () => {
       </view>
       <view class="reply-content">
         <view class="title"
-          >正在回復“
+          >{{ $t("正在回復") }}“
           <text>{{ formData.user_name }}</text>
-          ”的評價(英文)
+          {{ $t("”的評價") }}({{ $t("英文") }})
         </view>
         <view class="msg">
           <uv-textarea placeholder="請輸入(英文)" v-model="formData.response_en"></uv-textarea>
@@ -53,7 +53,7 @@ const handleSubmit = () => {
       </view>
 
       <view class="submit-button flex-right">
-        <uv-button type="success" @click="handleSubmit">確認回復</uv-button>
+        <uv-button type="success" @click="handleSubmit">{{ $t("確認回復") }}</uv-button>
       </view>
     </view>
   </view>

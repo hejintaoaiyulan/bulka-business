@@ -22,7 +22,7 @@
         <view class="top-statictis">
           <view class="title-statictis">
             <view class="title-name"
-              >數據統計
+              >{{ $t("數據統計") }}
               <view class="review-badge" v-if="info.food_badge?.status === 1">
                 <image
                   src="../../static/dz/review_expert.png"
@@ -32,37 +32,37 @@
                 <text class="badge-text">{{ info.food_badge.name }}</text>
               </view>
             </view>
-            <view class="title-operation" @click="handleMore">查看更多</view>
+            <view class="title-operation" @click="handleMore">{{ $t("查看更多") }}</view>
           </view>
           <view class="grid">
             <view class="grid-item">
-              <view class="tip">今日營業額(HK$)</view>
+              <view class="tip">{{ $t("今日營業額") }}(HK$)</view>
               <view class="count">{{ info.sales_price }}</view>
             </view>
             <view class="grid-item">
-              <view class="tip">今日訂單量</view>
+              <view class="tip">{{ $t("今日訂單量") }}</view>
               <view class="count">{{ info.order_num }}</view>
             </view>
             <view class="grid-item">
-              <view class="tip">今日結算訂單</view>
+              <view class="tip">{{ $t("今日結算訂單") }}</view>
               <view class="count">{{ info.today_settled_num }}</view>
             </view>
             <view class="grid-item">
-              <view class="tip">今日已售商品(件)</view>
+              <view class="tip">{{ $t("今日已售商品") }}({{ $t("件") }})</view>
               <view class="count">{{ info.sales_num }}</view>
             </view>
             <view class="grid-item">
-              <view class="tip">今日訪客(人)</view>
+              <view class="tip">{{ $t("今日訪客") }}({{ $t("人") }})</view>
               <view class="count">{{ info.shop_uv }}</view>
             </view>
             <view class="grid-item">
-              <view class="tip">今日結算金額(HK$)</view>
+              <view class="tip">{{ $t("今日結算金額") }}(HK$)</view>
               <view class="count">{{ info.today_settled_price }}</view>
             </view>
           </view>
         </view>
         <view class="work-platform">
-          <view class="title">工作臺</view>
+          <view class="title">{{ $t("工作臺") }}</view>
           <view class="manage-list">
             <view class="manage-item" @click="handleToCategory">
               <view class="icon">
@@ -70,8 +70,8 @@
                 <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
               </view>
               <view class="msg">
-                <view>商品分類管理</view>
-                <view class="tip">設置門店商品分類</view>
+                <view>{{ $t("商品分類管理") }}</view>
+                <view class="tip">{{ $t("設置門店商品分類") }}</view>
               </view>
               <view class="right-icon">
                 <text class="iconfont icon-arrow-right-copy"></text>
@@ -83,8 +83,10 @@
                 <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
               </view>
               <view class="msg">
-                <view>商品管理</view>
-                <view class="tip">當前已上架商品{{ info.goods_num }}件</view>
+                <view>{{ $t("商品管理") }}</view>
+                <view class="tip"
+                  >{{ $t("當前已上架商品") }}{{ info.goods_num }}{{ $t("件") }}</view
+                >
               </view>
               <view class="right-icon">
                 <text class="iconfont icon-arrow-right-copy"></text>
@@ -96,8 +98,8 @@
                 <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
               </view>
               <view class="msg">
-                <view>優惠活動管理</view>
-                <view class="tip">設置連續性折扣組合</view>
+                <view>{{ $t("優惠活動管理") }}</view>
+                <view class="tip">{{ $t("設置連續性折扣組合") }}</view>
               </view>
               <view class="right-icon">
                 <text class="iconfont icon-arrow-right-copy"></text>
@@ -109,8 +111,8 @@
                 <!--              <image src="https://img.yzcdn.cn/vant/apple-3.jpg" style="width: 100%; height: 100%" mode="aspectFill" />-->
               </view>
               <view class="msg">
-                <view>換購活動管理</view>
-                <view class="tip">設置商品換購活動</view>
+                <view>{{ $t("換購活動管理") }}</view>
+                <view class="tip">{{ $t("設置商品換購活動") }}</view>
               </view>
               <view class="right-icon">
                 <text class="iconfont icon-arrow-right-copy"></text>
@@ -121,8 +123,8 @@
                 <text class="iconfont icon-shouye1"></text>
               </view>
               <view class="msg">
-                <view>試吃活動管理</view>
-                <view class="tip">設置商品試吃活動</view>
+                <view>{{ $t("試吃活動管理") }}</view>
+                <view class="tip">{{ $t("設置商品試吃活動") }}</view>
               </view>
               <view class="right-icon">
                 <text class="iconfont icon-arrow-right-copy"></text>
@@ -134,8 +136,8 @@
                 <!--              <image src="/static/image/img-6.png" style="width: 100%; height: 100%" mode="aspectFill" />-->
               </view>
               <view class="msg">
-                <view>評論管理</view>
-                <view class="tip">查看門店所有用戶評論</view>
+                <view>{{ $t("評論管理") }}</view>
+                <view class="tip">{{ $t("查看門店所有用戶評論") }}</view>
               </view>
               <view class="right-icon">
                 <text class="iconfont icon-arrow-right-copy"></text>
@@ -156,7 +158,7 @@
         <view class="stock-container">
           <view class="stock-content">
             <view class="stock-title">
-              <view>庫存提醒</view>
+              <view>{{ $t("庫存提醒") }}</view>
               <view class="close-icon" @click="close">
                 <text class="iconfont icon-icon-close"></text>
               </view>
@@ -174,7 +176,7 @@
                   >
                     <view class="goods-item">
                       <view class="goods_name">{{ goods.goods_name }}</view>
-                      <view class="tip">庫存不足</view>
+                      <view class="tip">{{ $t("庫存不足") }}</view>
                     </view>
                   </view>
                 </view>

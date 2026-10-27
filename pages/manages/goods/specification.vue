@@ -5,6 +5,7 @@ import UvPopup from "../../../uni_modules/uv-popup/components/uv-popup/uv-popup.
 import UvInput from "../../../uni_modules/uv-input/components/uv-input/uv-input.vue";
 import { uniqueId } from "lodash";
 import { Toast } from "../../../utils";
+import { $t } from "@/i18n-helper";
 const popUp = ref();
 const keyName = {
   1: "一",
@@ -134,8 +135,10 @@ const handleSaveAttr = () => {
 
 const handleRemoveAttr = (data, item) => {
   uni.showModal({
-    title: "提示",
-    content: `確認刪除【${item.name}】 規格選項嗎？`,
+    title: $t("提示"),
+    content: `${$t("確認刪除")}【${item.name}】 ${$t("規格選項嗎")}？`,
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: (result) => {
       if (result.confirm) {
         formListData.value = formListData.value.map((dataItem) => {
@@ -176,23 +179,23 @@ const handleSubmit = () => {
       left-icon-color="#fff"
     >
       <template #right>
-        <text class="add-spec" @click="handleAddSpecification">新增規格</text>
+        <text class="add-spec" @click="handleAddSpecification">{{ $t("新增規格") }}</text>
       </template>
     </uv-navbar>
     <view class="content">
       <view class="card">
-        <view class="card-title">當前商品名稱：{{ options.goods_name || "" }}</view>
+        <view class="card-title">{{ $t("當前商品名稱") }}：{{ options.goods_name || "" }}</view>
       </view>
       <view class="empty" v-if="!formListData.length">
-        <text>暫無規格，點擊右上角添加</text>
+        <text>{{ $t("暫無規格，點擊右上角添加") }}</text>
       </view>
       <view v-for="(item, index) in formListData" :key="item.id" class="card">
-        <view class="card-title">規格{{ keyName[index + 1] }}</view>
+        <view class="card-title">{{ $t("規格") }}{{ keyName[index + 1] }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>規格名稱</text>
+              <text>{{ $t("規格名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -209,7 +212,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>規格名稱(英文)</text>
+              <text>{{ $t("規格名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -226,7 +229,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否支援多選</text>
+              <text>{{ $t("是否支援多選") }}</text>
             </view>
             <view class="form-value">
               <uv-radio-group
@@ -241,14 +244,14 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>規格選項</text>
+              <text>{{ $t("規格選項") }}</text>
             </view>
             <view class="form-value" @click="handleAddItem(item)">
-              <text class="setting-mode">新增規格項</text>
+              <text class="setting-mode">{{ $t("新增規格項") }}</text>
             </view>
           </view>
         </view>
-        <view class="card-title">規格選項</view>
+        <view class="card-title">{{ $t("規格選項") }}</view>
         <view class="option-list">
           <view class="option" v-for="opt in item.goods_spec_attr" :key="opt.id">
             <view class="option-title">
@@ -264,20 +267,22 @@ const handleSubmit = () => {
             </view>
             <view class="option-price">
               <view class="price">HK$ {{ opt.sale_price }}</view>
-              <view class="inventory">庫存{{ opt.stock }}</view>
+              <view class="inventory">{{ $t("庫存") }}{{ opt.stock }}</view>
             </view>
           </view>
-          <view class="empty" v-if="!item.goods_spec_attr?.length"> 暫無規格項，請新增 </view>
+          <view class="empty" v-if="!item.goods_spec_attr?.length"
+            >{{ $t("暫無規格項，請新增") }}
+          </view>
         </view>
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" @click="handleSubmit">儲存</uv-button>
+      <uv-button class="operation-item" @click="handleSubmit">{{ $t("儲存") }}</uv-button>
     </view>
 
     <uv-popup mode="bottom" ref="popUp">
       <view class="pop-content">
-        <view class="title">{{ isEditMode ? "編輯規格項" : "新增規格項" }}</view>
+        <view class="title">{{ $t(isEditMode ? "編輯規格項" : "新增規格項") }}</view>
         <view class="form">
           <view class="form-item">
             <uv-input placeholder="輸入規格項名稱" v-model="activeForm.name" />
@@ -295,7 +300,7 @@ const handleSubmit = () => {
             <uv-input placeholder="輸入庫存數量" v-model="activeForm.stock" />
           </view>
           <view class="form-item">
-            <uv-button class="button" @click="handleSaveAttr">確認</uv-button>
+            <uv-button class="button" @click="handleSaveAttr">{{ $t("確認") }}</uv-button>
           </view>
         </view>
       </view>

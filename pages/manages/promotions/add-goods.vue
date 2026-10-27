@@ -6,7 +6,7 @@ import { useFileUpload } from "../../../utils/uploadFile";
 import { UploadUrl } from "../../../api/public";
 import { onShow, onLoad } from "@dcloudio/uni-app";
 import { uniqueId } from "lodash";
-
+import { $t } from "@/i18n-helper";
 const { uploadFile } = useFileUpload();
 
 const formData = ref({
@@ -23,7 +23,7 @@ onLoad((query) => {
     if (data) {
       formData.value = unref(data);
       uni.setNavigationBarTitle({
-        title: "編輯優惠活動",
+        title: $t("編輯優惠活動"),
       });
     }
   }
@@ -78,12 +78,12 @@ const handleSave = () => {
   <view class="container">
     <view class="content">
       <view class="card">
-        <view class="card-title">商品信息</view>
+        <view class="card-title">{{ $t("商品信息") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品圖片</text>
+              <text>{{ $t("商品圖片") }}</text>
             </view>
             <view class="form-value flex-right">
               <view class="add-file-box" v-if="!formData.goods_image" @click="handleChooseImage">
@@ -103,7 +103,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品名稱</text>
+              <text>{{ $t("商品名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -120,7 +120,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品名稱(英文)</text>
+              <text>{{ $t("商品名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -137,7 +137,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品描述</text>
+              <text>{{ $t("商品描述") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -153,7 +153,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品描述(英文)</text>
+              <text>{{ $t("商品描述") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -169,7 +169,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品原價</text>
+              <text>{{ $t("商品原價") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -185,7 +185,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>換購價</text>
+              <text>{{ $t("換購價") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -201,7 +201,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品數量</text>
+              <text>{{ $t("商品數量") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-number-box v-model="formData.goods_stock" input-align="right" fontSize="26rpx" />
@@ -210,12 +210,12 @@ const handleSave = () => {
         </view>
       </view>
       <view class="card">
-        <view class="card-title">贈品信息</view>
+        <view class="card-title">{{ $t("贈品信息") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>贈品圖片</text>
+              <text>{{ $t("贈品圖片") }}</text>
             </view>
             <view class="form-value flex-right">
               <view
@@ -239,7 +239,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>贈品名稱</text>
+              <text>{{ $t("贈品名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -254,7 +254,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>贈品名稱(英文)</text>
+              <text>{{ $t("贈品名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -269,7 +269,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>贈品庫存</text>
+              <text>{{ $t("贈品庫存") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -285,7 +285,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>贈品數量</text>
+              <text>{{ $t("贈品數量") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-number-box v-model="formData.freebies_num" input-align="right" fontSize="26rpx" />
@@ -295,7 +295,7 @@ const handleSave = () => {
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" @click="handleSave">保存</uv-button>
+      <uv-button class="operation-item" @click="handleSave">{{ $t("保存") }}</uv-button>
     </view>
   </view>
 </template>

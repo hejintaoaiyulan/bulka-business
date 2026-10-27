@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
-import {scanOrder} from "@/api/order";
-
+import { scanOrder } from "@/api/order";
+import { $t } from '@/i18n-helper'
 export const toPromise = (fn, options) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -18,21 +18,21 @@ export const Toast = {
   success: (title, options) => {
     uni.showToast({
       icon: 'success',
-      title,
+      title: $t(title),
       ...options
     })
   },
   fail: (title, options) => {
     uni.showToast({
       icon: 'error',
-      title,
+      title: $t(title),
       ...options
     })
   },
   info: (title, options) => {
     uni.showToast({
       icon: 'none',
-      title,
+      title: $t(title),
       ...options
     })
   }
@@ -111,7 +111,7 @@ export async function clearAllCache() {
   // #endif
 
   uni.showToast({
-    title: '緩存清理完成',
+    title: $t('緩存清理完成'),
     icon: 'success'
   });
 }
@@ -197,8 +197,10 @@ export async function getBrowserCacheSize() {
 export const showModal = (content, title = '提示') => {
   return new Promise((resolve, reject) => {
     uni.showModal({
-      title: title,
-      content: content,
+      title: $t(title),
+      content: $t(content),
+      cancelText: $t('取消'),
+      confirmText: $t('确定'),
       success: (result) => {
         if (result.confirm) {
           resolve(result.confirm);
@@ -215,12 +217,12 @@ export const showModal = (content, title = '提示') => {
 
 // 掃取餐碼
 export const scanCodeByOrder = () => {
-  return toPromise(uni.scanCode, {onlyFromCamera: true, hideAlbum: true}).then(res => {
+  return toPromise(uni.scanCode, { onlyFromCamera: true, hideAlbum: true }).then(res => {
     const text = res.result; // order_no=xxxxx&code=xxxxx
     const params = text.split('&') || [];
     const orderNo = params[0]?.split('=')?.[1];
     const code = params[1]?.split('=')?.[1];
-    const dataParams = {order_no: orderNo, pickup_code: code}
+    const dataParams = { order_no: orderNo, pickup_code: code }
     return scanOrder(dataParams).then(() => (dataParams));
   });
 }

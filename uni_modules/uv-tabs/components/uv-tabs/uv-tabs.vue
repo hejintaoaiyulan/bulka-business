@@ -31,7 +31,7 @@
 								:class="[item.disabled && 'uv-tabs__wrapper__nav__item__text--disabled']"
 								class="uv-tabs__wrapper__nav__item__text"
 								:style="[textStyle(index)]"
-							>{{ item[keyName] }}</text>
+							>{{ $t(item[keyName]) }}</text>
 							<uv-badge
 								:show="!!(item.badge && (item.badge.show || item.badge.isDot || item.badge.value))"
 								:isDot="item.badge && item.badge.isDot || propsBadge.isDot"

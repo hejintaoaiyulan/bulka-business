@@ -1,22 +1,21 @@
 <script setup>
-
 import UvButton from "../../../uni_modules/uv-button/components/uv-button/uv-button.vue";
 
 const handleBack = () => {
-  uni.navigateBack({})
-}
+  uni.navigateBack({});
+};
 </script>
 
 <template>
-<view class="container">
-  <view class="success-content">
-    <image src="/static/pass.png" style="width: 40%; height: 100rpx" mode="widthFix" />
-    <view class="tips">已上傳成功</view>
+  <view class="container">
+    <view class="success-content">
+      <image src="/static/pass.png" style="width: 40%; height: 100rpx" mode="widthFix" />
+      <view class="tips">{{ $t("已上傳成功") }}</view>
+    </view>
+    <view class="home-button">
+      <uv-button class="operation-item" @click="handleBack">{{ $t("返回首頁") }}</uv-button>
+    </view>
   </view>
-  <view class="home-button">
-    <uv-button class="operation-item" @click="handleBack">返回首頁</uv-button>
-  </view>
-</view>
 </template>
 
 <style scoped lang="scss">

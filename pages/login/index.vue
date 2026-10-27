@@ -5,6 +5,7 @@ import { Login } from "../../api/login";
 import { setToken } from "../../utils";
 import { useUserStore } from "../../model/user";
 import { onLoad } from "@dcloudio/uni-app";
+import { $t } from "@/i18n-helper";
 
 const userStore = useUserStore();
 const formData = ref({
@@ -35,14 +36,14 @@ const handleRegister = () => {
 const handleLogin = () => {
   if (!Regs.mobile.test(formData.value.mobile)) {
     uni.showToast({
-      title: "請輸入正確的手機號",
+      title: $t("請輸入正確的手機號"),
       icon: "none",
     });
     return;
   }
   if (!formData.value.password) {
     uni.showToast({
-      title: "請輸入密碼",
+      title: $t("請輸入密碼"),
       icon: "none",
     });
     return;
@@ -115,7 +116,7 @@ const handleVisitorLogin = () => {
         <view class="form-item">
           <view class="form-label">
             <view class="iconfont icon-zhanghaozhongxinzhanghaoguanli"></view>
-            <view class="label-text">賬號</view>
+            <view class="label-text">{{ $t("賬號") }}</view>
           </view>
           <view class="form-value" style="display: flex; column-gap: 10rpx; align-items: center">
             <uv-input
@@ -133,7 +134,7 @@ const handleVisitorLogin = () => {
         <view class="form-item">
           <view class="form-label">
             <view class="iconfont icon-mima"></view>
-            <view class="label-text">密碼</view>
+            <view class="label-text">{{ $t("密碼") }}</view>
           </view>
           <view class="form-value">
             <uv-input
@@ -145,7 +146,7 @@ const handleVisitorLogin = () => {
         </view>
         <view class="form-item">
           <view class="form-value flex-right">
-            <view class="tips" @click="handleToPassword">忘記密碼?</view>
+            <view class="tips" @click="handleToPassword">{{ $t("忘記密碼") }}?</view>
           </view>
         </view>
       </view>
@@ -155,10 +156,10 @@ const handleVisitorLogin = () => {
           custom-style="background: black; color: #fff"
           :hairline="false"
           @click="handleLogin"
-          >登錄</uv-button
+          >{{ $t("登錄") }}</uv-button
         >
-        <view class="register" @click="handleRegister">去註冊</view>
-        <view class="register" @click="handleVisitorLogin">遊客登錄</view>
+        <view class="register" @click="handleRegister">{{ $t("去註冊") }}</view>
+        <view class="register" @click="handleVisitorLogin">{{ $t("遊客登錄") }}</view>
       </view>
     </view>
   </view>

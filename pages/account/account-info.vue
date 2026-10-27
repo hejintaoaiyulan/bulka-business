@@ -167,12 +167,12 @@ const handleLocation = () => {
   <view class="container safe-pb">
     <view class="content">
       <view class="card">
-        <view class="card-title">商家信息</view>
+        <view class="card-title">{{ $t("商家信息") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>門店頭像</text>
+              <text>{{ $t("門店頭像") }}</text>
             </view>
             <view class="form-value flex-right">
               <view class="add-file-box" v-if="!formData.shop_avatar" @click="handleChooseAvatar">
@@ -193,7 +193,7 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>門店背景圖</text>
+              <text>{{ $t("門店背景圖") }}</text>
             </view>
             <view class="form-value flex-right">
               <view class="add-file-box" v-if="!formData.bg_image" @click="handleChooseBg">
@@ -213,7 +213,7 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>店鋪名稱</text>
+              <text>{{ $t("店鋪名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -228,7 +228,7 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>店鋪名稱(英文)</text>
+              <text>{{ $t("店鋪名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -244,11 +244,11 @@ const handleLocation = () => {
           <view class="form-item" style="display: none">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>門店定位</text>
+              <text>{{ $t("門店定位") }}</text>
             </view>
             <view class="form-value">
               <view class="setting-mode" @click="handleLocation">{{
-                formData.address_name || "獲取門店定位"
+                formData.address_name || $t("獲取門店定位")
               }}</view>
             </view>
           </view>
@@ -256,7 +256,7 @@ const handleLocation = () => {
           <view class="form-item" style="display: none">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>門店定位(英文)</text>
+              <text>{{ $t("門店定位") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -272,9 +272,9 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>店鋪地址</text>
+              <text>{{ $t("店鋪地址") }}</text>
               <text style="font-size: 20rpx; color: #007aff" @click="handleLocation"
-                >(點擊獲取)</text
+                >({{ $t("點擊獲取") }})</text
               >
             </view>
             <view class="form-value">
@@ -291,7 +291,7 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>店鋪地址(英文)</text>
+              <text>{{ $t("店鋪地址") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -307,12 +307,12 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>門店分類</text>
+              <text>{{ $t("門店分類") }}</text>
             </view>
             <PickerSelect :options="types" key-name="name" @change="handleSelectType">
               <view class="form-value">
                 <text class="placeholder">
-                  {{ formData.shop_type_name || "請選擇門店分類" }}
+                  {{ $t(formData.shop_type_name || "請選擇門店分類") }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -323,12 +323,12 @@ const handleLocation = () => {
 
       <view class="card">
         <view class="card-title">
-          <view>門店相冊</view>
-          <view class="setting-mode" @click="handleToAlbum">管理相冊</view>
+          <view>{{ $t("門店相冊") }}</view>
+          <view class="setting-mode" @click="handleToAlbum">{{ $t("管理相冊") }}</view>
         </view>
         <view class="card-content">
           <view class="img-list" style="min-height: 150rpx">
-            <view class="empty" v-if="!viewAlbum?.length">暫無相片</view>
+            <view class="empty" v-if="!viewAlbum?.length">{{ $t("暫無相片") }}</view>
             <view
               class="img-item"
               @click="handlePreviewImage"
@@ -343,13 +343,13 @@ const handleLocation = () => {
 
       <view class="card">
         <view class="card-title">
-          <view>更多設置</view>
+          <view>{{ $t("更多設置") }}</view>
         </view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否接單</text>
+              <text>{{ $t("是否接單") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-switch v-model="formData.order_on" :inactive-value="2" :active-value="1" />
@@ -358,7 +358,7 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否開啟門店自提</text>
+              <text>{{ $t("是否開啟門店自提") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-switch v-model="formData.takeout_on" :inactive-value="2" :active-value="1" />
@@ -367,7 +367,7 @@ const handleLocation = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否開啟門店堂食</text>
+              <text>{{ $t("是否開啟門店堂食") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-switch v-model="formData.dine_on" :inactive-value="2" :active-value="1" />
@@ -377,9 +377,9 @@ const handleLocation = () => {
       </view>
     </view>
     <view class="submit-button">
-      <uv-button custom-style="background: black; color: #fff" @click="handleSubmit"
-        >提交</uv-button
-      >
+      <uv-button custom-style="background: black; color: #fff" @click="handleSubmit">{{
+        $t("提交")
+      }}</uv-button>
     </view>
   </view>
 </template>

@@ -57,7 +57,7 @@
 								lineHeight: $uv.addUnit(itemHeight),
 								fontWeight: index1 === innerIndex[index] ? 'bold' : 'normal'
 							},textStyle(index,index1)]"
-					>{{ getItemText(item1) }}</text>
+					>{{  $t(getItemText(item1) )}}</text>
 				</picker-view-column>
 			</picker-view>
 			<view

@@ -8,6 +8,7 @@ import PickerSelect from "../../../components/PickerSelect.vue";
 import { pick } from "lodash";
 import { getGoodsInfo, getGoodsTypes, saveGoods, getFoodConditionConfig } from "../../../api/goods";
 import { Toast } from "../../../utils";
+import { $t } from "@/i18n-helper";
 
 const { uploadFile, isUploading } = useFileUpload({ showUploadLoading: true });
 const types = ref([]);
@@ -60,7 +61,7 @@ const handleStartConfirm = (e) => {
   const val = e.value;
   // 已有结束时间，开始不能>=结束
   if (endTime.value && timeToMin(val) >= timeToMin(endTime.value)) {
-    uni.showToast({ title: "開始時間不能大於等於結束時間", icon: "none" });
+    uni.showToast({ title: $t("開始時間不能大於等於結束時間"), icon: "none" });
     return;
   }
   startTime.value = val;
@@ -70,7 +71,7 @@ const handleEndConfirm = (e) => {
   const val = e.value;
   // 已有开始，结束不能<=开始
   if (startTime.value && timeToMin(val) <= timeToMin(startTime.value)) {
-    uni.showToast({ title: "結束時間不能小於等於開始時間", icon: "none" });
+    uni.showToast({ title: $t("結束時間不能小於等於開始時間"), icon: "none" });
     return;
   }
   endTime.value = val;
@@ -84,7 +85,7 @@ onLoad((query) => {
   if (query?.id) {
     getInfo(query.id);
     uni.setNavigationBarTitle({
-      title: "編輯試吃商品",
+      title: $t("編輯試吃商品"),
     });
   }
 });
@@ -216,7 +217,7 @@ const validateStock = () => {
   const config = conditionConfig.value;
   const stock = Number(formData.value.goods_stock) || 0;
   if (config.food_condition_stock > 0 && stock > config.food_condition_stock) {
-    Toast.info(`商品庫存不能超過 ${config.food_condition_stock}`);
+    Toast.info(`${$t("商品庫存不能超過")} ${config.food_condition_stock}`);
     formData.value.goods_stock = config.food_condition_stock;
   }
 };
@@ -225,7 +226,7 @@ const validatePrice = () => {
   const config = conditionConfig.value;
   const salePrice = Number(formData.value.sale_price) || 0;
   if (config.food_condition_price > 0 && salePrice > config.food_condition_price) {
-    Toast.info(`商品售價不能超過 ${config.food_condition_price}`);
+    Toast.info(`${$t("商品售價不能超過")} ${config.food_condition_price}`);
     formData.value.sale_price = config.food_condition_price;
   }
 };
@@ -266,19 +267,19 @@ const handleSave = () => {
     const discountVal = Number(formData.value.discount) || 0;
 
     if (config.food_condition_stock > 0 && stock > config.food_condition_stock) {
-      return Toast.info(`商品庫存不能超過 ${config.food_condition_stock}`);
+      return Toast.info(`${$t("商品庫存不能超過")} ${config.food_condition_stock}`);
     }
     if (config.food_condition_price > 0 && salePrice > config.food_condition_price) {
-      return Toast.info(`商品售價不能超過 ${config.food_condition_price}`);
+      return Toast.info(`${$t("商品售價不能超過")} ${config.food_condition_price}`);
     }
     if (config.food_condition_discount > 0 && discountVal > config.food_condition_discount) {
-      return Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
+      return Toast.info(`${$t("商品折扣不能超過")} ${config.food_condition_discount}`);
     }
   } else {
     // 多規格驗證
     const discountVal = Number(formData.value.discount) || 0;
     if (config.food_condition_discount > 0 && discountVal > config.food_condition_discount) {
-      return Toast.info(`商品折扣不能超過 ${config.food_condition_discount}`);
+      return Toast.info(`${$t("商品折扣不能超過")}${config.food_condition_discount}`);
     }
     // 驗證每個規格項的庫存和價格
     const specs = formData.value.goods_spec || [];
@@ -288,12 +289,12 @@ const handleSave = () => {
         const attrPrice = Number(attr.sale_price) || 0;
         if (config.food_condition_stock > 0 && attrStock > config.food_condition_stock) {
           return Toast.info(
-            `規格「${attr.goods_spec_name || ""}」庫存不能超過 ${config.food_condition_stock}`,
+            `${$t("規格")}「${attr.goods_spec_name || ""}${$t("」庫存不能超過")} ${config.food_condition_stock}`,
           );
         }
         if (config.food_condition_price > 0 && attrPrice > config.food_condition_price) {
           return Toast.info(
-            `規格「${attr.goods_spec_name || ""}」售價不能超過 ${config.food_condition_price}`,
+            `${$t("規格")}「${attr.goods_spec_name || ""}${$t("」售價不能超過")} ${config.food_condition_price}`,
           );
         }
       }
@@ -352,12 +353,12 @@ const handleSave = () => {
   <view class="container">
     <view class="content">
       <view class="card">
-        <view class="card-title">商品基礎信息</view>
+        <view class="card-title">{{ $t("商品基礎信息") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品圖片</text>
+              <text>{{ $t("商品圖片") }}</text>
             </view>
             <view class="form-value flex-right">
               <view class="add-file-box" v-if="!formData.goods_image" @click="handleChooseImage">
@@ -382,7 +383,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品名稱</text>
+              <text>{{ $t("商品名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -399,7 +400,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品名稱(英文)</text>
+              <text>{{ $t("商品名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -416,7 +417,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品描述</text>
+              <text>{{ $t("商品描述") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -432,7 +433,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品描述(英文)</text>
+              <text>{{ $t("商品描述") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -448,7 +449,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>平臺商品分類</text>
+              <text>{{ $t("平臺商品分類") }}</text>
             </view>
             <PickerSelect
               :options="categories"
@@ -457,7 +458,7 @@ const handleSave = () => {
             >
               <view class="form-value">
                 <text class="placeholder">
-                  {{ formData.goods_category_name || "請選擇分類" }}
+                  {{ $t(formData.goods_category_name || "請選擇分類") }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -466,12 +467,12 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商家商品分類</text>
+              <text>{{ $t("商家商品分類") }}</text>
             </view>
             <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeType">
               <view class="form-value">
                 <text class="placeholder">
-                  {{ formData.goods_type_name || "請選擇分類" }}
+                  {{ $t(formData.goods_type_name || "請選擇分類") }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -480,20 +481,20 @@ const handleSave = () => {
           <!-- 开始时间 -->
           <view class="form-item">
             <view class="form-label">
-              <text>試食可提取時間（開始）</text>
+              <text>{{ $t("試食可提取時間（開始）") }}</text>
             </view>
             <view class="item" @click="openStartPicker" style="color: #888888; font-size: 24rpx">
-              <text>{{ startTime || "請選擇開始時間" }}</text>
+              <text>{{ startTime || $t("請選擇開始時間") }}</text>
             </view>
           </view>
 
           <!-- 结束时间 -->
           <view class="form-item">
             <view class="form-label">
-              <text>試食可提取時間（結束）</text>
+              <text>{{ $t("試食可提取時間（結束）") }}</text>
             </view>
             <view class="item" @click="openEndPicker" style="color: #888888; font-size: 24rpx">
-              <text>{{ endTime || "請選擇結束時間" }}</text>
+              <text>{{ endTime || $t("請選擇結束時間") }}</text>
             </view>
           </view>
 
@@ -516,12 +517,12 @@ const handleSave = () => {
         </view>
       </view>
       <view class="card">
-        <view class="card-title">商品規格及庫存</view>
+        <view class="card-title">{{ $t("商品規格及庫存") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品庫存</text>
+              <text>{{ $t("商品庫存") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -537,7 +538,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品原價</text>
+              <text>{{ $t("商品原價") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -553,7 +554,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品售價</text>
+              <text>{{ $t("商品售價") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -570,8 +571,8 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>商品折扣</text>
-              <text class="form-label-tip">(超過50%折扣自動參加首頁試食活動)</text>
+              <text>{{ $t("商品折扣") }}</text>
+              <text class="form-label-tip">({{ $t("超過50%折扣自動參加首頁試食活動") }})</text>
             </view>
             <view class="form-value">
               <text>{{ discount }}</text>
@@ -581,12 +582,12 @@ const handleSave = () => {
       </view>
 
       <view class="card">
-        <view class="card-title">更多設置</view>
+        <view class="card-title">{{ $t("更多設置") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否上架</text>
+              <text>{{ $t("是否上架") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-switch
@@ -599,7 +600,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>商品順序</text>
+              <text>{{ $t("商品順序") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -616,7 +617,7 @@ const handleSave = () => {
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" @click="handleSave">保存</uv-button>
+      <uv-button class="operation-item" @click="handleSave">{{ $t("保存") }}</uv-button>
     </view>
   </view>
 </template>

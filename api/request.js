@@ -1,9 +1,10 @@
 // utils/request.js
 
-import {getToken, Toast} from "../utils"
-import {useNotAuthModal} from "../hooks";
+import { getToken, Toast } from "../utils"
+import { useNotAuthModal } from "../hooks";
+import { $t } from '@/i18n-helper'
 
-const {open} = useNotAuthModal()
+const { open } = useNotAuthModal()
 const config = {
   baseUrl: '', // 基礎地址
   timeout: 15000, // 超時時間
@@ -44,11 +45,21 @@ function addResponseInterceptor(interceptor) {
  */
 async function request(options) {
   try {
+
+    // 每次請求都實時讀取最新語言（解決切換語言不生效問題）
+    const locale = uni.getStorageSync('locale') || 'zh-CN'
+    // 語言映射：en=英文，zh-TW=繁體，其他全部cn
+    let lang = 'cn'
+    if (locale === 'en') lang = 'en'
+    else if (locale === 'zh-TW') lang = 'cn' // 如果後端要單獨tw，改成lang='tw'
+
+
     // 合併配置
     const mergedOptions = {
       ...config,
       ...options,
       header: {
+        lang: lang,
         'Content-Type': config.contentType,
         ...options.header
       }
@@ -75,11 +86,11 @@ async function request(options) {
     if (mergedOptions.showLoading) {
       console.log('顯示loading')
       uni.showLoading({
-        title: mergedOptions.loadingText,
+        title: $t(mergedOptions.loadingText),
         mask: true
       })
     }
-
+    mergedOptions.data.lang = lang
     // 創建請求
     const requestTask = uni.request({
       url: mergedOptions.baseUrl.concat(mergedOptions.url),
@@ -107,7 +118,7 @@ async function request(options) {
     let response = res
     // 處理業務邏輯錯誤
     if (response.statusCode !== 200) {
-		console.log(response)
+      console.log(response)
       throw new Error(response.data.message || '請求失敗')
     }
 

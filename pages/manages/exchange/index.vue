@@ -1,159 +1,186 @@
 <script setup>
-import {ref} from 'vue'
-import {onShow, onPullDownRefresh} from '@dcloudio/uni-app'
-import {usePageLoading} from "../../../hooks";
-import {delExchange, getExchangeList, overExchange} from "../../../api/exchange";
-import {ActivityStatus} from "../../../utils/fields";
-
+import { ref } from "vue";
+import { onShow, onPullDownRefresh } from "@dcloudio/uni-app";
+import { usePageLoading } from "../../../hooks";
+import { delExchange, getExchangeList, overExchange } from "../../../api/exchange";
+import { ActivityStatus } from "../../../utils/fields";
+import { $t } from "@/i18n-helper";
 const { dataList, getData, delItem, reload, loadNext } = usePageLoading(getExchangeList, {
-  onFinish: uni.stopPullDownRefresh
-})
+  onFinish: uni.stopPullDownRefresh,
+});
 
 const requestParams = ref({
-  activity_name: '',
-  status: ''
-})
+  activity_name: "",
+  status: "",
+});
 
 const tabs = ref([
-  {name: '全部', key: ''},
-  {name: '未開始', key: 1},
-  {name: '進行中', key: 2},
-  {name: '已下架', key: 3},
-  {name: '已結束', key: 4},
-])
+  { name: "全部", key: "" },
+  { name: "未開始", key: 1 },
+  { name: "進行中", key: 2 },
+  { name: "已下架", key: 3 },
+  { name: "已結束", key: 4 },
+]);
 
 const search = () => {
-  reload(requestParams.value)
-}
-
+  reload(requestParams.value);
+};
 
 onShow(() => {
-  search()
-})
+  search();
+});
 
 onPullDownRefresh(() => {
-  search()
-})
+  search();
+});
 
 const handleAdd = () => {
   uni.navigateTo({
-    url: '/pages/manages/exchange/add-exchange'
-  })
-}
+    url: "/pages/manages/exchange/add-exchange",
+  });
+};
 
 const handleRemove = (val) => {
   uni.showModal({
-    title: '提示',
-    content: '是否刪除該商品？',
+    title: $t("提示"),
+    content: $t("是否刪除該商品？"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: function (res) {
       if (res.confirm) {
-        console.log('用戶點擊確定');
-        delExchange({id: val.id }).then(() => {
-          delItem(val.id)
-        })
+        console.log("用戶點擊確定");
+        delExchange({ id: val.id }).then(() => {
+          delItem(val.id);
+        });
       } else if (res.cancel) {
-        console.log('用戶點擊取消');
+        console.log("用戶點擊取消");
       }
-    }
-  })
-}
+    },
+  });
+};
 
 const handleOut = (val) => {
   uni.showModal({
-    title: '提示',
-    content: '是否下架此換購活動？',
+    title: $t("提示"),
+    content: $t("是否下架此換購活動？"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: function (res) {
       if (res.confirm) {
-        console.log('用戶點擊確定');
-        overExchange({id: val.id, status: 3}).then(() => {
-          getData(requestParams.value, true)
-        })
+        console.log("用戶點擊確定");
+        overExchange({ id: val.id, status: 3 }).then(() => {
+          getData(requestParams.value, true);
+        });
       } else if (res.cancel) {
-        console.log('用戶點擊取消');
+        console.log("用戶點擊取消");
       }
-    }
-  })
-}
+    },
+  });
+};
 
 // 下架
 const handleStop = (val) => {
   uni.showModal({
-    title: '提示',
-    content: '是否結束此換購活動？',
+    title: $t("提示"),
+    content: $t("是否結束此換購活動？"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: function (res) {
       if (res.confirm) {
-        console.log('用戶點擊確定');
-        overExchange({id: val.id, status: 4}).then(() => {
-          getData(requestParams.value, true)
-        })
+        console.log("用戶點擊確定");
+        overExchange({ id: val.id, status: 4 }).then(() => {
+          getData(requestParams.value, true);
+        });
       } else if (res.cancel) {
-        console.log('用戶點擊取消');
+        console.log("用戶點擊取消");
       }
-    }
-  })
-}
+    },
+  });
+};
 
 const handleChangeStatus = (val) => {
-  requestParams.value.status = val.key
-  search()
-}
+  requestParams.value.status = val.key;
+  search();
+};
 
 const handleEdit = (val) => {
-  console.log(val)
+  console.log(val);
   uni.navigateTo({
-    url: '/pages/manages/exchange/add-exchange?id=' + val.id
-  })
-}
-
+    url: "/pages/manages/exchange/add-exchange?id=" + val.id,
+  });
+};
 </script>
 
 <template>
   <view class="container">
     <view class="header">
       <view class="search">
-        <uv-input v-model="requestParams.activity_name" clearable prefix-icon="search" placeholder="請輸入活動名稱" :border="false" @confirm="search" />
+        <uv-input
+          v-model="requestParams.activity_name"
+          clearable
+          prefix-icon="search"
+          placeholder="請輸入活動名稱"
+          :border="false"
+          @confirm="search"
+        />
       </view>
       <view class="tabs">
-        <uv-tabs :list="tabs" line-color="#c74336" :scrollable="false" @change="handleChangeStatus"></uv-tabs>
+        <uv-tabs
+          :list="tabs"
+          line-color="#c74336"
+          :scrollable="false"
+          @change="handleChangeStatus"
+        ></uv-tabs>
       </view>
     </view>
-    <scroll-view :scroll-y="true" style="flex: 1;overflow: hidden;"  @scrolltolower="loadNext">
+    <scroll-view :scroll-y="true" style="flex: 1; overflow: hidden" @scrolltolower="loadNext">
       <view class="content">
         <view class="empty" v-if="!dataList.length">
-          暫無數據
+          {{ $t("暫無數據") }}
         </view>
         <view class="promotion-item" v-for="item in dataList" :key="item.id">
           <view class="promotion-title">
-            <view class="name">{{item.activity_name}}</view>
+            <view class="name">{{ item.activity_name }}</view>
             <view class="status">
-              <uv-tags :text="ActivityStatus.map.get(item.status)" plain size="mini" type="primary"></uv-tags>
+              <uv-tags
+                :text="ActivityStatus.map.get(item.status)"
+                plain
+                size="mini"
+                type="primary"
+              ></uv-tags>
             </view>
           </view>
           <view class="promotion-time">
-            <text>活動商品：{{item.goods_count}}件</text>
+            <text>{{ $t("活動商品") }}：{{ item.goods_count }}{{ $t("件") }} </text>
           </view>
           <view class="promotion-time">
-            <text>活動時間： {{item.start_time}} 至 {{item.end_time}}</text>
+            <text
+              >{{ $t("活動時間") }}： {{ item.start_time }} {{ $t("至") }} {{ item.end_time }}</text
+            >
           </view>
           <view class="promotion-operation">
             <uv-button class="operation-item" @click="handleRemove(item)">
-              <text>刪除</text>
+              <text>{{ $t("刪除") }}</text>
             </uv-button>
-            <uv-button class="operation-item" @click="handleEdit(item)" v-if="[3,4].includes(item.status)">
-              <text>重新編輯</text>
+            <uv-button
+              class="operation-item"
+              @click="handleEdit(item)"
+              v-if="[3, 4].includes(item.status)"
+            >
+              <text>{{ $t("重新編輯") }}</text>
             </uv-button>
             <uv-button class="operation-item" @click="handleOut(item)" v-if="item.status === 2">
-              <text>下架</text>
+              <text>{{ $t("下架") }}</text>
             </uv-button>
             <uv-button class="operation-item" @click="handleStop(item)" v-if="item.status !== 4">
-              <text>結束</text>
+              <text>{{ $t("結束") }}</text>
             </uv-button>
           </view>
         </view>
       </view>
     </scroll-view>
     <view class="submit-button safe-pb">
-      <uv-button @click="handleAdd">新增換購活動</uv-button>
+      <uv-button @click="handleAdd">{{ $t("新增換購活動") }}</uv-button>
     </view>
   </view>
 </template>
@@ -221,7 +248,7 @@ const handleEdit = (val) => {
   background-color: #fff;
 }
 .operation-item {
-  :global(.uv-button){
+  :global(.uv-button) {
     background-color: #000 !important;
     color: #fff !important;
   }

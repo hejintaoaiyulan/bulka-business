@@ -1,4 +1,5 @@
 import request from './request'
+import { $t } from "@/i18n-helper";
 // export const baseUrl = 'https://storeapi.totxlive.com'
 // export const baseUrl = 'https://api.bulka.fun'
 export const baseUrl = 'http://test.bulka.fun'
@@ -18,7 +19,7 @@ request.addResponseInterceptor(async (response) => {
         return Promise.reject(response)
     }
     if (response.data.code !== 0) {
-        throw new Error(response.data.message || '請求失敗')
+        throw new Error($t(response.data.message || '請求失敗'))
     }
     return response
 })

@@ -8,7 +8,7 @@ import PickerSelect from "../../../components/PickerSelect.vue";
 import { pick } from "lodash";
 import { getGoodsInfo, getGoodsTypes, saveGoods } from "../../../api/goods";
 import { Toast } from "../../../utils";
-
+import { $t } from "@/i18n-helper";
 const { uploadFile, isUploading } = useFileUpload({ showUploadLoading: true });
 const types = ref([]);
 const categories = ref([]);
@@ -39,7 +39,7 @@ onLoad((query) => {
   if (query?.id) {
     getInfo(query.id);
     uni.setNavigationBarTitle({
-      title: "編輯商品",
+      title: $t("編輯商品"),
     });
   }
 });
@@ -208,12 +208,12 @@ const handleSave = () => {
   <view class="container">
     <view class="content">
       <view class="card">
-        <view class="card-title">商品基礎信息</view>
+        <view class="card-title">{{ $t("商品基礎信息") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品圖片</text>
+              <text>{{ $t("商品圖片") }}</text>
             </view>
             <view class="form-value flex-right">
               <view class="add-file-box" v-if="!formData.goods_image" @click="handleChooseImage">
@@ -224,6 +224,7 @@ const handleSave = () => {
                   style="display: inline-block"
                 ></view>
               </view>
+
               <view class="add-file-box show-picture" v-else @click="handleChooseImage">
                 <uv-image
                   :src="formData.show_goods_image"
@@ -238,7 +239,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品名稱</text>
+              <text>{{ $t("商品名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -255,7 +256,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品名稱(英文)</text>
+              <text>{{ $t("商品名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -272,7 +273,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品描述</text>
+              <text>{{ $t("商品描述") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -288,7 +289,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品描述(英文)</text>
+              <text>{{ $t("商品描述") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -304,7 +305,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>平臺商品分類</text>
+              <text>{{ $t("平臺商品分類") }}</text>
             </view>
             <PickerSelect
               :options="categories"
@@ -313,7 +314,7 @@ const handleSave = () => {
             >
               <view class="form-value">
                 <text class="placeholder">
-                  {{ formData.goods_category_name || "請選擇分類" }}
+                  {{ $t(formData.goods_category_name || "請選擇分類") }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -322,12 +323,12 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商家商品分類</text>
+              <text>{{ $t("商家商品分類") }}</text>
             </view>
             <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeType">
               <view class="form-value">
                 <text class="placeholder">
-                  {{ formData.goods_type_name || "請選擇分類" }}
+                  {{ $t(formData.goods_type_name || "請選擇分類") }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -336,13 +337,13 @@ const handleSave = () => {
         </view>
       </view>
       <view class="card">
-        <view class="card-title">商品規格及庫存</view>
+        <view class="card-title">{{ $t("商品規格及庫存") }}</view>
         <view class="card-form">
           <template v-if="single">
             <view class="form-item">
               <view class="form-label">
                 <text class="red-text">*</text>
-                <text>商品規格</text>
+                <text>{{ $t("商品規格") }}</text>
               </view>
               <view class="form-value flex-right">
                 <uv-radio-group
@@ -358,7 +359,7 @@ const handleSave = () => {
             <view class="form-item">
               <view class="form-label">
                 <text class="red-text">*</text>
-                <text>商品庫存</text>
+                <text>{{ $t("商品庫存") }}</text>
               </view>
               <view class="form-value">
                 <uv-input
@@ -373,7 +374,7 @@ const handleSave = () => {
             <view class="form-item">
               <view class="form-label">
                 <text class="red-text">*</text>
-                <text>商品原價</text>
+                <text>{{ $t("商品原價") }}</text>
               </view>
               <view class="form-value">
                 <uv-input
@@ -389,7 +390,7 @@ const handleSave = () => {
             <view class="form-item">
               <view class="form-label">
                 <text class="red-text">*</text>
-                <text>商品售價</text>
+                <text>{{ $t("商品售價") }}</text>
               </view>
               <view class="form-value">
                 <uv-input
@@ -407,7 +408,7 @@ const handleSave = () => {
             <view class="form-item">
               <view class="form-label">
                 <text class="red-text">*</text>
-                <text>規格類型</text>
+                <text>{{ $t("規格類型") }}</text>
               </view>
               <view class="form-value flex-right">
                 <uv-radio-group
@@ -422,18 +423,20 @@ const handleSave = () => {
             <view class="form-item">
               <view class="form-label">
                 <text class="red-text">*</text>
-                <text>商品規格</text>
+                <text>{{ $t("商品規格") }}</text>
               </view>
               <view class="form-value flex-right" @click="handleToSetSpecification">
-                <text class="setting-mode">{{ formData.goods_spec_name || "設置商品規格" }}</text>
+                <text class="setting-mode">{{
+                  $t(formData.goods_spec_name || "設置商品規格")
+                }}</text>
               </view>
             </view>
           </template>
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>商品折扣</text>
-              <text class="form-label-tip">(超過50%折扣自動參加首頁試食活動)</text>
+              <text>{{ $t("商品折扣") }}</text>
+              <text class="form-label-tip">({{ $t("超過50%折扣自動參加首頁試食活動") }})</text>
             </view>
             <view class="form-value">
               <text v-if="single">{{ discount }}</text>
@@ -453,12 +456,12 @@ const handleSave = () => {
       </view>
 
       <view class="card">
-        <view class="card-title">更多設置</view>
+        <view class="card-title">{{ $t("更多設置") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否推薦</text>
+              <text>{{ $t("是否推薦") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-switch
@@ -471,7 +474,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>是否上架</text>
+              <text>{{ $t("是否上架") }}</text>
             </view>
             <view class="form-value flex-right">
               <uv-switch
@@ -484,7 +487,7 @@ const handleSave = () => {
           <view class="form-item">
             <view class="form-label">
               <!--                <text class="red-text">*</text>-->
-              <text>商品順序</text>
+              <text>{{ $t("商品順序") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -501,7 +504,7 @@ const handleSave = () => {
       </view>
     </view>
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" @click="handleSave">保存</uv-button>
+      <uv-button class="operation-item" @click="handleSave">{{ $t("保存") }}</uv-button>
     </view>
   </view>
 </template>

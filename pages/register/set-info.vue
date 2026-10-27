@@ -6,6 +6,7 @@ import {useFileUpload} from "../../utils/uploadFile";
 import PickerSelect from "../../components/PickerSelect.vue";
 import {onShow} from '@dcloudio/uni-app'
 import {pick} from "lodash";
+import { $t } from "@/i18n-helper";
 
 const currentStep = ref(1)
 const {uploadFile} = useFileUpload()
@@ -61,7 +62,7 @@ const handleChooseImage = () => {
 
 const handleChooseMaterialImage = () => {
   uni.showLoading({
-    title: '上傳中'
+    title:  $t('上傳中')
   })
   uploadFile({
     url: '/store/index/uploadImage',
@@ -141,19 +142,25 @@ const handleToHome = () => {
       </view>
 
       <view v-if="currentStep === 1" class="card">
-        <view class="card-title">商家基本資訊</view>
+        <view class="card-title">{{ $t("商家基本資訊") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品頭像</text>
+              <text>{{ $t("商品頭像") }}</text>
             </view>
             <view class="form-value flex-right">
               <view class="add-file-box" v-if="!info.shop_avatar" @click="handleChooseImage">
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseImage">
-                <uv-image :src="info.show_shop_avatar" mode="aspectFit" width="100%" height="100%" radius="5"/>
+                <uv-image
+                  :src="info.show_shop_avatar"
+                  mode="aspectFit"
+                  width="100%"
+                  height="100%"
+                  radius="5"
+                />
               </view>
             </view>
           </view>
@@ -161,23 +168,28 @@ const handleToHome = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商品名稱</text>
+              <text>{{ $t("商品名稱") }}</text>
             </view>
             <view class="form-value">
-              <uv-input inputAlign="right" v-model="info.shop_name" fontSize="26rpx" :border="false"
-                        placeholder="請輸入商家名稱"/>
+              <uv-input
+                inputAlign="right"
+                v-model="info.shop_name"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入商家名稱"
+              />
             </view>
           </view>
 
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>入駐分類</text>
+              <text>{{ $t("入駐分類") }}</text>
             </view>
             <picker-select :options="types" key-name="name" @change="handleSelectType">
               <view class="form-value">
                 <text class="placeholder">
-                  {{info.shop_type_name || '請選擇入駐分類'}}
+                  {{ $t(info.shop_type_name || "請選擇入駐分類") }}
                   <text class="iconfont icon-arrow-right-copy"></text>
                 </text>
               </view>
@@ -187,46 +199,71 @@ const handleToHome = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>聯繫人</text>
+              <text>{{ $t("聯繫人") }}</text>
             </view>
             <view class="form-value">
-              <uv-input v-model="info.contact_name" inputAlign="right" fontSize="26rpx" :border="false"
-                        placeholder="請輸入聯繫人"/>
+              <uv-input
+                v-model="info.contact_name"
+                inputAlign="right"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入聯繫人"
+              />
             </view>
           </view>
 
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>手機號碼</text>
+              <text>{{ $t("手機號碼") }}</text>
             </view>
             <view class="form-value">
-              <uv-input inputAlign="right" v-model="info.contact_tel" fontSize="26rpx" :border="false"
-                        placeholder="請輸入手機號碼"/>
+              <uv-input
+                inputAlign="right"
+                v-model="info.contact_tel"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入手機號碼"
+              />
             </view>
           </view>
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>地址</text>
+              <text>{{ $t("地址") }}</text>
             </view>
             <view class="form-value">
-              <uv-input inputAlign="right" v-model="info.address" fontSize="26rpx" :border="false"
-                        placeholder="請輸入地址"/>
+              <uv-input
+                inputAlign="right"
+                v-model="info.address"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入地址"
+              />
             </view>
           </view>
 
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>商業登記資料</text>
+              <text>{{ $t("商業登記資料") }}</text>
             </view>
             <view class="form-value flex-right">
-              <view class="add-file-box" v-if="!info.material_image" @click="handleChooseMaterialImage">
+              <view
+                class="add-file-box"
+                v-if="!info.material_image"
+                @click="handleChooseMaterialImage"
+              >
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
               <view class="add-file-box show-picture" v-else @click="handleChooseMaterialImage">
-                <uv-image :src="info.show_material_image" mode="aspectFit" width="100%" height="100%" radius="5"/>
+                <uv-image
+                  :src="info.show_material_image"
+                  mode="aspectFit"
+                  width="100%"
+                  height="100%"
+                  radius="5"
+                />
               </view>
             </view>
           </view>
@@ -234,14 +271,22 @@ const handleToHome = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>負責人身份證照片</text>
+              <text>{{ $t("負責人身份證照片") }}</text>
             </view>
             <view class="form-value flex-right">
-              <view class="add-file-box show-picture" v-for="(img, index) in info.view_images" :key="index"
-                    @click="handleShowActions(img, index)">
-                <uv-image :src="img.url" mode="aspectFit" width="100%" height="100%" radius="5"/>
+              <view
+                class="add-file-box show-picture"
+                v-for="(img, index) in info.view_images"
+                :key="index"
+                @click="handleShowActions(img, index)"
+              >
+                <uv-image :src="img.url" mode="aspectFit" width="100%" height="100%" radius="5" />
               </view>
-              <view class="add-file-box" v-if="(info.director_images?.length || 0) < idCardImgNumber" @click="handleChooseDirector">
+              <view
+                class="add-file-box"
+                v-if="(info.director_images?.length || 0) < idCardImgNumber"
+                @click="handleChooseDirector"
+              >
                 <view class="iconfont icon-jiajianzujianjiahao"></view>
               </view>
             </view>
@@ -250,22 +295,32 @@ const handleToHome = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>公司電話</text>
+              <text>{{ $t("公司電話") }}</text>
             </view>
             <view class="form-value">
-              <uv-input inputAlign="right" v-model="info.company_tel" fontSize="26rpx" :border="false"
-                        placeholder="請輸入公司電話"/>
+              <uv-input
+                inputAlign="right"
+                v-model="info.company_tel"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入公司電話"
+              />
             </view>
           </view>
 
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>收款銀行賬戶</text>
+              <text>{{ $t("收款銀行賬戶") }}</text>
             </view>
             <view class="form-value">
-              <uv-input inputAlign="right" v-model="info.bank_acccount" fontSize="26rpx" :border="false"
-                        placeholder="請輸入收款銀行賬戶"/>
+              <uv-input
+                inputAlign="right"
+                v-model="info.bank_acccount"
+                fontSize="26rpx"
+                :border="false"
+                placeholder="請輸入收款銀行賬戶"
+              />
             </view>
           </view>
         </view>
@@ -273,44 +328,51 @@ const handleToHome = () => {
       <view v-if="currentStep === 2" class="card">
         <view class="result-content" style="padding-top: 40rpx" v-if="isCheckError">
           <view class="pass-img">
-            <image src="/static/pass-fail.png" mode="scaleToFill"/>
+            <image src="/static/pass-fail.png" mode="scaleToFill" />
           </view>
           <view class="pass-text">
-            <view class="pass-desc">審核不通過</view>
-            <view class="pass-desc">1.請重新提交</view>
-            <view class="pass-desc">2.請重新提交</view>
+            <view class="pass-desc">{{ $t("審核不通過") }}</view>
+            <view class="pass-desc">1.{{ $t("請重新提交") }}</view>
+            <view class="pass-desc">2.{{ $t("請重新提交") }}</view>
           </view>
           <view class="submit-button w-full">
-            <uv-button custom-style="background: black; color: #fff">重新編輯</uv-button>
+            <uv-button custom-style="background: black; color: #fff">{{
+              $t("重新編輯")
+            }}</uv-button>
           </view>
         </view>
         <view class="result-content" style="padding-top: 40rpx">
           <view class="pass-img">
-            <image src="/static/pass.png" mode="scaleToFill"/>
+            <image src="/static/pass.png" mode="scaleToFill" />
           </view>
           <view class="pass-text text-center">
-            <view class="pass-desc">提交成功</view>
-            <view class="pass-desc">正在審核中，請耐心等待</view>
+            <view class="pass-desc">{{ $t("提交成功") }}</view>
+            <view class="pass-desc">{{ $t("正在審核中，請耐心等待") }}</view>
           </view>
         </view>
       </view>
       <view v-if="currentStep === 3" class="card">
-
         <view class="result-content" style="padding-top: 40rpx">
           <view class="pass-img">
-            <image src="/static/pass.png" mode="scaleToFill"/>
+            <image src="/static/pass.png" mode="scaleToFill" />
           </view>
           <view class="pass-text">
-            <text>資料審核通過，入駐成功</text>
+            <text>{{ $t("資料審核通過，入駐成功") }}</text>
           </view>
           <view class="submit-button w-full">
-            <uv-button custom-style="background: black; color: #fff" @click="handleToHome">進入商家主頁</uv-button>
+            <uv-button custom-style="background: black; color: #fff" @click="handleToHome">{{
+              $t("進入商家主頁")
+            }}</uv-button>
           </view>
         </view>
       </view>
     </view>
     <view class="submit-button safe-pb" v-if="currentStep === 1">
-      <uv-button custom-style="background: black; color: #fff;" :hairline="false" @click="handleSubmit">提交申請
+      <uv-button
+        custom-style="background: black; color: #fff;"
+        :hairline="false"
+        @click="handleSubmit"
+        >{{ $t("提交申請") }}
       </uv-button>
     </view>
   </view>
@@ -407,7 +469,6 @@ const handleToHome = () => {
     border: none;
   }
 }
-
 
 .flex-right {
   display: flex;

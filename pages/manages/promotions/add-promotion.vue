@@ -7,7 +7,7 @@ import { pick } from "lodash";
 import { getDiscountActivityInfo, updateDiscountActivity } from "../../../api/discount";
 import { Toast } from "../../../utils";
 import { useUserStore } from "@/model/user";
-
+import { $t } from "@/i18n-helper";
 const startTimePicker = ref();
 const endTimePicker = ref();
 const timeFormat = "YYYY-MM-DD HH:mm:ss";
@@ -41,7 +41,7 @@ onLoad((query) => {
   if (query?.id) {
     getInfo(query.id);
     uni.setNavigationBarTitle({
-      title: "編輯優惠活動",
+      title: $t("編輯優惠活動"),
     });
   }
 });
@@ -65,7 +65,9 @@ onShow(() => {
 const handleToAddGoods = () => {
   if (shopConfig.value?.discount_activity_max_count) {
     if (formData.value.goods.length >= shopConfig.value.discount_activity_max_count) {
-      return Toast.info(`最多隻能添加${shopConfig.value.discount_activity_max_count}件商品`);
+      return Toast.info(
+        `${$t("最多隻能添加")}${shopConfig.value.discount_activity_max_count}${$t("件商品")}`,
+      );
     }
   }
   uni.navigateTo({
@@ -85,8 +87,10 @@ const handleSetEndTime = (evt) => {
 
 const handleRemoveGoods = (goods) => {
   uni.showModal({
-    title: "提示",
-    content: "確定刪除此商品嗎？",
+    title: $t("提示"),
+    content: $t("確定刪除此商品嗎？"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success(res) {
       if (res.confirm) {
         formData.value.goods = formData.value.goods.filter(
@@ -146,12 +150,12 @@ const handleSubmit = () => {
   <view class="container">
     <view class="content">
       <view class="card">
-        <view class="card-title">活動基本信息</view>
+        <view class="card-title">{{ $t("活動基本信息") }}</view>
         <view class="card-form">
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動名稱</text>
+              <text>{{ $t("活動名稱") }}</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -167,7 +171,7 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動名稱(英文)</text>
+              <text>{{ $t("活動名稱") }}({{ $t("英文") }})</text>
             </view>
             <view class="form-value">
               <uv-input
@@ -183,14 +187,14 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動開始時間</text>
+              <text>{{ $t("活動開始時間") }}</text>
             </view>
             <view class="form-value" @click="startTimePicker.open()">
               <view class="placeholder">
                 {{
                   formData.start_time
                     ? dayjs(formData.start_time).format(timeFormat)
-                    : "請選擇活動開始時間"
+                    : $t("請選擇活動開始時間")
                 }}
                 <text class="iconfont icon-shijian"></text>
               </view>
@@ -199,14 +203,14 @@ const handleSubmit = () => {
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
-              <text>活動結束時間 </text>
+              <text>{{ $t("活動結束時間") }} </text>
             </view>
             <view class="form-value" @click="endTimePicker.open()">
               <view class="placeholder">
                 {{
                   formData.end_time
                     ? dayjs(formData.end_time).format(timeFormat)
-                    : "請選擇活動結束時間"
+                    : $t("請選擇活動結束時間")
                 }}
                 <text class="iconfont icon-shijian"></text>
               </view>
@@ -216,21 +220,21 @@ const handleSubmit = () => {
       </view>
       <view class="card">
         <view class="card-title">
-          <view>活動商品</view>
-          <view class="setting-mode" @click="handleToAddGoods">添加商品</view>
+          <view>{{ $t("活動商品") }}</view>
+          <view class="setting-mode" @click="handleToAddGoods">{{ $t("添加商品") }}</view>
         </view>
         <view class="card-form">
           <!--          <view class="empty">暫無商品，快去上傳吧</view>-->
           <view class="card" style="padding: 0" v-for="(item, i) in formData.goods" :key="i">
             <view class="title">
-              <view>{{ i + 1 }}號商品</view>
+              <view>{{ i + 1 }}{{ $t("號商品") }}</view>
               <view class="card-option">
                 <view @click="handleRemoveGoods(item)">
-                  <text>刪除商品</text>
+                  <text>{{ $t("刪除商品") }}</text>
                   <text class="iconfont icon-yichu1"></text>
                 </view>
                 <view @click="handleEditGoods(item)">
-                  <text>重新編輯</text>
+                  <text>{{ $t("重新編輯") }}</text>
                   <text class="iconfont icon-bianji"></text>
                 </view>
               </view>
@@ -250,17 +254,17 @@ const handleSubmit = () => {
                     {{ item.goods_desc }}
                   </view>
                   <view class="price-msg">
-                    <view class="price">換購價 HK$ {{ item.sale_price }}</view>
+                    <view class="price">{{ $t("換購價") }} HK$ {{ item.sale_price }}</view>
                   </view>
                 </view>
               </view>
               <view class="price-msg">
-                <view class="count">庫存{{ item.goods_stock }}件</view>
+                <view class="count">{{ $t("庫存") }}{{ item.goods_stock }}{{ $t("件") }}</view>
               </view>
             </view>
 
             <template>
-              <view class="title">贈品</view>
+              <view class="title">{{ $t("贈品") }}</view>
               <view class="gift-item">
                 <view class="gift-img">
                   <image
@@ -281,7 +285,7 @@ const handleSubmit = () => {
     </view>
 
     <view class="submit-button safe-pb">
-      <uv-button class="operation-item" block @click="handleSubmit">保存</uv-button>
+      <uv-button class="operation-item" block @click="handleSubmit">{{ $t("保存") }}</uv-button>
     </view>
 
     <uv-datetime-picker

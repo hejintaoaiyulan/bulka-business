@@ -1,23 +1,15 @@
 <script setup>
 import { onShow, onPullDownRefresh } from "@dcloudio/uni-app";
-import {
-  delGoods,
-  getGoodsTypes,
-  goodsList,
-  goodsPublish,
-} from "../../../api/goods";
+import { delGoods, getGoodsTypes, goodsList, goodsPublish } from "../../../api/goods";
 import { usePageLoading } from "../../../hooks";
 import { ref } from "vue";
 import PickerSelect from "../../../components/PickerSelect.vue";
 import { PublishStatus } from "../../../utils/fields";
-
-const { reload, dataList, loadNext, delItem, getData } = usePageLoading(
-  goodsList,
-  {
-    loadInInit: true,
-    onFinish: uni.stopPullDownRefresh,
-  },
-);
+import { $t } from "@/i18n-helper";
+const { reload, dataList, loadNext, delItem, getData } = usePageLoading(goodsList, {
+  loadInInit: true,
+  onFinish: uni.stopPullDownRefresh,
+});
 
 const types = ref([]);
 
@@ -56,8 +48,10 @@ onPullDownRefresh(() => {
 
 const handleRemove = (val) => {
   uni.showModal({
-    title: "提示",
-    content: "是否刪除該試吃商品？",
+    title: $t("提示"),
+    content: $t("是否刪除該試吃商品？"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: function (res) {
       if (res.confirm) {
         console.log("用戶點擊確定");
@@ -72,8 +66,10 @@ const handleRemove = (val) => {
 // 下架
 const handleSoldOut = (val) => {
   uni.showModal({
-    title: "提示",
-    content: "是否下架該試吃商品？",
+    title: $t("提示"),
+    content: $t("是否下架該試吃商品？"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: function (res) {
       if (res.confirm) {
         console.log("用戶點擊確定");
@@ -90,8 +86,10 @@ const handleSoldOut = (val) => {
 // 上架
 const handleSoldIn = (val, flag) => {
   uni.showModal({
-    title: "提示",
-    content: `是否${flag ? "重新" : ""}上架該試吃商品？`,
+    title: $t("提示"),
+    content: $t(`是否${flag ? "重新" : ""}上架該試吃商品？`),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: function (res) {
       if (res.confirm) {
         console.log("用戶點擊確定");
@@ -157,13 +155,9 @@ onShow(() => {
             @confirm="search"
           />
         </view>
-        <PickerSelect
-          :options="types"
-          key-name="goods_type_name"
-          @change="handleChangeSearchType"
-        >
+        <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeSearchType">
           <view class="right-search">
-            <view>{{ requestParams.goods_type_name || "選擇商品分類" }}</view>
+            <view>{{ $t(requestParams.goods_type_name || "選擇商品分類") }}</view>
             <text class="iconfont icon-arrow-right-copy"></text>
           </view>
         </PickerSelect>
@@ -186,7 +180,7 @@ onShow(() => {
         :show-scrollbar="false"
       >
         <view class="goods-list">
-          <view class="empty" v-if="!dataList.length"> 暫無數據 </view>
+          <view class="empty" v-if="!dataList.length"> {{ $t("暫無數據") }}</view>
           <view class="goods-item" v-for="item in dataList" :key="item.id">
             <view class="goods-title">
               <view class="goods-tag">
@@ -196,10 +190,8 @@ onShow(() => {
                 class="goods-status"
                 :class="{ is_stock_status_error: item.stock_status === 2 }"
               >
-                <text>{{
-                  PublishStatus.map.get(item.publish_status) || "未知分類"
-                }}</text>
-                <text v-if="item.stock_status === 2"> | 庫存不足</text>
+                <text>{{ $t(PublishStatus.map.get(item.publish_status) || "未知分類") }}</text>
+                <text v-if="item.stock_status === 2"> | {{ $t("庫存不足") }}</text>
               </view>
             </view>
             <view class="goods-content">
@@ -212,40 +204,40 @@ onShow(() => {
                 <view class="goods-price">
                   <view class="price">HK$ {{ item.sale_price }}</view>
                   <view class="inventory">
-                    <text>銷量{{ item.sales }}</text>
+                    <text>{{ $t("銷量") }}{{ item.sales }}</text>
                     <text>|</text>
-                    <text>庫存{{ item.goods_stock }}</text>
+                    <text>{{ $t("庫存") }}{{ item.goods_stock }}</text>
                   </view>
                 </view>
               </view>
             </view>
             <view class="goods-operation">
               <uv-button class="operation-item" @click="handleRemove(item)">
-                <text>刪除</text>
+                <text>{{ $t("刪除") }}</text>
               </uv-button>
               <uv-button class="operation-item" @click="handleToEdit(item)">
-                <text>編輯</text>
+                <text>{{ $t("編輯") }}</text>
               </uv-button>
               <uv-button
                 v-if="item.publish_status === 1"
                 class="operation-item"
                 @click="handleSoldOut(item)"
               >
-                <text>下架</text>
+                <text>{{ $t("下架") }}</text>
               </uv-button>
               <uv-button
                 v-if="item.publish_status === 0"
                 class="operation-item"
                 @click="handleSoldIn(item)"
               >
-                <text>上架</text>
+                <text>{{ $t("上架") }}</text>
               </uv-button>
               <uv-button
                 v-if="item.publish_status === 2"
                 class="operation-item"
                 @click="handleSoldIn(item, true)"
               >
-                <text>重新上架</text>
+                <text>{{ $t("重新上架") }}</text>
               </uv-button>
             </view>
           </view>
@@ -253,7 +245,7 @@ onShow(() => {
       </scroll-view>
     </view>
     <view class="footer">
-      <uv-button @click="handleAddGoods">新增試吃商品</uv-button>
+      <uv-button @click="handleAddGoods">{{ $t("新增試吃商品") }}</uv-button>
     </view>
   </view>
 </template>

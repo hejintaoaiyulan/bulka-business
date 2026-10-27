@@ -152,7 +152,7 @@ const handleStatus = ({ key }) => {
     <scroll-view :scroll-y="true" @scrolltolower="loadNext" style="flex: 1; overflow: hidden">
       <view class="content">
         <view class="comment-list">
-          <view class="empty" v-if="!dataList.length"> 暫無評論 </view>
+          <view class="empty" v-if="!dataList.length"> {{ $t("暫無評論") }} </view>
           <view class="comment-item" v-for="item in dataList" :key="item.id">
             <view class="comment-title">
               <view class="user">
@@ -164,24 +164,24 @@ const handleStatus = ({ key }) => {
               </view>
             </view>
             <view class="comment-star">
-              <text>當前平均分：</text>
+              <text>{{ $t("當前平均分") }}：</text>
               <uv-rate :count="5" :value="item.star"></uv-rate>
               <view class="score-item" v-for="(itm, index) in criteriaList" :key="index">
                 <view class="score-title">
-                  <text>{{ itm.title }}</text>
+                  <text>{{ $t(itm.title) }}</text>
                   <!-- <text class="score-desc">{{ itm.description }}</text> -->
                 </view>
                 <view class="score-rate">
                   <uv-rate :count="5" :allow-half="false" v-model="item[itm.key]" />
                 </view>
                 <view class="option-desc">
-                  {{ itm.options.find((opt) => opt.score === item[itm.key]).description }}
+                  {{ $t(itm.options.find((opt) => opt.score === item[itm.key]).description) }}
                 </view>
               </view>
             </view>
 
             <view class="comment-content">
-              {{ item.content }}
+              {{ $t(item.content) }}
             </view>
             <view class="comment-pictures">
               <view class="picture-item" v-for="(img, index) in item.images" :key="index">
@@ -192,10 +192,10 @@ const handleStatus = ({ key }) => {
               Array.isArray(item.goods_name) ? item.goods_name.join("、") : item.goods_name
             }}</view>
             <view class="response-text" v-if="item.response_status === 1">
-              回覆：{{ item.response }}
+              {{ $t("回覆") }}：{{ item.response }}
             </view>
             <view class="comment-operation flex-right" v-if="item.response_status === 2">
-              <uv-button size="normal" @click="handleReply(item)">回復評論</uv-button>
+              <uv-button size="normal" @click="handleReply(item)">{{ $t("回復評論") }}</uv-button>
             </view>
           </view>
         </view>

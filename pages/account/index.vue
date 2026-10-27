@@ -42,11 +42,11 @@ onShow(() => {
                 mode="aspectFit"
                 class="badge-icon"
               ></image>
-              <text class="badge-text">{{ userInfo.food_badge.name }}</text>
+              <text class="badge-text">{{ $t(userInfo.food_badge.name) }}</text>
             </view>
           </view>
           <view class="sub-title" v-if="!userInfo.shop_no"
-            >電話：{{ userInfo.prefix }}{{ userInfo.mobile }}</view
+            >{{ $t("電話") }}：{{ userInfo.prefix }}{{ userInfo.mobile }}</view
           >
           <view v-else class="sub-title">ID: {{ userInfo.shop_no }}</view>
         </view>
@@ -58,8 +58,8 @@ onShow(() => {
             <!--        <uv-avatar text="資料" :size="40" />-->
           </view>
           <view class="item-content">
-            <view class="item-title">商家資料</view>
-            <view class="item-sub-title">管理商家門店信息</view>
+            <view class="item-title">{{ $t("商家資料") }}</view>
+            <view class="item-sub-title">{{ $t("管理商家門店信息") }}</view>
           </view>
         </view>
 
@@ -69,8 +69,8 @@ onShow(() => {
             <!--        <uv-avatar text="資料" :size="40" />-->
           </view>
           <view class="item-content">
-            <view class="item-title">商家錢包</view>
-            <view class="item-sub-title">查看錢包餘額以及結算訂單</view>
+            <view class="item-title">{{ $t("商家錢包") }}</view>
+            <view class="item-sub-title">{{ $t("查看錢包餘額以及結算訂單") }}</view>
           </view>
         </view>
 
@@ -80,8 +80,8 @@ onShow(() => {
             <!--        <uv-avatar text="資料" :size="40" />-->
           </view>
           <view class="item-content">
-            <view class="item-title">新手教程</view>
-            <view class="item-sub-title">查看APP使用教程</view>
+            <view class="item-title">{{ $t("新手教程") }}</view>
+            <view class="item-sub-title">{{ $t("查看APP使用教程") }}</view>
           </view>
         </view>
 
@@ -91,8 +91,8 @@ onShow(() => {
             <!--        <uv-avatar text="資料" :size="40" />-->
           </view>
           <view class="item-content">
-            <view class="item-title">幫助中心</view>
-            <view class="item-sub-title">相關問題解答</view>
+            <view class="item-title">{{ $t("幫助中心") }}</view>
+            <view class="item-sub-title">{{ $t("相關問題解答") }}</view>
           </view>
         </view>
 
@@ -102,8 +102,8 @@ onShow(() => {
             <!--        <uv-avatar text="資料" :size="40" />-->
           </view>
           <view class="item-content">
-            <view class="item-title">設置</view>
-            <view class="item-sub-title">關於APP設置</view>
+            <view class="item-title">{{ $t("設置") }}</view>
+            <view class="item-sub-title">{{ $t("關於APP設置") }}</view>
           </view>
         </view>
       </view>

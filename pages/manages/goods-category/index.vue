@@ -4,6 +4,7 @@ import { uniqueId } from "lodash";
 import { delGoodsType, getGoodsTypes, saveGoodsType } from "../../../api/goods";
 import { onShow } from "@dcloudio/uni-app";
 import { Toast } from "../../../utils";
+import { $t } from "@/i18n-helper";
 
 const popRef = ref();
 
@@ -28,8 +29,10 @@ const maxSort = computed(() => {
 
 const handleRemoveTag = (id) => {
   uni.showModal({
-    title: "提示",
-    content: "是否刪除該分類？",
+    title: $t("提示"),
+    content: $t("是否刪除該分類？"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: function (res) {
       if (res.confirm) {
         delGoodsType({ id: id }).then(() => {
@@ -100,7 +103,7 @@ onShow(() => {
         :key="item.key"
         @click="handleEditTag(item)"
       >
-        <view>{{ item.goods_type_name }}({{ item.goods_type_name_en }})</view>
+        <view>{{ $t(item.goods_type_name) }}({{ $t(item.goods_type_name_en) }})</view>
         <view class="remove-icon flex-center" @click.stop="handleRemoveTag(item.id)">
           <text class="iconfont icon-jianhao"></text>
         </view>
@@ -111,7 +114,7 @@ onShow(() => {
     </view>
     <uv-popup custom-style="height: 480rpx" ref="popRef" mode="bottom">
       <view class="content safe-pb">
-        <view class="title">添加分類</view>
+        <view class="title">{{ $t("添加分類") }}</view>
         <view class="form">
           <view class="form-item">
             <uv-input placeholder="輸入分類名稱" v-model="addFormData.goods_type_name" />
@@ -127,7 +130,9 @@ onShow(() => {
             />
           </view>
           <view class="form-item">
-            <uv-button type="primary" class="button" @click="submitAddTag">確定新增/保存</uv-button>
+            <uv-button type="primary" class="button" @click="submitAddTag">{{
+              $t("確定新增/保存")
+            }}</uv-button>
           </view>
         </view>
       </view>

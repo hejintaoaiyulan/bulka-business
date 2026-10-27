@@ -1,7 +1,7 @@
-import {ref, computed, onUnmounted} from 'vue'
-import {isFunction, omit} from "lodash";
-import {getToken} from "../utils";
-
+import { ref, computed, onUnmounted } from 'vue'
+import { isFunction, omit } from "lodash";
+import { getToken } from "../utils";
+import { $t } from '@/i18n-helper'
 
 let isOpened = false
 // 401鑑權失敗，重新登錄
@@ -27,8 +27,10 @@ export const useNotAuthModal = () => {
       }
     } else
       uni.showModal({
-        title: '提示',
-        content: tip,
+        title: $t("提示"),
+        content: $t(tip),
+        cancelText: $t("取消"),
+        confirmText: $t("确定"),
         showCancel: false,
         success: (result) => {
           if (result.confirm)
@@ -42,7 +44,7 @@ export const useNotAuthModal = () => {
       })
   }
 
-  return {open}
+  return { open }
 }
 
 
@@ -82,7 +84,7 @@ export const usePageLoading = (
         (response.data[keyName] || []).forEach(newItem => {
           dataList.value = dataList.value.map(item => {
             if (newItem.id === item.id) {
-              return {...item, ...newItem}
+              return { ...item, ...newItem }
             }
             return item
           })
@@ -108,7 +110,7 @@ export const usePageLoading = (
     pageParams.value.page = 1
     hasMore.value = true
     dataList.value = []
-    return getData({...loadDataParams, ...(data || {})})
+    return getData({ ...loadDataParams, ...(data || {}) })
   }
 
   const loadNext = () => {
@@ -194,12 +196,12 @@ export function useWebSocket(url, options = {}) {
   const isUserStop = ref(false)
   const isConnected = ref(false)
   const reconnectTimer = ref(null)
-	const loading = ref(false)
+  const loading = ref(false)
 
   const connect = () => {
     if (!url || isConnected.value || !getToken() || loading.value) return
 
-	  loading.value = true
+    loading.value = true
     socket.value = uni.connectSocket({
       url, method: options.method || 'GET', complete: () => {
       }
@@ -207,7 +209,7 @@ export function useWebSocket(url, options = {}) {
 
     socket.value.onOpen?.((res) => {
       isConnected.value = true
-	    loading.value = false
+      loading.value = false
       onOpen && onOpen(res)
     })
 
@@ -218,7 +220,7 @@ export function useWebSocket(url, options = {}) {
 
     socket.value.onClose?.((res) => {
       isConnected.value = false
-	    loading.value = false
+      loading.value = false
       onClose && onClose(res)
       if (!isUserStop.value)
         reconnect()
@@ -226,7 +228,7 @@ export function useWebSocket(url, options = {}) {
 
     socket.value.onError?.((err) => {
       console.log(url)
-	    loading.value = false
+      loading.value = false
       isConnected.value = false
       onError && onError(err)
       if (!isUserStop.value)
@@ -253,7 +255,7 @@ export function useWebSocket(url, options = {}) {
   }
 
   const close = (flag) => {
-	  isUserStop.value = !!flag
+    isUserStop.value = !!flag
     if (socket.value) {
       socket.value.close()
     }

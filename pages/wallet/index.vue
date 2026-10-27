@@ -1,89 +1,96 @@
 <script setup>
-import {ref} from 'vue'
-import {getWallet, getWalletLog} from "@/api/wallet";
-import {onShow, onPullDownRefresh, onReachBottom} from '@dcloudio/uni-app'
-import {usePageLoading} from "@/hooks";
+import { ref } from "vue";
+import { getWallet, getWalletLog } from "@/api/wallet";
+import { onShow, onPullDownRefresh, onReachBottom } from "@dcloudio/uni-app";
+import { usePageLoading } from "@/hooks";
 
-const walletInfo = ref({})
-const {reload, dataList, loadNext} = usePageLoading(getWalletLog, {})
+const walletInfo = ref({});
+const { reload, dataList, loadNext } = usePageLoading(getWalletLog, {});
 
 // 獲取錢包信息
 const getInfo = () => {
-  getWallet().then(res => {
-    walletInfo.value = res.data || {}
-  }).finally(() => {
-    uni.stopPullDownRefresh()
-  })
-}
+  getWallet()
+    .then((res) => {
+      walletInfo.value = res.data || {};
+    })
+    .finally(() => {
+      uni.stopPullDownRefresh();
+    });
+};
 
 const getList = () => {
-  reload()
-}
-
+  reload();
+};
 
 onShow(() => {
-  getInfo()
-  getList()
-})
+  getInfo();
+  getList();
+});
 
 const handleDetail = (record) => {
   uni.navigateTo({
-    url: '/pages/wallet/detail?settled_date=' + record.settled_date + '&settled_no=' + record.settled_no + '&id=' + record.id
-  })
-}
+    url:
+      "/pages/wallet/detail?settled_date=" +
+      record.settled_date +
+      "&settled_no=" +
+      record.settled_no +
+      "&id=" +
+      record.id,
+  });
+};
 
 const handleWithdrawal = () => {
   uni.navigateTo({
-    url: '/pages/wallet/withdrawal?amount=' + walletInfo.value.balance + '&max_withdrawal_amount' + walletInfo.value.max_withdrawal_amount
-  })
-}
+    url:
+      "/pages/wallet/withdrawal?amount=" +
+      walletInfo.value.balance +
+      "&max_withdrawal_amount" +
+      walletInfo.value.max_withdrawal_amount,
+  });
+};
 
 onPullDownRefresh(() => {
-  getInfo()
-  getList()
-})
-
+  getInfo();
+  getList();
+});
 
 onReachBottom(() => {
   // console.log('reachBottom')
-  loadNext()
-})
-
+  loadNext();
+});
 </script>
 
 <template>
   <view class="container safe-pb">
     <view class="content">
       <view class="card">
-        <view class="card-title">
-          我的餘額
-        </view>
+        <view class="card-title"> {{ $t("我的餘額") }} </view>
         <view class="card-content">
           <view class="amount">
             <view class="price">HK$ {{ walletInfo.balance }}</view>
             <view class="withdrawal" @click="handleWithdrawal">
-              <view>提現</view>
+              <view>{{ $t("提現") }}</view>
             </view>
           </view>
 
           <view class="price-msg">
             <view class="price-item">
               <view class="value">HK$ {{ walletInfo.unsettled }}</view>
-              <view class="title">待結算金額</view>
+              <view class="title">{{ $t("待結算金額") }}</view>
             </view>
             <view class="price-item">
               <view class="value">HK$ {{ walletInfo.withdrawaling }}</view>
-              <view class="title">提現中金額</view>
+              <view class="title">{{ $t("提現中金額") }}</view>
             </view>
           </view>
 
           <view class="price-tip">
-            結算說明：訂單將在完成7天后進行結算，並非實時到賬
+            {{ $t(" 結算說明：訂單將在完成7天后進行結算，並非實時到賬") }}
           </view>
         </view>
       </view>
       <view class="card">
-        <view class="card-title">餘額明細</view>
+        <view class="card-title">{{ $t("餘額明細") }}</view>
         <view class="card-content">
           <view class="order-list">
             <uv-empty text="暫無數據" v-if="!dataList.length"></uv-empty>
@@ -91,13 +98,15 @@ onReachBottom(() => {
               <view class="order-msg">
                 <view class="order-msg-left">
                   <view>{{ item.title }}</view>
-                  <view v-if="item.type === 1" class="detail" @click="handleDetail(item)">查看明細</view>
+                  <view v-if="item.type === 1" class="detail" @click="handleDetail(item)">{{
+                    $t("查看明細")
+                  }}</view>
                 </view>
                 <view class="order-msg-right">{{ item.money }}</view>
               </view>
               <view class="order-msg">
                 <view class="order-msg-left">
-                  <view>結算編號：{{ item.settled_no }}</view>
+                  <view>{{ $t("結算編號") }}：{{ item.settled_no }}</view>
                 </view>
                 <view class="order-msg-right">{{ item.settled_date }}</view>
               </view>
@@ -165,7 +174,6 @@ onReachBottom(() => {
   background: #f8f8f8;
   padding: 20rpx;
 }
-
 
 .card {
   padding: 20rpx;

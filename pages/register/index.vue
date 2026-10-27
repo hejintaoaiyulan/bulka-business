@@ -87,14 +87,14 @@ const handleToSetInfo2 = (cid) => {
 <template>
   <view class="container">
     <view class="header">
-      <text>正在註冊</text>
+      <text>{{ $t("正在註冊") }}</text>
     </view>
     <view class="content">
       <view class="form">
         <view class="form-item">
           <view class="form-label">
             <view class="iconfont icon-zhanghaozhongxinzhanghaoguanli"></view>
-            <view class="label-text">手機號</view>
+            <view class="label-text">{{ $t("手機號") }}</view>
           </view>
           <view class="form-value" style="display: flex; column-gap: 10rpx; align-items: center">
             <uv-input
@@ -112,7 +112,7 @@ const handleToSetInfo2 = (cid) => {
         <view class="form-item">
           <view class="form-label">
             <view class="iconfont icon-mima"></view>
-            <view class="label-text">短信驗證碼</view>
+            <view class="label-text">{{ $t("短信驗證碼") }}</view>
           </view>
           <view class="form-value">
             <uv-input placeholder="請輸入驗證碼" v-model="formData.code">
@@ -133,7 +133,7 @@ const handleToSetInfo2 = (cid) => {
         <view class="form-item">
           <view class="form-label">
             <view class="iconfont icon-mima"></view>
-            <view class="label-text">設置密碼</view>
+            <view class="label-text">{{ $t("設置密碼") }}</view>
           </view>
           <view class="form-value">
             <uv-input
@@ -150,7 +150,7 @@ const handleToSetInfo2 = (cid) => {
           custom-style="background: black; color: #fff"
           :hairline="false"
           @click="handleToSetInfo"
-          >下一步
+          >{{ $t("下一步") }}
         </uv-button>
       </view>
     </view>

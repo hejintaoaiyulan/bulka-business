@@ -1,84 +1,85 @@
 <script setup>
-import {computed, ref, unref} from "vue";
-import {onLoad} from '@dcloudio/uni-app'
-import {useFileUpload} from "../../utils/uploadFile";
-import {UploadUrl} from "../../api/public";
+import { computed, ref, unref } from "vue";
+import { onLoad } from "@dcloudio/uni-app";
+import { useFileUpload } from "../../utils/uploadFile";
+import { UploadUrl } from "../../api/public";
 // import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
+import { $t } from "@/i18n-helper";
+const { uploadFile } = useFileUpload({
+  showUploadLoading: true,
+});
 
-const {uploadFile} = useFileUpload({
-  showUploadLoading: true
-})
+const urls = ref([]);
+const paths = ref([]);
 
-const urls = ref([])
-const paths = ref([])
-
-let option = {}
+let option = {};
 onLoad((query) => {
-  option = query
-  const imagesObj = uni.getStorageSync('storeImages') || []
-  urls.value = imagesObj.viewUrls || []
-  paths.value = imagesObj.paths || []
-})
+  option = query;
+  const imagesObj = uni.getStorageSync("storeImages") || [];
+  urls.value = imagesObj.viewUrls || [];
+  paths.value = imagesObj.paths || [];
+});
 
 const handlePreviewImage = (index) => {
   uni.previewImage({
     urls,
-    current: index
-  })
-}
-
+    current: index,
+  });
+};
 
 const handleAddImage = () => {
   uploadFile({
     count: 9,
-    name: 'image',
+    name: "image",
     url: UploadUrl,
-    fileType: ['image']
-  }).then(res => {
+    fileType: ["image"],
+  }).then((res) => {
     // console.log(res)
-    urls.value.push(...res.map(item => item.url))
-    paths.value.push(...res.map(item => item.path))
-    uni.$emit('store-images', {
+    urls.value.push(...res.map((item) => item.url));
+    paths.value.push(...res.map((item) => item.path));
+    uni.$emit("store-images", {
       viewUrls: unref(urls),
-      paths: unref(paths)
-    })
-  })
-}
+      paths: unref(paths),
+    });
+  });
+};
 
 const viewUrls = computed(() => {
-  return urls.value.filter(Boolean).map(url => {
-    if(url.indexOf('http') !== -1) {
-      return url
+  return urls.value.filter(Boolean).map((url) => {
+    if (url.indexOf("http") !== -1) {
+      return url;
     }
-    return option.base_url + url
-  })
-})
+    return option.base_url + url;
+  });
+});
 
 const handleBack = () => {
-  uni.navigateBack()
-}
+  uni.navigateBack();
+};
 
 const handleRemove = (url, index) => {
   uni.showModal({
-    title: '提示',
-    content: '確定刪除此圖片嗎?',
+    title: $t("提示"),
+    content: $t("確定刪除此圖片嗎?"),
+    cancelText: $t("取消"),
+    confirmText: $t("確定"),
     success: (res) => {
-      if(res.confirm) {
-        urls.value.splice(index, 1)
-        paths.value.splice(index, 1)
-        uni.$emit('store-images', {
+      if (res.confirm) {
+        urls.value.splice(index, 1);
+        paths.value.splice(index, 1);
+        uni.$emit("store-images", {
           viewUrls: unref(urls),
-          paths: unref(paths)
-        })
+          paths: unref(paths),
+        });
       }
-    }
-  })
-}
+    },
+  });
+};
 </script>
 
 <template>
-<view class="container">
-  <uv-navbar
+  <view class="container">
+    <uv-navbar
       title="商家相冊"
       fixed
       bg-color="#000000"
@@ -87,21 +88,26 @@ const handleRemove = (url, index) => {
       placeholder
       @left-click="handleBack"
       left-icon-color="#fff"
-  >
-    <template #right>
-      <text class="add-icon iconfont icon-jiahao" @click="handleAddImage"></text>
-    </template>
-  </uv-navbar>
-  <view class="image-content safe-pb">
-    <view class="empty" v-if="!viewUrls.length">暫無相片</view>
-    <view class="image-item" v-for="(url , index) in viewUrls" :key="index" @click="handlePreviewImage(index)">
-      <view class="remove-icon flex-center" @click.stop="handleRemove(url)">
-        <text class="iconfont icon-jianhao"></text>
+    >
+      <template #right>
+        <text class="add-icon iconfont icon-jiahao" @click="handleAddImage"></text>
+      </template>
+    </uv-navbar>
+    <view class="image-content safe-pb">
+      <view class="empty" v-if="!viewUrls.length">{{ $t("暫無相片") }}</view>
+      <view
+        class="image-item"
+        v-for="(url, index) in viewUrls"
+        :key="index"
+        @click="handlePreviewImage(index)"
+      >
+        <view class="remove-icon flex-center" @click.stop="handleRemove(url)">
+          <text class="iconfont icon-jianhao"></text>
+        </view>
+        <image mode="widthFix" :src="url" style="width: 100%; height: 100rpx" />
       </view>
-      <image mode="widthFix" :src="url" style="width: 100%; height: 100rpx" />
     </view>
   </view>
-</view>
 </template>
 
 <style scoped lang="scss">

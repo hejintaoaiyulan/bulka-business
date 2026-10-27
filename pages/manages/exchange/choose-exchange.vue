@@ -1,130 +1,145 @@
 <script setup>
-import {getGoodsTypes, goodsList} from "../../../api/goods";
-import { onShow, onLoad, onReachBottom } from '@dcloudio/uni-app'
-import {usePageLoading} from "../../../hooks";
-import {ref} from "vue";
-import {pick} from "lodash";
+import { getGoodsTypes, goodsList } from "../../../api/goods";
+import { onShow, onLoad, onReachBottom } from "@dcloudio/uni-app";
+import { usePageLoading } from "../../../hooks";
+import { ref } from "vue";
+import { pick } from "lodash";
 import PickerSelect from "../../../components/PickerSelect.vue";
-import {Toast} from "../../../utils";
+import { Toast } from "../../../utils";
 
-const { reload, loadNext, dataList } = usePageLoading( goodsList,{
-  onFinish: uni.stopPullDownRefresh
-})
+const { reload, loadNext, dataList } = usePageLoading(goodsList, {
+  onFinish: uni.stopPullDownRefresh,
+});
 
-const types = ref([])
+const types = ref([]);
 
-const selection = ref([])
-const oldSelectionData = ref([])
+const selection = ref([]);
+const oldSelectionData = ref([]);
 
 const requestParams = ref({
-  goods_name: '',
-  goods_type_id: '',
-  goods_type_name: ''
-})
+  goods_name: "",
+  goods_type_id: "",
+  goods_type_name: "",
+});
 
 const getTypes = () => {
-  getGoodsTypes().then(res => {
-    types.value = (res.data || []);
-    types.value.unshift({id: '', goods_type_name: '全部類型' })
-  })
-}
+  getGoodsTypes().then((res) => {
+    types.value = res.data || [];
+    types.value.unshift({ id: "", goods_type_name: "全部類型" });
+  });
+};
 
 const search = () => {
-  reload(pick(requestParams.value, ['goods_name', 'goods_type_id']));
-}
+  reload(pick(requestParams.value, ["goods_name", "goods_type_id"]));
+};
 
 onShow(() => {
-  search()
-  getTypes()
-})
+  search();
+  getTypes();
+});
 
 onLoad((query) => {
-  if(query?.isEdit === '1') {
-    const list = uni.getStorageSync('exchange-goods-list')
-    uni.removeStorageSync('exchange-goods-list')
-    if(list) {
-      oldSelectionData.value = list
-      selection.value = list.map(item => item.id)
+  if (query?.isEdit === "1") {
+    const list = uni.getStorageSync("exchange-goods-list");
+    uni.removeStorageSync("exchange-goods-list");
+    if (list) {
+      oldSelectionData.value = list;
+      selection.value = list.map((item) => item.id);
     }
   }
-})
+});
 
 const handleSetType = (val) => {
   requestParams.value.goods_type_id = val.id;
-  requestParams.value.goods_type_name = val.goods_type_name
-  search()
-}
+  requestParams.value.goods_type_name = val.goods_type_name;
+  search();
+};
 
 const handleSelectId = (val) => {
-  console.log(val)
-}
+  console.log(val);
+};
 
 const handleSubmit = () => {
-  if(!selection.value.length) {
-    return Toast.info('請選擇商品')
+  if (!selection.value.length) {
+    return Toast.info("請選擇商品");
   }
-  const data = dataList.value.filter(item => {
-    return selection.value.includes(item.id)
-  })
-  const oldList = oldSelectionData.value.filter(item => {
-    return selection.value.includes(item.id) && data.every(o => o.id !== item.id)
-  })
+  const data = dataList.value.filter((item) => {
+    return selection.value.includes(item.id);
+  });
+  const oldList = oldSelectionData.value.filter((item) => {
+    return selection.value.includes(item.id) && data.every((o) => o.id !== item.id);
+  });
 
-  uni.$emit('exchange-goods', [...data, ...oldList])
-  uni.navigateBack({})
-}
-
+  uni.$emit("exchange-goods", [...data, ...oldList]);
+  uni.navigateBack({});
+};
 </script>
 
 <template>
-<view class="container">
-  <view class="header">
-    <view class="search-box">
-      <view class="left-search">
-        <uv-input v-model="requestParams.goods_name" placeholder="請輸入商品名稱" prefixIcon="search" fontSize="28rpx" style="width: 100%" :border="false" @confirm="search" />
-      </view>
-      <PickerSelect :options="types" key-name="goods_type_name" @change="handleSetType">
-        <view class="right-search">
-          <view>{{requestParams.goods_type_name || '選擇商品分類'}}</view>
-          <text class="iconfont icon-arrow-right-copy"></text>
+  <view class="container">
+    <view class="header">
+      <view class="search-box">
+        <view class="left-search">
+          <uv-input
+            v-model="requestParams.goods_name"
+            placeholder="請輸入商品名稱"
+            prefixIcon="search"
+            fontSize="28rpx"
+            style="width: 100%"
+            :border="false"
+            @confirm="search"
+          />
         </view>
-      </PickerSelect>
-    </view>
-  </view>
-  <scroll-view :scroll-y="true" style="flex: 1; height: 100%; overflow: hidden" @scrolltolower="loadNext">
-    <view class="content">
-      <uv-checkbox-group @change="handleSelectId" v-model="selection">
-        <view class="goods-item" v-for="goods in dataList" :key="goods.id">
-          <view class="goods-checkbox">
-            <uv-checkbox shape="circle" :name="goods.id"></uv-checkbox>
+        <PickerSelect :options="types" key-name="goods_type_name" @change="handleSetType">
+          <view class="right-search">
+            <view>{{ $t(requestParams.goods_type_name || "選擇商品分類") }}</view>
+            <text class="iconfont icon-arrow-right-copy"></text>
           </view>
-          <view class="goods-content">
-            <view class="goods-img">
-              <image :src="goods.goods_image" mode="aspectFit" style="width: 100rpx; height: 100rpx" />
+        </PickerSelect>
+      </view>
+    </view>
+    <scroll-view
+      :scroll-y="true"
+      style="flex: 1; height: 100%; overflow: hidden"
+      @scrolltolower="loadNext"
+    >
+      <view class="content">
+        <uv-checkbox-group @change="handleSelectId" v-model="selection">
+          <view class="goods-item" v-for="goods in dataList" :key="goods.id">
+            <view class="goods-checkbox">
+              <uv-checkbox shape="circle" :name="goods.id"></uv-checkbox>
             </view>
-            <view class="goods-msg">
-              <view class="goods-title">
-                {{goods.goods_name}}
+            <view class="goods-content">
+              <view class="goods-img">
+                <image
+                  :src="goods.goods_image"
+                  mode="aspectFit"
+                  style="width: 100rpx; height: 100rpx"
+                />
               </view>
-              <view class="goods-tip">{{goods.goods_desc}}</view>
-              <view class="goods-price">
-                <view class="price">HK$ {{goods.sale_price}}</view>
-                <view class="inventory">
-                  <text>銷量{{goods.sales}}</text>
-                  <text>|</text>
-                  <text>庫存{{goods.goods_stock}}</text>
+              <view class="goods-msg">
+                <view class="goods-title">
+                  {{ $t(goods.goods_name) }}
+                </view>
+                <view class="goods-tip">{{ goods.goods_desc }}</view>
+                <view class="goods-price">
+                  <view class="price">HK$ {{ goods.sale_price }}</view>
+                  <view class="inventory">
+                    <text>{{ $t("銷量") }}{{ goods.sales }}</text>
+                    <text>|</text>
+                    <text>{{ $t("庫存") }}{{ goods.goods_stock }}</text>
+                  </view>
                 </view>
               </view>
             </view>
           </view>
-        </view>
-      </uv-checkbox-group>
+        </uv-checkbox-group>
+      </view>
+    </scroll-view>
+    <view class="submit-button safe-pb">
+      <uv-button class="operation-item" @click="handleSubmit">{{ $t("保存") }}</uv-button>
     </view>
-  </scroll-view>
-  <view class="submit-button safe-pb">
-    <uv-button class="operation-item" @click="handleSubmit">保存</uv-button>
   </view>
-</view>
 </template>
 
 <style scoped lang="scss">

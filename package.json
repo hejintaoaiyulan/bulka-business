@@ -5,7 +5,8 @@
     "opencc-js": "^1.0.5"
   },
   "dependencies": {
-    "pinia": "^3.0.1"
+    "pinia": "^3.0.1",
+    "vue-i18n": "^9.14.5"
   },
   "scripts": {
     "to:traditional": "node scripts/convertToTraditional.js"

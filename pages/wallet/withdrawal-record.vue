@@ -1,84 +1,86 @@
 <script setup>
-
-import {ref, computed} from "vue";
+import { ref, computed } from "vue";
 import dayjs from "dayjs";
-import {usePageLoading} from "@/hooks";
-import {getWallet, getWithdrawList} from "@/api/wallet";
-import {onShow} from '@dcloudio/uni-app'
+import { usePageLoading } from "@/hooks";
+import { getWallet, getWithdrawList } from "@/api/wallet";
+import { onShow } from "@dcloudio/uni-app";
+import { $t } from "@/i18n-helper";
 
-const walletInfo = ref({})
+const walletInfo = ref({});
 
-const {reload, dataList, loadNext} = usePageLoading(getWithdrawList, {})
+const { reload, dataList, loadNext } = usePageLoading(getWithdrawList, {});
 
 const date = ref(dayjs());
 const dateStr = computed(() => {
-  return date.value.format('YYYY-MM')
-})
+  return date.value.format("YYYY-MM");
+});
 const handleInfo = (record) => {
-  console.log(record)
+  console.log(record);
   uni.showModal({
-    title: '提現失敗原因',
-    content: record.reason || '請檢查您的銀行卡信息是否正確，或聯繫客服處理。',
+    title: $t("提現失敗原因"),
+    content: $t(record.reason || "請檢查您的銀行卡信息是否正確，或聯繫客服處理。"),
     showCancel: false,
-    confirmText: '知道了'
-  })
-}
+    confirmText: $t("知道了"),
+  });
+};
 
 // 處理日期選擇
 const handleChangeDate = (evt) => {
   const value = evt.detail.value;
   const day = dayjs(value);
-  if(day.isSame(date.value,'d')) return
+  if (day.isSame(date.value, "d")) return;
   // 可以在這裡觸發數據重新加載
   // console.log('選擇的日期:', date.value.format('YYYY-MM'));
-  if(day.isAfter(dayjs(), 'd')) {
+  if (day.isAfter(dayjs(), "d")) {
     uni.showToast({
-      title: '不能選擇未來的日期',
-      icon: 'none'
+      title: $t("不能選擇未來的日期"),
+      icon: "none",
     });
     return;
   }
   date.value = day;
-  getList()
-}
+  getList();
+};
 
 // 獲取錢包信息
 const getInfo = () => {
-  getWallet().then(res => {
-    walletInfo.value = res.data || {}
-  }).finally(() => {
-    uni.stopPullDownRefresh()
-  })
-}
+  getWallet()
+    .then((res) => {
+      walletInfo.value = res.data || {};
+    })
+    .finally(() => {
+      uni.stopPullDownRefresh();
+    });
+};
 
 const getList = () => {
   reload({
     date: dateStr.value,
-  })
-}
+  });
+};
 
 onShow(() => {
-  getInfo()
-  getList()
-})
+  getInfo();
+  getList();
+});
 </script>
 
 <template>
   <view class="container safe-pb">
     <view class="header">
-      <view>累計提現(HK$)</view>
-      <view class="price">{{walletInfo.withdrawaled}}</view>
-      <view class="tip-total">提現中：{{walletInfo.withdrawaling}}HK$</view>
+      <view>{{ $t("累計提現") }}(HK$)</view>
+      <view class="price">{{ walletInfo.withdrawaled }}</view>
+      <view class="tip-total">{{ $t("提現中") }}：{{ walletInfo.withdrawaling }}HK$</view>
     </view>
     <view class="record-list">
       <view class="record-filter">
         <view class="type">
-          <text>全部</text>
+          <text>{{ $t("全部") }}</text>
           <text class="iconfont icon-arrow-right-copy"></text>
         </view>
         <picker mode="date" fields="month" @change="handleChangeDate">
           <view class="time">
-            <text>{{dateStr}}</text>
+            <text>{{ $t(dateStr) }}</text>
             <text class="iconfont icon-arrow-right-copy"></text>
           </view>
         </picker>
@@ -89,14 +91,16 @@ onShow(() => {
         <view class="record-item" v-for="record in dataList" :key="record.id">
           <view class="record-msg">
             <view class="record-type">
-              <text>{{record.status_txt}}</text>
-              <text v-if="record.status === 3" class="red tip" @click="handleInfo(record)">查看原因</text>
+              <text>{{ $t(record.status_txt) }}</text>
+              <text v-if="record.status === 3" class="red tip" @click="handleInfo(record)">{{
+                $t("查看原因")
+              }}</text>
             </view>
-            <view class="record-price">{{record.money}}</view>
+            <view class="record-price">{{ record.money }}</view>
           </view>
           <view class="record-msg">
-            <view class="record-order">訂單號：{{record.withdrawal_no}}</view>
-            <view class="record-time">{{record.approval_time}}</view>
+            <view class="record-order">{{ $t("訂單號") }}：{{ record.withdrawal_no }}</view>
+            <view class="record-time">{{ record.approval_time }}</view>
           </view>
         </view>
       </view>
@@ -166,7 +170,8 @@ onShow(() => {
   display: flex;
   justify-content: space-between;
 
-  .time,.type {
+  .time,
+  .type {
     display: flex;
     padding: 10rpx 20rpx;
     background: rgba(0, 0, 0, 0.03);

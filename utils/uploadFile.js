@@ -1,9 +1,10 @@
 // utils/uploadFile.ts
-import {ref, watch} from 'vue'
-import {Toast, toPromise} from '@/utils/index'
-import {getToken} from "./index";
+import { ref, watch } from 'vue'
+import { Toast, toPromise } from '@/utils/index'
+import { getToken } from "./index";
 // import { BaseUrl } from '@/api/config'
 import request from "../api/index";
+import { $t } from '@/i18n-helper'
 
 const BaseUrl = request.config.baseUrl
 
@@ -17,8 +18,8 @@ const defaultOptions = {
   maxSize: 15 * 1024 * 1024, // 默認10MB
   count: 9, // 默認最多選擇9個文件
   sourceType: ['album', 'camera'], // 默認從相冊或相機選擇
-  onSuccess: () => {},
-  onFail: () => {}
+  onSuccess: () => { },
+  onFail: () => { }
 }
 
 
@@ -30,7 +31,7 @@ export function useFileUpload(c = { showUploadLoading: false }) {
     if (c?.showUploadLoading) {
       if (val) {
         uni.showLoading({
-          title: '上傳中'
+          title: $t("上傳中")
         })
       } else {
         uni.hideLoading()
@@ -81,17 +82,17 @@ export function useFileUpload(c = { showUploadLoading: false }) {
       const validFiles = res.tempFiles.filter((file) => {
         if (file.size > config.maxSize) {
           Toast.info('文件大小超出限制')
-          config.onFail?.(`文件大小不能超過${config.maxSize / 1024 / 1024}MB`)
+          config.onFail(`${$t('文件大小不能超過')}${config.maxSize / 1024 / 1024}MB`)
           return false
         }
         return true
       })
 
-      if (validFiles.length === 0) return Promise.reject('沒有符合要求的文件')
+      if (validFiles.length === 0) return Promise.reject($t('沒有符合要求的文件'))
 
       if (validFiles.length > config.count) {
         await uni.showToast({
-          title: `最多上傳${config.count}個文件`,
+          title: `${$t('最多上傳')}${config.count}${$t('個文件')}`,
           icon: 'none',
         })
       }
@@ -115,12 +116,12 @@ export function useFileUpload(c = { showUploadLoading: false }) {
                 config.onSuccess(data.data)
                 resolve(data.data)
               } else {
-                config.onFail(`上傳失敗: ${res.statusCode}`)
+                config.onFail(`${$t('上傳失敗')}: ${res.statusCode}`)
                 reject(res)
               }
             },
             fail: (err) => {
-              config.onFail('上傳請求失敗')
+              config.onFail($t('上傳請求失敗'))
               reject(err)
             },
             complete: () => {

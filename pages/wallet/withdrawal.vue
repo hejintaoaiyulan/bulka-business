@@ -1,140 +1,158 @@
 <script setup>
-import {ref, watch} from "vue";
-import {onLoad, onShow} from '@dcloudio/uni-app'
-import {applyWithdraw, getBankCardList} from "@/api/wallet";
-import {maskBankCard} from "@/utils";
+import { ref, watch } from "vue";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+import { applyWithdraw, getBankCardList } from "@/api/wallet";
+import { maskBankCard } from "@/utils";
+import { $t } from "@/i18n-helper";
 
-const selectedRef = ref('')
-const maxAmount = ref(0)
-const amount = ref(0)
-const showError = ref(false)
-const max_withdrawal_amount = ref(0)
-const backCardList = ref([])
+const selectedRef = ref("");
+const maxAmount = ref(0);
+const amount = ref(0);
+const showError = ref(false);
+const max_withdrawal_amount = ref(0);
+const backCardList = ref([]);
 
 const handleCard = (id) => {
-  selectedRef.value = id
-}
+  selectedRef.value = id;
+};
 
 const handleConfirm = () => {
   if (!selectedRef.value) {
     uni.showToast({
-      title: '請選擇提現方式',
-      icon: 'none'
-    })
-    return
+      title: $t("請選擇提現方式"),
+      icon: "none",
+    });
+    return;
   }
   if (!amount.value || amount.value <= 0) {
     uni.showToast({
-      title: '請輸入提現金額',
-      icon: 'none'
-    })
-    return
+      title: $t("請輸入提現金額"),
+      icon: "none",
+    });
+    return;
   }
   applyWithdraw({
     bank_id: selectedRef.value,
     money: amount.value,
-  }).then(res => {
-    uni.navigateTo({
-      url: '/pages/wallet/result?type=success'
-    })
-  }).catch(err => {
-    uni.showToast({
-      title: err.message || '提現失敗',
-      icon: 'none'
-    })
   })
-
-}
+    .then((res) => {
+      uni.navigateTo({
+        url: "/pages/wallet/result?type=success",
+      });
+    })
+    .catch((err) => {
+      uni.showToast({
+        title: $t(err.message || "提現失敗"),
+        icon: "none",
+      });
+    });
+};
 
 const handleToRecord = () => {
   uni.navigateTo({
-    url: '/pages/wallet/withdrawal-record'
-  })
-}
+    url: "/pages/wallet/withdrawal-record",
+  });
+};
 
 const handleToCardManager = () => {
   uni.navigateTo({
-    url: '/pages/wallet/bank-card'
-  })
-}
+    url: "/pages/wallet/bank-card",
+  });
+};
 
 onLoad((query) => {
   if (query.amount) {
-    maxAmount.value = +query.amount
-    max_withdrawal_amount.value = +query.max_withdrawal_amount
+    maxAmount.value = +query.amount;
+    max_withdrawal_amount.value = +query.max_withdrawal_amount;
   }
-})
+});
 
 const handleAllAmount = () => {
-  amount.value = maxAmount.value
-}
+  amount.value = maxAmount.value;
+};
 
 const getList = () => {
-  getBankCardList().then(res => {
-    backCardList.value = res.data || []
-    const firstCard = backCardList.value[0]
+  getBankCardList().then((res) => {
+    backCardList.value = res.data || [];
+    const firstCard = backCardList.value[0];
     if (firstCard) {
-      selectedRef.value = firstCard.id
+      selectedRef.value = firstCard.id;
     }
-  })
-}
+  });
+};
 
 onShow(() => {
-  getList()
-})
+  getList();
+});
 
-watch(() => amount.value, (newVal) => {
-  showError.value = newVal > maxAmount.value;
-})
-
+watch(
+  () => amount.value,
+  (newVal) => {
+    showError.value = newVal > maxAmount.value;
+  },
+);
 </script>
 
 <template>
   <view class="container safe-pb">
-    <uv-navbar title="提現" bg-color="#2133ff" placeholder autoBack title-style="color: white" safe-area-inset-top
-               left-icon-color="#fff">
+    <uv-navbar
+      :title="$t('提現')"
+      bg-color="#2133ff"
+      placeholder
+      autoBack
+      title-style="color: white"
+      safe-area-inset-top
+      left-icon-color="#fff"
+    >
       <template #right>
-        <view class="right-text" @click="handleToRecord">提現記錄</view>
+        <view class="right-text" @click="handleToRecord">{{ $t("提現記錄") }}</view>
       </template>
     </uv-navbar>
     <view class="content">
       <view class="header">
-        <view>提現金額</view>
+        <view>{{ $t("提現金額") }}</view>
         <view class="input-box">
           <uv-input placeholder="請輸入提現金額" :max="maxAmount" v-model="amount">
             <template #prefix>
               <view class="prefix-unit">HK$</view>
             </template>
             <template #suffix>
-              <view class="suffix-text" @click="handleAllAmount">
-                全部提現
-              </view>
+              <view class="suffix-text" @click="handleAllAmount"> {{ $t("全部提現") }}</view>
             </template>
           </uv-input>
-          <view v-if="showError" class="error red">提現金額大餘餘額</view>
+          <view v-if="showError" class="error red">{{ $t("提現金額大餘餘額") }}</view>
         </view>
         <view class="amount-box">
-          <view class="amount-number">可提現金額：HK$ {{ maxAmount }}</view>
+          <view class="amount-number">{{ $t("可提現金額") }}：HK$ {{ maxAmount }}</view>
           <view class="amount-tag">
-            <view>0.3%手續費</view>
+            <view>{{ $t("0.3%手續費") }}</view>
           </view>
         </view>
       </view>
       <view class="withdrawal-box">
         <view class="withdrawal-title">
-          <view class="method">提現方式</view>
+          <view class="method">{{ $t("提現方式") }}</view>
           <view class="cards" @click="handleToCardManager">
-            我的銀行卡({{ backCardList.length }}張)
+            {{ $t("我的銀行卡") }}({{ backCardList.length }}{{ $t("張") }})
           </view>
         </view>
         <uv-radio-group style="width: 100%" v-model="selectedRef">
           <view class="withdrawal-cards">
-            <view class="card-item" v-for="card in backCardList" :key="card.id" @click="handleCard(card.id)">
+            <view
+              class="card-item"
+              v-for="card in backCardList"
+              :key="card.id"
+              @click="handleCard(card.id)"
+            >
               <view class="card-icon">
-                <image src="/static/bank-card.png" style="width: 100rpx; height: 100rpx;" mode="widthFix"/>
+                <image
+                  src="/static/bank-card.png"
+                  style="width: 100rpx; height: 100rpx"
+                  mode="widthFix"
+                />
               </view>
               <view class="card-info">
-                <view class="bank-name">{{ card.bank_name }}</view>
+                <view class="bank-name">{{ $t(card.bank_name) }}</view>
                 <view class="bank-number">{{ maskBankCard(card.bank_account) }}</view>
               </view>
               <view class="select-icon">
@@ -145,7 +163,7 @@ watch(() => amount.value, (newVal) => {
         </uv-radio-group>
       </view>
       <view class="withdrawal-button">
-        <view class="btn" @click="handleConfirm">確認提現</view>
+        <view class="btn" @click="handleConfirm">{{ $t("確認提現") }}</view>
       </view>
     </view>
   </view>

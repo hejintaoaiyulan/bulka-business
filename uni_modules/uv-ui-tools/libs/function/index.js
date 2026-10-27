@@ -1,5 +1,6 @@
 import { number, empty } from './test.js'
 import { round } from './digit.js'
+import { $t } from '@/i18n-helper'
 /**
  * @description 如果value小于min，取min；如果value大于max，取max
  * @param {number} min
@@ -104,9 +105,9 @@ function guid(len = 32, firstU = true, radix = null) {
 
 /**
 * @description 获取父组件的参数，因为支付宝小程序不支持provide/inject的写法
-   this.$parent在非H5中，可以准确获取到父组件，但是在H5中，需要多次this.$parent.$parent.xxx
-   这里默认值等于undefined有它的含义，因为最顶层元素(组件)的$parent就是undefined，意味着不传name
-   值(默认为undefined)，就是查找最顶层的$parent
+	 this.$parent在非H5中，可以准确获取到父组件，但是在H5中，需要多次this.$parent.$parent.xxx
+	 这里默认值等于undefined有它的含义，因为最顶层元素(组件)的$parent就是undefined，意味着不传name
+	 值(默认为undefined)，就是查找最顶层的$parent
 *  @param {string|undefined} name 父组件的参数名
 */
 function $parent(name = undefined) {
@@ -133,8 +134,8 @@ function $parent(name = undefined) {
  */
 function addStyle(customStyle, target = 'object') {
 	// 字符串转字符串，对象转对象情形，直接返回
-	if (empty(customStyle) || typeof(customStyle) === 'object' && target === 'object' || target === 'string' &&
-		typeof(customStyle) === 'string') {
+	if (empty(customStyle) || typeof (customStyle) === 'object' && target === 'object' || target === 'string' &&
+		typeof (customStyle) === 'string') {
 		return customStyle
 	}
 	// 字符串转对象
@@ -265,7 +266,7 @@ function randomArray(array = []) {
 // 所以这里做一个兼容polyfill的兼容处理
 if (!String.prototype.padStart) {
 	// 为了方便表示这里 fillString 用了ES6 的默认参数，不影响理解
-	String.prototype.padStart = function(maxLength, fillString = ' ') {
+	String.prototype.padStart = function (maxLength, fillString = ' ') {
 		if (Object.prototype.toString.call(fillString) !== '[object String]') {
 			throw new TypeError(
 				'fillString must be String'
@@ -471,7 +472,7 @@ function queryParams(data = {}, isPrefix = true, arrayFormat = 'brackets') {
  */
 function toast(title, duration = 2000) {
 	uni.showToast({
-		title: String(title),
+		title: $t(String(title)),
 		icon: 'none',
 		duration
 	})
@@ -578,7 +579,7 @@ function formValidate(instance, event) {
 	// 如果发生变化的input或者textarea等，其父组件中有uv-form-item或者uv-form等，就执行form的validate方法
 	// 同时将form-item的pros传递给form，让其进行精确对象验证
 	if (formItem && form) {
-		form.validateField(formItem.prop, () => {}, event)
+		form.validateField(formItem.prop, () => { }, event)
 	}
 }
 
@@ -620,7 +621,7 @@ function setProperty(obj, key, value) {
 		return
 	}
 	// 递归赋值
-	const inFn = function(_obj, keys, v) {
+	const inFn = function (_obj, keys, v) {
 		// 最后一个属性key
 		if (keys.length === 1) {
 			_obj[keys[0]] = v

@@ -1,31 +1,31 @@
 <script setup>
-import { onLoad } from '@dcloudio/uni-app'
-import {ref, shallowRef} from "vue";
-import {getProtocol} from "@/api/public";
+import { onLoad } from "@dcloudio/uni-app";
+import { ref, shallowRef } from "vue";
+import { getProtocol } from "@/api/public";
 
-const pageQuery = shallowRef({})
-const content = ref({})
+const pageQuery = shallowRef({});
+const content = ref({});
 
 const getContent = () => {
   getProtocol(pageQuery.value).then((res) => {
-    content.value = (res.data || {}).content || {}
-  })
-}
+    content.value = (res.data || {}).content || {};
+  });
+};
 
-onLoad(query => {
-  pageQuery.value = query
-  getContent()
-})
+onLoad((query) => {
+  pageQuery.value = query;
+  getContent();
+});
 </script>
 
 <template>
   <view class="container">
     <view class="content">
-      <view class="title" style="font-size: 32rpx;font-weight: bold;">
-        <text>{{ content.title }}</text>
+      <view class="title" style="font-size: 32rpx; font-weight: bold">
+        <text>{{ $t(content.title) }}</text>
       </view>
     </view>
-    <view class="content" style="margin-top: 20rpx;font-size: 26rpx;">
+    <view class="content" style="margin-top: 20rpx; font-size: 26rpx">
       <rich-text :nodes="content.content"></rich-text>
     </view>
   </view>
@@ -43,5 +43,4 @@ onLoad(query => {
   padding: 20rpx;
   border-radius: 10rpx;
 }
-
 </style>

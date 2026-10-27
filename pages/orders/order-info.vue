@@ -84,17 +84,17 @@ const handleScanCode = () => {
     <view class="content">
       <view class="card">
         <view class="title">
-          <view class="status-text">{{ info.status_txt }}</view>
+          <view class="status-text">{{ $t(info.status_txt) }}</view>
 
           <view class="result" v-if="info.status === 4">
-            <uv-button size="small" @click="handleScanCode">掃碼取餐</uv-button>
+            <uv-button size="small" @click="handleScanCode">{{ $t("掃碼取餐") }}</uv-button>
           </view>
         </view>
-        <view class="sub-title">{{ OrderStatusText.map.get(info.status) }}</view>
+        <view class="sub-title">{{ $t(OrderStatusText.map.get(info.status)) }}</view>
       </view>
 
       <view class="card">
-        <view class="title">客戶信息</view>
+        <view class="title">{{ $t("客戶信息") }}</view>
         <view class="user-content">
           <view class="user">
             <uv-avatar :size="30" :src="info.user?.avatar" />
@@ -104,14 +104,14 @@ const handleScanCode = () => {
         </view>
         <view class="call">
           <view class="call-button" @click="handleConnect"
-            >聯繫客戶
+            >{{ $t("聯繫客戶") }}
             <view class="iconfont icon-dianhua"></view>
           </view>
         </view>
       </view>
 
       <view class="card">
-        <view class="title">餐品詳情</view>
+        <view class="title">{{ $t("餐品詳情") }}</view>
         <view class="order-content" v-for="goods in info.goods_list" :key="goods.goods_id">
           <view class="order-single-msg">
             <view class="order-img">
@@ -130,12 +130,12 @@ const handleScanCode = () => {
           </view>
           <view class="price-msg">
             <view class="price">HK$ {{ goods.all_sale_price }}</view>
-            <view class="count">共{{ goods.num }}件</view>
+            <view class="count">{{ $t("共") }}{{ goods.num }}{{ $t("件") }}</view>
           </view>
         </view>
 
         <template v-if="freebies.length">
-          <view class="title">贈品</view>
+          <view class="title">{{ $t("贈品") }}</view>
           <view class="gift-item" v-for="(gift, index) in freebies" :key="index">
             <view class="gift-img">
               <image
@@ -152,38 +152,38 @@ const handleScanCode = () => {
         </template>
 
         <view class="form-item" style="margin-top: 20rpx">
-          <view class="form-label">費用合計</view>
+          <view class="form-label">{{ $t("費用合計") }}</view>
           <view class="form-value red-text"> HK$ {{ info.price }} </view>
         </view>
         <view class="form-item">
-          <view class="form-label">訂單備註</view>
+          <view class="form-label">{{ $t("訂單備註") }}</view>
           <view class="form-value">
-            <text class="placeholder">{{ info.mark || "無備注" }}</text>
+            <text class="placeholder">{{ $t(info.mark || "無備注") }}</text>
           </view>
         </view>
       </view>
 
       <view class="card">
-        <view class="title">訂單信息</view>
+        <view class="title">{{ $t("訂單信息") }}</view>
         <view class="form-item">
-          <view class="form-label">訂單編號</view>
+          <view class="form-label">{{ $t("訂單編號") }}</view>
           <view class="form-value">{{ info.order_no }}</view>
         </view>
         <view class="form-item">
-          <view class="form-label">下單時間</view>
+          <view class="form-label">{{ $t("下單時間") }}</view>
           <view class="form-value">{{ info.createtime }}</view>
         </view>
         <view class="form-item">
-          <view class="form-label">費用合計</view>
+          <view class="form-label">{{ $t("費用合計") }}</view>
           <view class="form-value">HK$ {{ info.price }}</view>
         </view>
         <view class="form-item">
-          <view class="form-label">支付方式</view>
-          <view class="form-value">{{ info.pay_type_txt }}</view>
+          <view class="form-label">{{ $t("支付方式") }}</view>
+          <view class="form-value">{{ $t(info.pay_type_txt) }}</view>
         </view>
         <view class="form-item" v-if="info.pay_time">
           <view class="form-label">
-            <text>支付時間</text>
+            <text>{{ $t("支付時間") }}</text>
           </view>
           <view class="form-value">
             <text>{{ info.pay_time }}</text>
@@ -192,16 +192,18 @@ const handleScanCode = () => {
       </view>
     </view>
     <view class="submit-button flex-right safe-pb">
-      <uv-button size="small" v-if="[1, 2, 3, 4].includes(info.status)" @click="handleCancel"
-        >取消訂單</uv-button
-      >
-      <uv-button size="small" v-if="info.status === 2" @click="handleAccept">接單</uv-button>
-      <uv-button size="small" v-if="info.status === 3" @click="handleServingFood"
-        >確認出餐</uv-button
-      >
-      <uv-button size="small" v-if="info.status === 4" @click="handleConnect"
-        >聯繫客戶領取</uv-button
-      >
+      <uv-button size="small" v-if="[1, 2, 3, 4].includes(info.status)" @click="handleCancel">{{
+        $t("取消訂單")
+      }}</uv-button>
+      <uv-button size="small" v-if="info.status === 2" @click="handleAccept">{{
+        $t("接單")
+      }}</uv-button>
+      <uv-button size="small" v-if="info.status === 3" @click="handleServingFood">{{
+        $t("確認出餐")
+      }}</uv-button>
+      <uv-button size="small" v-if="info.status === 4" @click="handleConnect">{{
+        $t("聯繫客戶領取")
+      }}</uv-button>
     </view>
   </view>
 </template>

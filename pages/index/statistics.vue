@@ -1,13 +1,12 @@
 <script setup>
 import GoodsItem from "@/components/GoodsItem.vue";
 import LineChart1 from "@/pages/index/modules/LineChart1.vue";
-import {ref, computed} from "vue";
-import {onShow, onPullDownRefresh} from '@dcloudio/uni-app'
-import {getShopToDayStatistics} from "@/api/shop";
-import {Toast} from "@/utils";
+import { ref, computed } from "vue";
+import { onShow, onPullDownRefresh } from "@dcloudio/uni-app";
+import { getShopToDayStatistics } from "@/api/shop";
+import { Toast } from "@/utils";
 
-const info = ref({})
-
+const info = ref({});
 
 // 第一個數據
 const chartData1 = computed(() => {
@@ -15,106 +14,107 @@ const chartData1 = computed(() => {
     xData: info.value.column2,
     data: [
       {
-        name: '點擊量',
-        data: info.value.goodsPv || []
+        name: "點擊量",
+        data: info.value.goodsPv || [],
       },
       {
-        name: '下單量',
-        data: info.value.orderNum || []
-      }
-    ]
-  }
-})
+        name: "下單量",
+        data: info.value.orderNum || [],
+      },
+    ],
+  };
+});
 
 const chartData2 = computed(() => {
   return {
     xData: info.value.column2,
     data: [
       {
-        name: '連招1次點擊量',
-        data: info.value.activity1 || []
+        name: "連招1次點擊量",
+        data: info.value.activity1 || [],
       },
       {
-        name: '連招2次點擊量',
-        data: info.value.activity2 || []
+        name: "連招2次點擊量",
+        data: info.value.activity2 || [],
       },
       {
-        name: '連招3次點擊量',
-        data: info.value.activity3 || []
+        name: "連招3次點擊量",
+        data: info.value.activity3 || [],
       },
       {
-        name: '連招4次點擊量',
-        data: info.value.activity4 || []
-      }
-    ]
-  }
-})
+        name: "連招4次點擊量",
+        data: info.value.activity4 || [],
+      },
+    ],
+  };
+});
 
 const chartData3 = computed(() => {
   return {
     xData: info.value.column2,
     data: [
       {
-        name: '連招1次下單量',
-        data: info.value.activityOrder1 || []
+        name: "連招1次下單量",
+        data: info.value.activityOrder1 || [],
       },
       {
-        name: '連招2次下單量',
-        data: info.value.activityOrder2 || []
+        name: "連招2次下單量",
+        data: info.value.activityOrder2 || [],
       },
       {
-        name: '連招3次下單量',
-        data: info.value.activityOrder3 || []
+        name: "連招3次下單量",
+        data: info.value.activityOrder3 || [],
       },
       {
-        name: '連招4次下單量',
-        data: info.value.activityOrder4 || []
-      }
-    ]
-  }
-})
+        name: "連招4次下單量",
+        data: info.value.activityOrder4 || [],
+      },
+    ],
+  };
+});
 
 // 獲取數據詳情
 const getInfo = () => {
-  getShopToDayStatistics().then(res => {
-    info.value = res.data || {}
-  }).catch(err => {
-    Toast.info(err.message || '獲取數據失敗')
-  }).finally(() => {
-    uni.stopPullDownRefresh()
-  })
-}
+  getShopToDayStatistics()
+    .then((res) => {
+      info.value = res.data || {};
+    })
+    .catch((err) => {
+      Toast.info(err.message || "獲取數據失敗");
+    })
+    .finally(() => {
+      uni.stopPullDownRefresh();
+    });
+};
 onShow(() => {
-  getInfo()
-})
+  getInfo();
+});
 
 onPullDownRefresh(() => {
-  getInfo()
-})
+  getInfo();
+});
 </script>
 
 <template>
   <view class="container">
     <view class="content safe-pb">
       <view class="card">
-        <view class="card-title">
-          試食商品數據
-        </view>
+        <view class="card-title"> {{ $t("試食商品數據") }} </view>
         <view class="card-content">
           <view class="goods-list">
             <uv-empty v-if="!info.goods.length" />
             <view v-for="goods in info.goods" :key="goods.id">
               <GoodsItem avatar-size="110rpx" :goods="goods">
                 <template v-slot:tag>
-                  <view class="tag">{{goods.goods_desc}}</view>
+                  <view class="tag">{{ goods.goods_desc }}</view>
                 </template>
                 <template v-slot:footer>
                   <view class="footer">
-                    <view class="price">HK$ {{goods.sale_price}}</view>
+                    <view class="price">HK$ {{ goods.sale_price }}</view>
                     <view class="numbers">
-                      <text>點擊量 {{goods.pv}}</text>
+                      <text>{{ $t("點擊量") }} {{ goods.pv }}</text>
                       <text>|</text>
-                      <text>下單量 {{goods.order_num}}</text>
+                      <text> {{ $t("下單量") }}{{ goods.order_num }}</text>
                     </view>
                   </view>
                 </template>
@@ -125,32 +125,22 @@ onPullDownRefresh(() => {
       </view>
 
       <view class="card">
-        <view class="card-title">
-          商品數據
-        </view>
-        <view class="card-sub-title">
-          統計用戶每日商品點擊數以及下單數
-        </view>
+        <view class="card-title"> {{ $t("商品數據") }} </view>
+        <view class="card-sub-title"> {{ $t("統計用戶每日商品點擊數以及下單數") }} </view>
         <view class="card-content">
-          <LineChart1 :data="chartData1"/>
+          <LineChart1 :data="chartData1" />
         </view>
       </view>
 
       <view class="card">
-        <view class="card-title">
-          連招數據
-        </view>
-        <view class="card-sub-title">
-          統計用戶每日點擊連招次數彙總
-        </view>
+        <view class="card-title"> {{ $t("連招數據") }} </view>
+        <view class="card-sub-title"> {{ $t("統計用戶每日點擊連招次數彙總") }} </view>
         <view class="card-content">
-          <LineChart1 :data="chartData2"/>
+          <LineChart1 :data="chartData2" />
         </view>
-        <view class="card-sub-title">
-          統計用戶每日點擊連招下單彙總
-        </view>
+        <view class="card-sub-title"> {{ $t("統計用戶每日點擊連招下單彙總") }} </view>
         <view class="card-content">
-          <LineChart1 :data="chartData3"/>
+          <LineChart1 :data="chartData3" />
         </view>
       </view>
     </view>

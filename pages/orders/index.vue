@@ -11,6 +11,7 @@ import {
 import { onShow, onHide, onPullDownRefresh } from "@dcloudio/uni-app";
 import { showModal, Toast } from "../../utils";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
+import { $t } from "@/i18n-helper";
 
 const storeTab = [
   {
@@ -77,7 +78,7 @@ onShow(() => {
   uni.$on("newOrder", () => {
     // console.log('收到新訂單通知')
     uni.showToast({
-      title: "收到新訂單",
+      title: $t("收到新訂單"),
       icon: "none",
       duration: 2000,
     });
@@ -231,7 +232,7 @@ const handleStopPush = (order, evt) => {
       @refresherrefresh="onRefresh"
     >
       <view style="padding: 20rpx">
-        <view class="empty" v-if="!dataList.length">暫無訂單數據</view>
+        <view class="empty" v-if="!dataList.length">{{ $t("暫無訂單數據") }}</view>
         <view class="order-item" v-for="order in dataList" :key="order.order_no">
           <view @click="handleToInfo(order)">
             <view class="order-title">
@@ -239,7 +240,7 @@ const handleStopPush = (order, evt) => {
                 <uv-avatar :src="order.user?.avatar" :size="30" />
                 <text>{{ order.user?.nickname }}</text>
               </view>
-              <view class="status">{{ order.status_txt }}</view>
+              <view class="status">{{ $t(order.status_txt) }}</view>
             </view>
             <view class="order-content" style="margin: 20rpx 0">
               <view
@@ -257,9 +258,9 @@ const handleStopPush = (order, evt) => {
                   />
                 </view>
                 <view class="order-msg">
-                  <view class="order-title">{{ goods.goods_name }}</view>
+                  <view class="order-title">{{ $t(goods.goods_name) }}</view>
                   <view class="order-tip">
-                    {{ goods.goods_spec_name }}
+                    {{ $t(goods.goods_spec_name) }}
                   </view>
                 </view>
               </view>
@@ -272,12 +273,12 @@ const handleStopPush = (order, evt) => {
                       style="width: 100rpx; height: 100rpx"
                     />
                   </view>
-                  <view class="goods-title">{{ goods.goods_name }}</view>
+                  <view class="goods-title">{{ $t(goods.goods_name) }}</view>
                 </view>
               </view>
               <view class="price-msg">
                 <view class="price">HK$ {{ order.price }}</view>
-                <view class="count">共{{ order.goods_count }}件</view>
+                <view class="count">{{ $t("共") }}{{ order.goods_count }}{{ $t("件") }}</view>
               </view>
             </view>
           </view>
@@ -288,28 +289,31 @@ const handleStopPush = (order, evt) => {
                 size="small"
                 v-if="order.push_status === 0"
                 @click="handleStopPush(order, $event)"
-                >停止推送</uv-button
+                >{{ $t("停止推送") }}</uv-button
               >
               <uv-button
                 size="small"
                 v-if="[1, 2, 3, 4].includes(order.status)"
                 @click="handleCancel(order, $event)"
-                >取消訂單</uv-button
+                >{{ $t("取消訂單") }}</uv-button
               >
-              <uv-button size="small" v-if="order.status === 2" @click="handleAccept(order, $event)"
-                >接單</uv-button
+              <uv-button
+                size="small"
+                v-if="order.status === 2"
+                @click="handleAccept(order, $event)"
+                >{{ $t("接單") }}</uv-button
               >
               <uv-button
                 size="small"
                 v-if="order.status === 3"
                 @click="handleServingFood(order, $event)"
-                >確認出餐</uv-button
+                >{{ $t("確認出餐") }}</uv-button
               >
               <uv-button
                 size="small"
                 v-if="order.status === 4"
                 @click="handleConnect(order, $event)"
-                >聯繫客戶領取</uv-button
+                >{{ $t("聯繫客戶領取") }}</uv-button
               >
             </view>
           </view>
