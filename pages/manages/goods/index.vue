@@ -3,7 +3,6 @@ import { onShow, onPullDownRefresh } from "@dcloudio/uni-app";
 import { delGoods, getGoodsTypes, goodsList, goodsPublish } from "../../../api/goods";
 import { usePageLoading } from "../../../hooks";
 import { ref } from "vue";
-import PickerSelect from "../../../components/PickerSelect.vue";
 import { PublishStatus } from "../../../utils/fields";
 import { $t } from "@/i18n-helper";
 const { reload, dataList, loadNext, delItem, getData } = usePageLoading(goodsList, {
@@ -12,6 +11,7 @@ const { reload, dataList, loadNext, delItem, getData } = usePageLoading(goodsLis
 });
 
 const types = ref([]);
+const typePicker = ref(null);
 
 const requestParams = ref({
   goods_name: "",
@@ -119,6 +119,8 @@ const handleChangeSearchType = (val) => {
   search();
 };
 
+const handleTypePickerConfirm = ({ value }) => value?.[0] && handleChangeSearchType(value[0]);
+
 const handleToEdit = (val) => {
   uni.navigateTo({
     url: "/pages/manages/goods/add-goods?id=" + val.id,
@@ -159,12 +161,16 @@ onShow(() => {
             @confirm="search"
           />
         </view>
-        <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeSearchType">
-          <view class="right-search">
-            <view>{{ $t(requestParams.goods_type_name || "選擇商品分類") }}</view>
-            <text class="iconfont icon-arrow-right-copy"></text>
-          </view>
-        </PickerSelect>
+        <view class="right-search" @click="typePicker.open()">
+          <view>{{ $t(requestParams.goods_type_name || "選擇商品分類") }}</view>
+          <text class="iconfont icon-arrow-right-copy"></text>
+        </view>
+        <uv-picker
+          ref="typePicker"
+          :columns="[types]"
+          key-name="goods_type_name"
+          @confirm="handleTypePickerConfirm"
+        />
       </view>
       <view class="tabs">
         <uv-tabs

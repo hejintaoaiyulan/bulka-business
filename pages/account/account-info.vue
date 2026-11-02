@@ -4,7 +4,6 @@ import { onShow, onLoad } from "@dcloudio/uni-app";
 import { getShopInfo, updateShopInfo } from "../../api/shop";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 import { getShopType, UploadUrl } from "../../api/public";
-import PickerSelect from "../../components/PickerSelect.vue";
 import { useFileUpload } from "../../utils/uploadFile";
 import { pick } from "lodash";
 import { Toast } from "../../utils";
@@ -15,6 +14,7 @@ const formData = ref({
   dine_on: 2,
 });
 const types = ref([]);
+const typePicker = ref(null);
 
 const ImageBaseUrl = ref("");
 const viewAlbum = ref([]);
@@ -113,6 +113,8 @@ const handleSelectType = (val) => {
   formData.value.shop_type_name = val.name;
   formData.value.shop_type_name_en = val.name_en;
 };
+
+const handleTypePickerConfirm = ({ value }) => value?.[0] && handleSelectType(value[0]);
 
 const handleSubmit = () => {
   const params = pick(formData.value, [
@@ -309,14 +311,18 @@ const handleLocation = () => {
               <text class="red-text">*</text>
               <text>{{ $t("門店分類") }}</text>
             </view>
-            <PickerSelect :options="types" key-name="name" @change="handleSelectType">
-              <view class="form-value">
-                <text class="placeholder">
-                  {{ $t(formData.shop_type_name || "請選擇門店分類") }}
-                  <text class="iconfont icon-arrow-right-copy"></text>
-                </text>
-              </view>
-            </PickerSelect>
+            <view class="form-value" @click="typePicker.open()">
+              <text class="placeholder">
+                {{ $t(formData.shop_type_name || "請選擇門店分類") }}
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </text>
+            </view>
+            <uv-picker
+              ref="typePicker"
+              :columns="[types]"
+              key-name="name"
+              @confirm="handleTypePickerConfirm"
+            />
           </view>
         </view>
       </view>

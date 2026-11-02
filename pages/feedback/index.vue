@@ -96,7 +96,7 @@ const handleSubmit = () => {
         <textarea
           maxlength="200"
           v-model="formData.content"
-          placeholder="請填寫10個字以上的問題描述以便我們提供更好的幫助"
+          :placeholder="$t('請填寫10個字以上的問題描述以便我們提供更好的幫助')"
         ></textarea>
       </view>
     </view>
@@ -127,7 +127,7 @@ const handleSubmit = () => {
         <view>{{ $t("聯繫方式") }}（{{ $t("選填") }}）</view>
       </view>
       <view class="form-value">
-        <input v-model="formData.mobile" placeholder="手機號碼，用於與你聯繫" />
+        <input v-model="formData.mobile" :placeholder="$t('請手機號碼，用於與你聯繫')" />
       </view>
     </view>
 

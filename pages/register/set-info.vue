@@ -3,7 +3,6 @@ import {ref, onUnmounted} from 'vue'
 import {getShopCheck, getShopType, SaveShopCheck, UploadUrl} from "../../api/public";
 import UvImage from "../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 import {useFileUpload} from "../../utils/uploadFile";
-import PickerSelect from "../../components/PickerSelect.vue";
 import {onShow} from '@dcloudio/uni-app'
 import {pick} from "lodash";
 import { $t } from "@/i18n-helper";
@@ -13,6 +12,7 @@ const {uploadFile} = useFileUpload()
 
 const info = ref({})
 const types = ref([])
+const typePicker = ref(null)
 const isCheckError = ref(false)
 // 身份證要幾張照片
 const idCardImgNumber = 1
@@ -62,7 +62,7 @@ const handleChooseImage = () => {
 
 const handleChooseMaterialImage = () => {
   uni.showLoading({
-    title:  $t('上傳中')
+    title: $t('上傳中')
   })
   uploadFile({
     url: '/store/index/uploadImage',
@@ -82,6 +82,8 @@ const handleSelectType = (obj) => {
   info.value.shop_type = obj.id
   info.value.shop_type_name = obj.name
 }
+
+const handleTypePickerConfirm = ({ value }) => value?.[0] && handleSelectType(value[0]);
 
 const handleChooseDirector = () => {
   uploadFile({
@@ -186,14 +188,18 @@ const handleToHome = () => {
               <text class="red-text">*</text>
               <text>{{ $t("入駐分類") }}</text>
             </view>
-            <picker-select :options="types" key-name="name" @change="handleSelectType">
-              <view class="form-value">
-                <text class="placeholder">
-                  {{ $t(info.shop_type_name || "請選擇入駐分類") }}
-                  <text class="iconfont icon-arrow-right-copy"></text>
-                </text>
-              </view>
-            </picker-select>
+            <view class="form-value" @click="typePicker.open()">
+              <text class="placeholder">
+                {{ $t(info.shop_type_name || "請選擇入駐分類") }}
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </text>
+            </view>
+            <uv-picker
+              ref="typePicker"
+              :columns="[types]"
+              key-name="name"
+              @confirm="handleTypePickerConfirm"
+            />
           </view>
 
           <view class="form-item">

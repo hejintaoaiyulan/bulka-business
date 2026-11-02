@@ -4,7 +4,6 @@ import { onShow, onLoad, onReachBottom } from "@dcloudio/uni-app";
 import { usePageLoading } from "../../../hooks";
 import { ref } from "vue";
 import { pick } from "lodash";
-import PickerSelect from "../../../components/PickerSelect.vue";
 import { Toast } from "../../../utils";
 
 const { reload, loadNext, dataList } = usePageLoading(goodsList, {
@@ -12,6 +11,7 @@ const { reload, loadNext, dataList } = usePageLoading(goodsList, {
 });
 
 const types = ref([]);
+const typePicker = ref(null);
 
 const selection = ref([]);
 const oldSelectionData = ref([]);
@@ -55,6 +55,8 @@ const handleSetType = (val) => {
   search();
 };
 
+const handleTypePickerConfirm = ({ value }) => value?.[0] && handleSetType(value[0]);
+
 const handleSelectId = (val) => {
   console.log(val);
 };
@@ -90,12 +92,16 @@ const handleSubmit = () => {
             @confirm="search"
           />
         </view>
-        <PickerSelect :options="types" key-name="goods_type_name" @change="handleSetType">
-          <view class="right-search">
-            <view>{{ $t(requestParams.goods_type_name || "選擇商品分類") }}</view>
-            <text class="iconfont icon-arrow-right-copy"></text>
-          </view>
-        </PickerSelect>
+        <view class="right-search" @click="typePicker.open()">
+          <view>{{ $t(requestParams.goods_type_name || "選擇商品分類") }}</view>
+          <text class="iconfont icon-arrow-right-copy"></text>
+        </view>
+        <uv-picker
+          ref="typePicker"
+          :columns="[types]"
+          key-name="goods_type_name"
+          @confirm="handleTypePickerConfirm"
+        />
       </view>
     </view>
     <scroll-view

@@ -4,7 +4,6 @@ import { onShow, onLoad } from "@dcloudio/uni-app";
 import UvImage from "../../../uni_modules/uv-image/components/uv-image/uv-image.vue";
 import { useFileUpload } from "../../../utils/uploadFile";
 import { getGoodsCategory, UploadUrl } from "../../../api/public";
-import PickerSelect from "../../../components/PickerSelect.vue";
 import { pick } from "lodash";
 import { getGoodsInfo, getGoodsTypes, saveGoods } from "../../../api/goods";
 import { Toast } from "../../../utils";
@@ -12,6 +11,8 @@ import { $t } from "@/i18n-helper";
 const { uploadFile, isUploading } = useFileUpload({ showUploadLoading: true });
 const types = ref([]);
 const categories = ref([]);
+const typePicker = ref(null);
+const categoryPicker = ref(null);
 const formData = ref({
   id: "",
   goods_image: "",
@@ -139,11 +140,15 @@ const handleChangeType = (val) => {
   formData.value.goods_type_id = val.id;
 };
 
+const handleTypePickerConfirm = ({ value }) => value?.[0] && handleChangeType(value[0]);
+
 const handleChangeCategory = (val) => {
   formData.value.goods_category_id = val.id;
   formData.value.goods_category_name_en = val.category_name_en;
   formData.value.goods_category_name = val.category_name;
 };
+
+const handleCategoryPickerConfirm = ({ value }) => value?.[0] && handleChangeCategory(value[0]);
 
 onShow(() => {
   getTypes();
@@ -307,32 +312,36 @@ const handleSave = () => {
               <text class="red-text">*</text>
               <text>{{ $t("平臺商品分類") }}</text>
             </view>
-            <PickerSelect
-              :options="categories"
+            <view class="form-value" @click="categoryPicker.open()">
+              <text class="placeholder">
+                {{ $t(formData.goods_category_name || "請選擇分類") }}
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </text>
+            </view>
+            <uv-picker
+              ref="categoryPicker"
+              :columns="[categories]"
               key-name="category_name"
-              @change="handleChangeCategory"
-            >
-              <view class="form-value">
-                <text class="placeholder">
-                  {{ $t(formData.goods_category_name || "請選擇分類") }}
-                  <text class="iconfont icon-arrow-right-copy"></text>
-                </text>
-              </view>
-            </PickerSelect>
+              @confirm="handleCategoryPickerConfirm"
+            />
           </view>
           <view class="form-item">
             <view class="form-label">
               <text class="red-text">*</text>
               <text>{{ $t("商家商品分類") }}</text>
             </view>
-            <PickerSelect :options="types" key-name="goods_type_name" @change="handleChangeType">
-              <view class="form-value">
-                <text class="placeholder">
-                  {{ $t(formData.goods_type_name || "請選擇分類") }}
-                  <text class="iconfont icon-arrow-right-copy"></text>
-                </text>
-              </view>
-            </PickerSelect>
+            <view class="form-value" @click="typePicker.open()">
+              <text class="placeholder">
+                {{ $t(formData.goods_type_name || "請選擇分類") }}
+                <text class="iconfont icon-arrow-right-copy"></text>
+              </text>
+            </view>
+            <uv-picker
+              ref="typePicker"
+              :columns="[types]"
+              key-name="goods_type_name"
+              @confirm="handleTypePickerConfirm"
+            />
           </view>
         </view>
       </view>

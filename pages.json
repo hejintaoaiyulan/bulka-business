@@ -387,19 +387,19 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首頁",
+        "text": "首頁 Home",
         "iconPath": "static/tabbar/home.png",
         "selectedIconPath": "static/tabbar/home-active.png"
       },
       {
         "pagePath": "pages/orders/index",
-        "text": "訂單",
+        "text": "訂單 Orders",
         "iconPath": "static/tabbar/order.png",
         "selectedIconPath": "static/tabbar/order-active.png"
       },
       {
         "pagePath": "pages/account/index",
-        "text": "我的",
+        "text": "我的 Me",
         "iconPath": "static/tabbar/my.png",
         "selectedIconPath": "static/tabbar/my-active.png"
       }

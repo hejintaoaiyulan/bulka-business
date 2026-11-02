@@ -74,7 +74,7 @@ const config = {
     repeatdur: 'repeatDur'
   }
 }
-const tagSelector={}
+const tagSelector = {}
 const {
   windowWidth,
   // #ifdef MP-WEIXIN
@@ -99,7 +99,7 @@ config.ignoreTags.style = undefined
  * @description 创建 map
  * @param {String} str 逗号分隔
  */
-function makeMap (str) {
+function makeMap(str) {
   const map = Object.create(null)
   const list = str.split(',')
   for (let i = list.length; i--;) {
@@ -114,7 +114,7 @@ function makeMap (str) {
  * @param {Boolean} amp 要不要解码 &amp;
  * @returns {String} 解码后的字符串
  */
-function decodeEntity (str, amp) {
+function decodeEntity(str, amp) {
   let i = str.indexOf('&')
   while (i !== -1) {
     const j = str.indexOf(';', i + 3)
@@ -142,7 +142,7 @@ function decodeEntity (str, amp) {
  * @description 合并多个块级标签，加快长内容渲染
  * @param {Array} nodes 要合并的标签数组
  */
-function mergeNodes (nodes) {
+function mergeNodes(nodes) {
   let i = nodes.length - 1
   for (let j = i; j >= -1; j--) {
     if (j === -1 || nodes[j].c || !nodes[j].name || (nodes[j].name !== 'div' && nodes[j].name !== 'p' && nodes[j].name[0] !== 'h') || (nodes[j].attrs.style || '').includes('inline')) {
@@ -162,7 +162,7 @@ function mergeNodes (nodes) {
  * @description html 解析器
  * @param {Object} vm 组件实例
  */
-function Parser (vm) {
+function Parser(vm) {
   this.options = vm || {}
   this.tagStyle = Object.assign({}, config.tagStyle, this.options.tagStyle)
   this.imgList = vm.imgList || []
@@ -624,7 +624,7 @@ Parser.prototype.popNode = function () {
     // 获取标题
     if (node.name === 'title' && children.length && children[0].type === 'text' && this.options.setTitle) {
       uni.setNavigationBarTitle({
-        title: children[0].text
+        title: $t(children[0].text),
       })
     }
     siblings.pop()
@@ -651,7 +651,7 @@ Parser.prototype.popNode = function () {
       return
     }
     // #ifdef APP-PLUS-NVUE
-    (function traversal (node) {
+    (function traversal(node) {
       if (node.name) {
         // 调整 svg 的大小写
         node.name = config.svgDict[node.name] || node.name
@@ -672,7 +672,7 @@ Parser.prototype.popNode = function () {
     const style = attrs.style
     attrs.style = ''
     attrs.xmlns = 'http://www.w3.org/2000/svg';
-    (function traversal (node) {
+    (function traversal(node) {
       if (node.type === 'text') {
         src += node.text
         return
@@ -854,7 +854,7 @@ Parser.prototype.popNode = function () {
       const cells = [] // 保存新的单元格
       const map = {}; // 被合并单元格占用的格子
 
-      (function traversal (nodes) {
+      (function traversal(nodes) {
         for (let i = 0; i < nodes.length; i++) {
           if (nodes[i].name === 'tr') {
             trList.push(nodes[i])
@@ -957,7 +957,7 @@ Parser.prototype.popNode = function () {
       }
       if (border || padding) {
         // 遍历
-        (function traversal (nodes) {
+        (function traversal(nodes) {
           for (let i = 0; i < nodes.length; i++) {
             const td = nodes[i]
             if (td.name === 'th' || td.name === 'td') {
@@ -1013,7 +1013,7 @@ Parser.prototype.popNode = function () {
       }
     }
   } else if (node.c) {
-    (function traversal (node) {
+    (function traversal(node) {
       node.c = 2
       for (let i = node.children.length; i--;) {
         const child = node.children[i]
@@ -1134,7 +1134,7 @@ Parser.prototype.onText = function (text) {
  * @description html 词法分析器
  * @param {Object} handler 高层处理器
  */
-function Lexer (handler) {
+function Lexer(handler) {
   this.handler = handler
 }
 
